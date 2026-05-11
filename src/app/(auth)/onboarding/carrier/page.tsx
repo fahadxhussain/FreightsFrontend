@@ -1,0 +1,472 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import {
+  Buildings,
+  Certificate,
+  FilePdf,
+  CreditCard,
+  UploadSimple,
+  CheckCircle,
+  ArrowLeft,
+  ArrowRight,
+  MagnifyingGlass,
+  Check,
+  Bank,
+  LinkSimple,
+  Camera,
+  Gauge,
+  Clock,
+  ArrowCounterClockwise
+} from '@phosphor-icons/react';
+import { cn } from '@/lib/utils';
+import api from '@/lib/axios';
+
+const companySchema = z.object({
+  companyName: z.string().min(2, 'Company name is required'),
+  businessType: z.string().min(1, 'Business type is required'),
+  ein: z.string().min(9, 'EIN must be 9 digits'),
+  street: z.string().min(1, 'Street address is required'),
+  city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
+  zip: z.string().min(5, 'ZIP code is required'),
+  phone: z.string().min(10, 'Phone number is required'),
+});
+
+const fmcsaSchema = z.object({
+  mcNumber: z.string().min(1, 'MC or USDOT number is required'),
+});
+
+type CompanyValues = z.infer<typeof companySchema>;
+type FmcsaValues = z.infer<typeof fmcsaSchema>;
+
+const STEPS = [
+  { num: 1, label: 'Company' },
+  { num: 2, label: 'FMCSA' },
+  { num: 3, label: 'Compliance' },
+  { num: 4, label: 'Payments' },
+];
+
+export default function CarrierOnboardingPage() {
+  const router = useRouter();
+  const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verificationResult, setVerificationResult] = useState<boolean>(false);
+  const [stripeConnected, setStripeConnected] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const companyForm = useForm<CompanyValues>({
+    resolver: zodResolver(companySchema),
+    defaultValues: {
+      companyName: '',
+      businessType: 'LLC',
+      ein: '',
+      street: '',
+      city: '',
+      state: 'TX',
+      zip: '',
+      phone: '',
+    }
+  });
+
+  const fmcsaForm = useForm<FmcsaValues>({
+    resolver: zodResolver(fmcsaSchema),
+    defaultValues: { mcNumber: '' }
+  });
+
+  const handleNext = async () => {
+    if (step === 1) {
+      const valid = await companyForm.trigger();
+      if (!valid) return;
+      setStep(2);
+    } else if (step === 2) {
+      if (!verificationResult) {
+        toast.error('Please verify your authority first');
+        return;
+      }
+      setStep(3);
+    } else if (step === 3) {
+      setStep(4);
+    }
+  };
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  const verifyFmcsa = async () => {
+    const valid = await fmcsaForm.trigger();
+    if (!valid) return;
+
+    setIsVerifying(true);
+    setTimeout(() => {
+      setVerificationResult(true);
+      setIsVerifying(false);
+      toast.success('Authority verified!');
+    }, 1500);
+  };
+
+  const completeOnboarding = async () => {
+    if (!stripeConnected) {
+      toast.error('Please connect your payment account');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const companyData = companyForm.getValues();
+      const fmcsaData = fmcsaForm.getValues();
+      
+      await api.post('/onboarding/carrier', {
+        ...companyData,
+        ...fmcsaData,
+      });
+      
+      setIsCompleted(true);
+    } catch (error: any) {
+      toast.error(error.response?.data?.error?.message || 'Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isCompleted) {
+    return (
+      <div className="flex flex-col items-center justify-center py-10 text-center animate-in fade-in zoom-in duration-500">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success-light text-success shadow-inner">
+          <CheckCircle size={48} weight="fill" />
+        </div>
+        <h2 className="text-2xl font-black tracking-tight text-foreground">You&apos;re all verified!</h2>
+        <p className="mt-2 text-muted font-medium">Welcome to FLOW. Your carrier profile is ready.</p>
+        <button 
+          onClick={() => router.push('/dashboard')}
+          className="btn btn-primary btn-lg mt-8 shadow-lg shadow-accent/20"
+        >
+          <Gauge size={20} weight="bold" />
+          Go to Dashboard
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header */}
+      <div className="mb-8 text-center">
+        <div className="text-[1.8rem] font-black text-accent tracking-tighter">FLOW</div>
+        <h2 className="mt-2 text-xl font-bold text-foreground">Carrier Onboarding</h2>
+        <p className="text-sm text-muted font-medium">Set up your fleet&apos;s business profile</p>
+      </div>
+
+      {/* Steps */}
+      <div className="mb-10 flex items-center justify-center">
+        {STEPS.map((s, i) => (
+          <div key={s.num} className="flex items-center">
+            <div className={cn(
+              "flex flex-col items-center gap-2",
+              step >= s.num ? "text-foreground" : "text-muted"
+            )}>
+              <div className={cn(
+                "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-black transition-all",
+                step === s.num ? "border-accent bg-accent text-white shadow-lg shadow-accent/20" : 
+                step > s.num ? "border-success bg-success text-white" : "border-border bg-card"
+              )}>
+                {step > s.num ? <Check size={18} weight="bold" /> : s.num}
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider">{s.label}</span>
+            </div>
+            {i < STEPS.length - 1 && (
+              <div className={cn(
+                "mx-3 mb-6 h-[2px] w-8 rounded-full",
+                step > s.num ? "bg-success" : "bg-border"
+              )} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="rounded-2xl border border-border bg-card p-8 shadow-xl backdrop-blur-md">
+        {step === 1 && (
+          <div className="space-y-6 animate-in fade-in duration-300">
+            <div className="flex items-center gap-2 text-accent">
+              <Buildings size={24} weight="bold" />
+              <h3 className="text-lg font-bold">Set up your company profile</h3>
+            </div>
+            
+            <div className="grid gap-5">
+              <div className="space-y-1.5">
+                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Company Name</label>
+                <input 
+                  {...companyForm.register('companyName')}
+                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", companyForm.formState.errors.companyName && "border-danger")}
+                  placeholder="e.g., Mike's Carriers LLC"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Business Type</label>
+                  <select 
+                    {...companyForm.register('businessType')}
+                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none appearance-none"
+                  >
+                    <option>LLC</option>
+                    <option>Inc.</option>
+                    <option>Sole Proprietor</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">EIN</label>
+                  <input 
+                    {...companyForm.register('ein')}
+                    className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", companyForm.formState.errors.ein && "border-danger")}
+                    placeholder="XX-XXXXXXX"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Street Address</label>
+                <input 
+                  {...companyForm.register('street')}
+                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", companyForm.formState.errors.street && "border-danger")}
+                  placeholder="123 Fleet Blvd"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-1.5">
+                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">City</label>
+                  <input 
+                    {...companyForm.register('city')}
+                    className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", companyForm.formState.errors.city && "border-danger")}
+                    placeholder="Dallas"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">State</label>
+                  <select 
+                    {...companyForm.register('state')}
+                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none appearance-none"
+                  >
+                    <option>TX</option><option>IL</option><option>CA</option><option>NY</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">ZIP</label>
+                  <input 
+                    {...companyForm.register('zip')}
+                    className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", companyForm.formState.errors.zip && "border-danger")}
+                    placeholder="75201"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Business Phone</label>
+                <input 
+                  {...companyForm.register('phone')}
+                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", companyForm.formState.errors.phone && "border-danger")}
+                  placeholder="+1 (555) 000-0000"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Company Logo (optional)</label>
+                <div className="flex items-center gap-4 rounded-xl border-2 border-dashed border-border p-4 hover:border-muted transition-colors cursor-pointer">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-input text-muted">
+                    <Camera size={24} />
+                  </div>
+                  <div className="text-xs font-bold text-muted uppercase tracking-wider">Click to upload logo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="space-y-6 animate-in fade-in duration-300">
+            <div className="flex items-center gap-2 text-accent">
+              <Certificate size={24} weight="bold" />
+              <h3 className="text-lg font-bold">Verify your operating authority</h3>
+            </div>
+            <p className="text-sm font-medium text-muted">Your MC or USDOT number is issued by the Federal Motor Carrier Safety Administration (FMCSA).</p>
+            
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">MC Number</label>
+                <input 
+                  {...fmcsaForm.register('mcNumber')}
+                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", fmcsaForm.formState.errors.mcNumber && "border-danger")}
+                  placeholder="MC-XXXXXXX"
+                />
+              </div>
+
+              {!verificationResult && (
+                <button 
+                  onClick={verifyFmcsa}
+                  disabled={isVerifying}
+                  className="btn btn-primary w-full py-3 shadow-lg shadow-accent/10"
+                >
+                  <MagnifyingGlass size={18} weight="bold" />
+                  {isVerifying ? 'Verifying...' : 'Verify Now'}
+                </button>
+              )}
+
+              {verificationResult && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-500">
+                  <div className="mb-4 flex justify-center">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success-light text-success">
+                      <Check size={24} weight="bold" />
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-border bg-input p-5">
+                    <h4 className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-muted">FMCSA Verification Result</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-muted uppercase">Legal Name</span>
+                        <span className="text-xs font-black">{companyForm.getValues('companyName') || "Mike's Carriers LLC"}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-muted uppercase">Authority Status</span>
+                        <span className="badge badge-green">Active</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-muted uppercase">Insurance</span>
+                        <span className="badge badge-green">Valid</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-muted uppercase">Safety Rating</span>
+                        <span className="badge badge-green">Satisfactory</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-muted uppercase">Authority Type</span>
+                        <span className="badge badge-blue">Common Carrier</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-6 animate-in fade-in duration-300">
+            <div className="flex items-center gap-2 text-accent">
+              <UploadSimple size={24} weight="bold" />
+              <h3 className="text-lg font-bold">Upload Compliance Documents</h3>
+            </div>
+            <p className="text-sm font-medium text-muted">Both documents are required to complete onboarding.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="rounded-2xl border-2 border-dashed border-border p-5 bg-card hover:border-muted transition-colors cursor-pointer">
+                <div className="mb-4 flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-wider">Insurance Certificate</h4>
+                  <span className="badge badge-green"><Check size={10} weight="bold" /> Uploaded</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <FilePdf size={28} weight="fill" className="text-danger" />
+                  <div>
+                    <p className="text-xs font-bold truncate max-w-[120px]">insurance_cert.pdf</p>
+                    <p className="text-[10px] text-muted">890 KB</p>
+                  </div>
+                </div>
+                <button className="btn btn-secondary h-8 px-3 text-[10px] mt-4 uppercase tracking-wider">
+                  <ArrowCounterClockwise size={12} weight="bold" />
+                  Replace
+                </button>
+              </div>
+
+              <div className="rounded-2xl border-2 border-dashed border-border p-5 bg-card hover:border-muted transition-colors cursor-pointer">
+                <div className="mb-4 flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-wider">Authority Letter</h4>
+                  <span className="badge badge-amber"><Clock size={10} weight="bold" /> Pending</span>
+                </div>
+                <div className="flex flex-col items-center justify-center py-2 text-muted">
+                  <UploadSimple size={24} />
+                  <p className="mt-2 text-[10px] font-bold uppercase tracking-wider">Click to upload</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="space-y-6 animate-in fade-in duration-300">
+            <div className="flex items-center gap-2 text-accent">
+              <CreditCard size={24} weight="bold" />
+              <h3 className="text-lg font-bold">Connect your payment account</h3>
+            </div>
+            <p className="text-sm font-medium text-muted">FLOW uses Stripe to process all payments securely. Connecting your account takes 2 minutes.</p>
+            
+            <div className="py-6 flex items-center justify-center gap-5">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#635BFF] text-2xl font-black text-white shadow-xl shadow-[#635BFF]/20">S</div>
+              <div className="text-muted"><LinkSimple size={24} weight="bold" /></div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-light text-accent text-2xl shadow-xl shadow-accent/10"><Bank size={28} weight="bold" /></div>
+            </div>
+
+            {!stripeConnected ? (
+              <div className="space-y-3">
+                <button 
+                  onClick={() => { setStripeConnected(true); toast.success('Stripe connected!'); }}
+                  className="btn btn-primary btn-lg w-full bg-[#635BFF] hover:bg-[#5851e5] shadow-lg shadow-[#635BFF]/20"
+                >
+                  Connect with Stripe
+                </button>
+                <p className="text-center text-[10px] font-bold text-muted uppercase tracking-widest">You&apos;ll be redirected to Stripe to complete setup</p>
+              </div>
+            ) : (
+              <div className="rounded-xl border border-border bg-input p-4 animate-in zoom-in duration-300">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-success-light text-success">
+                    <CheckCircle size={20} weight="fill" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-foreground">Stripe Connected</div>
+                    <div className="text-xs font-medium text-muted">Bank of America ••••4242</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="mt-10 flex justify-between gap-4">
+          <button 
+            onClick={handleBack}
+            className={cn("btn btn-secondary flex-1 py-3 h-12", step === 1 && "opacity-0 pointer-events-none")}
+          >
+            <ArrowLeft size={18} weight="bold" />
+            Back
+          </button>
+          
+          {step < 4 ? (
+            <button 
+              onClick={handleNext}
+              className="btn btn-primary flex-1 py-3 h-12 shadow-lg shadow-accent/10"
+            >
+              Continue
+              <ArrowRight size={18} weight="bold" />
+            </button>
+          ) : (
+            <button 
+              onClick={completeOnboarding}
+              disabled={isLoading || !stripeConnected}
+              className="btn btn-primary flex-1 py-3 h-12 bg-success hover:bg-success/90 shadow-lg shadow-success/10 border-none"
+            >
+              {isLoading ? 'Completing...' : 'Complete Onboarding'}
+              <Check size={18} weight="bold" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

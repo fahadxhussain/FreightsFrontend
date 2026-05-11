@@ -1,0 +1,689 @@
+"use client";
+
+import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import {
+  ArrowRight,
+  MapPinLine,
+  ChatText,
+  FileText,
+  Star,
+  Truck,
+  ArrowClockwise,
+  CurrencyDollar,
+  CheckCircle,
+  XCircle,
+  Warning,
+  CircleNotch,
+  BookmarkSimple,
+  CalendarBlank,
+} from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
+import api from "@/lib/axios";
+import { toast } from "sonner";
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+interface BookingEntry {
+  _id: string;
+  loadId: string;
+  loadDetails?: {
+    _id: string;
+    origin: { city: string; state: string };
+    destination: { city: string; state: string };
+    truckType: string;
+    status: string;
+    pickupDate: string;
+    deliveryDate: string;
+  };
+  status: string;
+  proposedRate: number | null;
+  originalRate?: number;
+  counterAmount?: number;
+  respondedAt: string | null;
+  createdAt: string;
+  assignedDriver?: string;
+  assignedTruck?: string;
+  carrierOrgName?: string;
+}
+
+type LoadBrief = {
+  _id: string;
+  origin: { city: string; state: string };
+  destination: { city: string; state: string };
+  truckType: string;
+  status: string;
+  pickupDate: string;
+  deliveryDate: string;
+  rate: number;
+};
+
+type ReqBrief = {
+  _id: string;
+  proposedRate: number | null;
+  status: string;
+  assignedDriver?: string;
+  assignedTruck?: string;
+  carrierOrgName?: string;
+};
+
+const TABS = ["Active", "Pending Bids", "Completed", "Cancelled"];
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function statusBadge(status: string) {
+  switch (status) {
+    case "accepted":
+    case "won":
+    case "booked":
+      return "badge-green";
+    case "in_transit":
+      return "badge-amber";
+    case "pending":
+    case "sent":
+      return "badge-indigo";
+    case "countered":
+      return "badge-amber";
+    case "denied":
+    case "declined":
+      return "badge-red";
+    case "delivered":
+      return "badge-green";
+    case "cancelled":
+    case "expired":
+      return "badge-red";
+    default:
+      return "badge-gray";
+  }
+}
+
+function statusLabel(status: string) {
+  switch (status) {
+    case "accepted":
+      return "Won";
+    case "pending":
+      return "Sent";
+    case "in_transit":
+      return "In Transit";
+    case "countered":
+      return "Countered";
+    case "denied":
+      return "Denied";
+    case "cancelled":
+      return "Cancelled";
+    case "delivered":
+      return "Delivered";
+    case "booked":
+      return "Booked";
+    case "expired":
+      return "Expired";
+    default:
+      return status.replace(/_/g, " ");
+  }
+}
+
+function equipmentBadge(truckType: string) {
+  const t = truckType?.toLowerCase() || "";
+  if (t === "flatbed") return "badge-blue";
+  if (t === "reefer") return "badge-indigo";
+  if (t === "dry_van" || t === "dry van") return "badge-green";
+  if (t === "step_deck" || t === "step deck") return "badge-amber";
+  return "badge-gray";
+}
+
+function formatDate(d: string) {
+  if (!d) return "—";
+  return new Date(d).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Page Component
+// ---------------------------------------------------------------------------
+
+export default function MyBookingsPage() {
+  const router = useRouter();
+
+  const [activeTab, setActiveTab] = useState("Active");
+  const [bookings, setBookings] = useState<BookingEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  // -----------------------------------------------------------------------
+  // Fetch my bookings
+  // -----------------------------------------------------------------------
+
+  const fetchBookings = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const loadsRes = await api.get("/loads");
+      const loads: LoadBrief[] =
+        loadsRes.data?.data?.loads ?? loadsRes.data?.data ?? [];
+
+      const bookingPromises = loads.map(async (load: LoadBrief) => {
+        try {
+          const bookingsRes = await api.get(
+            `/loads/${load._id}/booking-requests`,
+          );
+          const reqs: ReqBrief[] = bookingsRes.data?.data ?? [];
+          return reqs.map(
+            (req) =>
+              ({
+                _id: req._id,
+                loadId: load._id,
+                status: req.status,
+                proposedRate: req.proposedRate,
+                assignedDriver: req.assignedDriver,
+                assignedTruck: req.assignedTruck,
+                carrierOrgName: req.carrierOrgName,
+                loadDetails: {
+                  _id: load._id,
+                  origin: load.origin,
+                  destination: load.destination,
+                  truckType: load.truckType,
+                  status: load.status,
+                  pickupDate: load.pickupDate,
+                  deliveryDate: load.deliveryDate,
+                },
+                originalRate: load.rate,
+                respondedAt: null,
+                createdAt: "",
+              }) as BookingEntry,
+          );
+        } catch {
+          return [];
+        }
+      });
+
+      const allBookings: BookingEntry[] = (
+        await Promise.all(bookingPromises)
+      ).flat();
+      setBookings(allBookings);
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message || "Failed to fetch bookings";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const didFetchRef = React.useRef(false);
+  useEffect(() => {
+    if (didFetchRef.current) return;
+    didFetchRef.current = true;
+    fetchBookings();
+  }, [fetchBookings]);
+
+  // -----------------------------------------------------------------------
+  // Actions
+  // -----------------------------------------------------------------------
+
+  const handleAcceptCounter = async (loadId: string, offerId?: string) => {
+    if (!offerId) return;
+    setActionLoading(offerId);
+    try {
+      await api.post(`/loads/${loadId}/counteroffer/${offerId}/accept`);
+      toast.success("Counter offer accepted!");
+      fetchBookings();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message || "Failed to accept counter";
+      toast.error(msg);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleSendCounter = async (loadId: string, bookingId?: string) => {
+    if (!bookingId) return;
+    const counterRate = prompt("Enter your counter rate ($):");
+    if (!counterRate || isNaN(Number(counterRate))) {
+      toast.error("Please enter a valid rate");
+      return;
+    }
+    setActionLoading(bookingId);
+    try {
+      await api.post(`/bookings/${bookingId}/counter`, {
+        rate: Number(counterRate),
+      });
+      toast.success("Counter offer sent!");
+      fetchBookings();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message || "Failed to send counter";
+      toast.error(msg);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleDeclineCounter = async (loadId: string, bookingId?: string) => {
+    if (!bookingId) return;
+    setActionLoading(bookingId);
+    try {
+      await api.put(`/loads/${loadId}/bookings/${bookingId}/deny`);
+      toast.success("Bid declined");
+      fetchBookings();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message || "Failed to decline";
+      toast.error(msg);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleCancelBid = async (loadId: string, bookingId?: string) => {
+    if (!bookingId) return;
+    setActionLoading(bookingId);
+    try {
+      await api.put(`/loads/${loadId}/bookings/${bookingId}/cancel`);
+      toast.success("Booking request cancelled");
+      fetchBookings();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { error?: { message?: string } } } })
+          ?.response?.data?.error?.message || "Failed to cancel booking";
+      toast.error(msg);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // -----------------------------------------------------------------------
+  // Filtering
+  // -----------------------------------------------------------------------
+
+  const filteredBookings = bookings.filter((b) => {
+    const s = b.status;
+    const ls = b.loadDetails?.status;
+    switch (activeTab) {
+      case "Active":
+        return s === "accepted" || ls === "booked" || ls === "in_transit";
+      case "Pending Bids":
+        return s === "pending" || s === "countered";
+      case "Completed":
+        return ls === "delivered" || (s === "accepted" && ls === "delivered");
+      case "Cancelled":
+        return (
+          s === "denied" ||
+          s === "cancelled" ||
+          s === "expired" ||
+          ls === "cancelled"
+        );
+      default:
+        return true;
+    }
+  });
+
+  // -----------------------------------------------------------------------
+  // Render
+  // -----------------------------------------------------------------------
+
+  return (
+    <div className="p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header */}
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
+            <BookmarkSimple size={28} weight="bold" className="text-accent" />
+            My Bookings
+          </h1>
+          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+            Track and manage your bids and active shipments
+          </p>
+        </div>
+        <button
+          onClick={fetchBookings}
+          className="btn btn-secondary h-12 w-12 shadow-sm"
+          title="Refresh"
+        >
+          <ArrowClockwise
+            size={20}
+            weight="bold"
+            className={isLoading ? "animate-spin" : ""}
+          />
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="mb-8 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        {TABS.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={cn(
+              "whitespace-nowrap px-6 py-3 text-[11px] font-black uppercase tracking-wider rounded-2xl border transition-all",
+              activeTab === tab
+                ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
+                : "bg-card border-border text-muted hover:border-muted hover:text-foreground",
+            )}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="space-y-5">
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-36 rounded-2xl border border-border bg-card animate-pulse"
+            />
+          ))
+        ) : error && bookings.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-muted">
+            <Warning size={48} weight="thin" className="mb-4 opacity-20" />
+            <p className="font-bold uppercase tracking-widest text-xs">
+              {error}
+            </p>
+            <button
+              onClick={fetchBookings}
+              className="btn btn-secondary mt-4 text-[10px] font-black"
+            >
+              Retry
+            </button>
+          </div>
+        ) : filteredBookings.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24 text-muted">
+            <BookmarkSimple
+              size={48}
+              weight="thin"
+              className="mb-4 opacity-20"
+            />
+            <p className="font-bold uppercase tracking-widest text-xs">
+              No bookings found
+            </p>
+            <p className="text-[10px] text-muted mt-1">
+              {activeTab === "Active"
+                ? "Start bidding on loads in the marketplace"
+                : `No ${activeTab.toLowerCase()} bookings`}
+            </p>
+            {activeTab === "Active" || activeTab === "Pending Bids" ? (
+              <button
+                onClick={() => router.push("/marketplace")}
+                className="btn btn-primary h-12 px-6 mt-6 text-[10px] font-black uppercase tracking-widest"
+              >
+                Browse Marketplace
+              </button>
+            ) : null}
+          </div>
+        ) : (
+          filteredBookings.map((booking) => {
+            const ld = booking.loadDetails;
+            if (!ld) return null;
+
+            const isCountered = booking.status === "countered";
+            const isActive = activeTab === "Active";
+            const isPending = activeTab === "Pending Bids";
+            const isCompleted = activeTab === "Completed";
+
+            return (
+              <div
+                key={booking._id}
+                className={cn(
+                  "rounded-2xl border p-5 transition-all hover:border-accent/20 cursor-pointer group shadow-sm",
+                  isCountered
+                    ? "border-warning/40 bg-warning-light/30"
+                    : "border-border bg-card",
+                )}
+                onClick={() => router.push(`/loads/${ld._id}`)}
+              >
+                {/* Top row */}
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <div className="badge badge-blue h-7 px-3">
+                      FL-{ld._id.slice(-6).toUpperCase()}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base font-black text-foreground tracking-tight">
+                        {ld.origin.city}, {ld.origin.state}
+                      </span>
+                      <ArrowRight
+                        size={14}
+                        weight="bold"
+                        className="text-muted"
+                      />
+                      <span className="text-base font-black text-foreground tracking-tight">
+                        {ld.destination.city}, {ld.destination.state}
+                      </span>
+                    </div>
+                    <span
+                      className={cn(
+                        "badge text-[10px] px-3 py-1 h-7",
+                        statusBadge(booking.status),
+                      )}
+                    >
+                      {statusLabel(booking.status)}
+                    </span>
+                  </div>
+
+                  {/* Rate */}
+                  <div className="text-right shrink-0">
+                    {isCountered && booking.originalRate ? (
+                      <>
+                        <div className="text-[10px] font-bold text-muted line-through">
+                          ${booking.originalRate.toLocaleString()}
+                        </div>
+                        <div className="text-xl font-black text-warning tracking-tight">
+                          $
+                          {(
+                            booking.counterAmount || booking.proposedRate
+                          )?.toLocaleString()}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-xl font-black text-success tracking-tight">
+                        $
+                        {(
+                          booking.proposedRate ||
+                          booking.originalRate ||
+                          0
+                        ).toLocaleString()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Sub info */}
+                <div className="flex items-center gap-4 text-xs font-bold text-muted mb-4 flex-wrap">
+                  <span
+                    className={cn(
+                      "badge text-[9px]",
+                      equipmentBadge(ld.truckType),
+                    )}
+                  >
+                    {ld.truckType}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <CalendarBlank size={12} weight="bold" />
+                    {formatDate(ld.pickupDate)} – {formatDate(ld.deliveryDate)}
+                  </span>
+                  {booking.assignedDriver && (
+                    <span className="flex items-center gap-1">
+                      <Truck size={12} weight="bold" />
+                      {booking.assignedDriver}
+                      {booking.assignedTruck
+                        ? ` · ${booking.assignedTruck}`
+                        : ""}
+                    </span>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 flex-wrap">
+                  {isActive && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/tracking/${ld._id}`);
+                        }}
+                        className="btn btn-primary btn-sm h-10 px-5 text-[10px] font-black"
+                      >
+                        <MapPinLine size={16} weight="bold" /> Track Shipment
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push("/messaging");
+                        }}
+                        className="btn btn-secondary btn-sm h-10 px-5 text-[10px] font-black"
+                      >
+                        <ChatText size={16} weight="bold" /> Open Chat
+                      </button>
+                    </>
+                  )}
+
+                  {isPending && isCountered && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAcceptCounter(ld._id, booking._id);
+                        }}
+                        disabled={actionLoading === booking._id}
+                        className="btn btn-sm h-10 px-5 text-[10px] font-black"
+                        style={{
+                          backgroundColor: "var(--success)",
+                          color: "white",
+                          border: "none",
+                        }}
+                      >
+                        {actionLoading === booking._id ? (
+                          <CircleNotch
+                            size={12}
+                            weight="bold"
+                            className="animate-spin"
+                          />
+                        ) : (
+                          <>
+                            <CheckCircle size={16} weight="bold" /> Accept
+                            Counter
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSendCounter(ld._id, booking._id);
+                        }}
+                        disabled={actionLoading === booking._id}
+                        className="btn btn-secondary btn-sm h-10 px-5 text-[10px] font-black"
+                      >
+                        {actionLoading === booking._id ? (
+                          <CircleNotch
+                            size={12}
+                            weight="bold"
+                            className="animate-spin"
+                          />
+                        ) : (
+                          <>
+                            <CurrencyDollar size={16} weight="bold" /> Send
+                            Counter
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeclineCounter(ld._id, booking._id);
+                        }}
+                        disabled={actionLoading === booking._id}
+                        className="btn btn-sm h-10 px-5 text-[10px] font-black text-danger border border-danger/30 hover:bg-danger-light"
+                      >
+                        {actionLoading === booking._id ? (
+                          <CircleNotch
+                            size={12}
+                            weight="bold"
+                            className="animate-spin"
+                          />
+                        ) : (
+                          <>
+                            <XCircle size={16} weight="bold" /> Decline
+                          </>
+                        )}
+                      </button>
+                    </>
+                  )}
+
+                  {isPending && !isCountered && (
+                    <div className="flex gap-2 items-center">
+                      <span className="text-[10px] font-bold text-muted italic">
+                        Awaiting broker response...
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCancelBid(ld._id, booking._id);
+                        }}
+                        disabled={actionLoading === booking._id}
+                        className="btn btn-sm h-9 px-4 text-[10px] font-black text-danger border border-danger/30 hover:bg-danger-light"
+                      >
+                        {actionLoading === booking._id ? (
+                          <CircleNotch
+                            size={12}
+                            weight="bold"
+                            className="animate-spin"
+                          />
+                        ) : (
+                          <>
+                            <XCircle size={14} weight="bold" /> Cancel
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
+
+                  {isCompleted && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/documents`);
+                        }}
+                        className="btn btn-secondary btn-sm h-10 px-5 text-[10px] font-black"
+                      >
+                        <FileText size={16} weight="bold" /> View Invoice
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/reviews`);
+                        }}
+                        className="btn btn-sm h-10 px-5 text-[10px] font-black"
+                        style={{
+                          backgroundColor: "var(--warning)",
+                          color: "white",
+                          border: "none",
+                        }}
+                      >
+                        <Star size={16} weight="fill" /> Rate Broker
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+}
