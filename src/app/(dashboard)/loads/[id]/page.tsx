@@ -27,6 +27,7 @@ import api from "@/lib/axios";
 import { toast } from "sonner";
 import { useAppSelector } from "@/store/hooks";
 import PermissionGate from "@/components/PermissionGate";
+import { useSocket } from "@/hooks/useSocket";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -180,6 +181,15 @@ export default function LoadDetailPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [counterOffer, setCounterOffer] = useState<Record<string, string>>({});
   const [showCounterInput, setShowCounterInput] = useState<string | null>(null);
+
+  // Subscribe to real-time updates for this load
+  const { subscribeToLoad, unsubscribeFromLoad } = useSocket();
+  useEffect(() => {
+    if (params.id) {
+      subscribeToLoad(params.id as string);
+      return () => unsubscribeFromLoad(params.id as string);
+    }
+  }, [params.id, subscribeToLoad, unsubscribeFromLoad]);
 
   // -----------------------------------------------------------------------
   // Fetch load & booking requests

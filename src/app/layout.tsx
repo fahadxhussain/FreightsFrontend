@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import StoreProvider from "@/components/providers/StoreProvider";
+import SocketProvider from "@/components/providers/SocketProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
@@ -34,8 +35,10 @@ export default function RootLayout({
           enableSystem={false}
         >
           <StoreProvider>
-            {children}
-            <Toaster position="top-right" richColors />
+            <SocketProvider>
+              {children}
+              <Toaster position="top-right" richColors />
+            </SocketProvider>
           </StoreProvider>
         </ThemeProvider>
       </body>
