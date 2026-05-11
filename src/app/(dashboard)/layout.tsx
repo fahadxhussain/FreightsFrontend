@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
@@ -36,9 +36,25 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const user = useAppSelector((s) => s.auth.user);
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
-    if (!user?.role) return;
+    // Give AuthInitializer time to read token from localStorage
+    const timer = setTimeout(() => {
+      setIsAuthReady(true);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthReady) return;
+
+    // Redirect unauthenticated users to login
+    if (!user?.role) {
+      router.replace("/login");
+      return;
+    }
 
     // Check if current path is restricted — use ALLOW-list
     for (const [basePath, allowedRoles] of Object.entries(ROLE_ALLOWED_PATHS)) {
@@ -47,7 +63,15 @@ export default function DashboardLayout({
         return;
       }
     }
-  }, [pathname, user?.role, router]);
+  }, [pathname, user?.role, router, isAuthReady]);
+
+  if (!isAuthReady) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen">

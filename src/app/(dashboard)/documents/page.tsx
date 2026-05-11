@@ -1,125 +1,282 @@
 'use client';
 
-import { useState } from 'react';
-import { 
-  FilePdf, 
-  Image, 
-  FileText, 
-  DownloadSimple, 
-  TrashSimple, 
-  Plus, 
-  MagnifyingGlass, 
+import { useEffect, useState, useCallback } from 'react';
+import {
+  FilePdf,
+  Image,
+  DownloadSimple,
+  TrashSimple,
+  Plus,
+  MagnifyingGlass,
   Funnel,
   UploadSimple,
   X,
-  File
+  File,
 } from '@phosphor-icons/react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import api from '@/lib/axios';
 
-const DOCS = [
-  { id: 1, name: 'rate_con_FL20042.pdf', type: 'Rate Con', loadId: 'FL-20042', user: 'John Smith', date: 'Apr 1, 2025', size: '245 KB', ext: 'pdf' },
-  { id: 2, name: 'BOL_FL20042.pdf', type: 'BOL', loadId: 'FL-20042', user: 'Mike Thompson', date: 'Apr 2, 2025', size: '312 KB', ext: 'pdf' },
-  { id: 3, name: 'POD_FL20041.jpg', type: 'POD', loadId: 'FL-20041', user: 'Sarah Johnson', date: 'Mar 31, 2025', size: '1.2 MB', ext: 'jpg' },
-  { id: 4, name: 'insurance_cert.pdf', type: 'Insurance', loadId: '—', user: "Mike's Carriers", date: 'Mar 15, 2025', size: '890 KB', ext: 'pdf' },
-];
+interface DocumentRecord {
+  _id: string;
+  type: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  fileSize: number;
+  loadId: string | null;
+  status: string;
+  createdAt: string;
+  notes: string | null;
+}
+
+const TYPE_LABELS: Record<string, string> = {
+  rate_confirmation: 'Rate Con',
+  bol: 'BOL',
+  pod: 'POD',
+  invoice: 'Invoice',
+  insurance: 'Insurance',
+  other: 'Other',
+};
+
+const TYPE_COLORS: Record<string, string> = {
+  rate_confirmation: 'badge-indigo',
+  bol: 'badge-blue',
+  pod: 'badge-green',
+  invoice: 'badge-amber',
+  insurance: 'badge-purple',
+  other: 'badge-gray',
+};
 
 export default function DocumentVaultPage() {
+  const [documents, setDocuments] = useState<DocumentRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [uploadType, setUploadType] = useState('bol');
+  const [uploadLoadId, setUploadLoadId] = useState('');
+  const [uploadNotes, setUploadNotes] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [filterType, setFilterType] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const fetchDocuments = useCallback(async () => {
+    try {
+      const params = new URLSearchParams();
+      if (filterType) params.append('type', filterType);
+      const res = await api.get(`/documents?${params.toString()}`);
+      setDocuments(res.data.data || []);
+    } catch {
+      toast.error('Failed to load documents');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [filterType]);
+
+  useEffect(() => {
+    fetchDocuments();
+  }, [fetchDocuments]);
+
+  async function handleUpload(e: React.FormEvent) {
+    e.preventDefault();
+    if (!uploadFile) {
+      toast.error('Please select a file');
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', uploadFile);
+    formData.append('type', uploadType);
+    if (uploadLoadId) formData.append('loadId', uploadLoadId);
+    if (uploadNotes) formData.append('notes', uploadNotes);
+
+    try {
+      await api.post('/documents/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      toast.success('Document uploaded');
+      setIsUploadModalOpen(false);
+      setUploadFile(null);
+      setUploadType('bol');
+      setUploadLoadId('');
+      setUploadNotes('');
+      fetchDocuments();
+    } catch {
+      toast.error('Upload failed');
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Are you sure you want to delete this document?')) return;
+    try {
+      await api.delete(`/documents/${id}`);
+      toast.success('Document deleted');
+      setDocuments((prev) => prev.filter((d) => d._id !== id));
+    } catch {
+      toast.error('Failed to delete');
+    }
+  }
+
+  function formatFileSize(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function getFileExtension(mimeType: string): string {
+    if (mimeType.includes('pdf')) return 'pdf';
+    if (mimeType.includes('image')) return 'img';
+    return 'file';
+  }
+
+  const filteredDocs = documents.filter((doc) =>
+    searchQuery
+      ? doc.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (doc.loadId && doc.loadId.toLowerCase().includes(searchQuery.toLowerCase()))
+      : true,
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="p-6">
+      <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">Document Vault</h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">Secure centralized storage for all shipment records</p>
+          <h1 className="text-2xl font-bold text-foreground">Document Vault</h1>
+          <p className="text-sm text-muted">Manage shipment documents and records</p>
         </div>
-        <button 
+        <button
           onClick={() => setIsUploadModalOpen(true)}
-          className="btn btn-primary btn-lg shadow-xl shadow-accent/20"
+          className="flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover"
         >
-          <Plus size={20} weight="bold" />
-          Upload Document
+          <Plus size={18} /> Upload Document
         </button>
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <div className="relative flex-1 min-w-[300px]">
-          <MagnifyingGlass size={18} weight="bold" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-          <input 
-            className="w-full rounded-xl border border-border bg-card px-11 py-3 text-[13px] font-medium outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5" 
-            placeholder="Search by filename, load ID, or user..." 
+          <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+          <input
+            className="w-full rounded-lg border border-border bg-card px-10 py-2.5 text-sm outline-none focus:border-accent"
+            placeholder="Search by filename or load ID..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <select className="h-12 w-48 rounded-xl border border-border bg-card px-4 text-[13px] font-bold text-foreground outline-none appearance-none cursor-pointer hover:border-muted transition-colors">
-          <option>All Types</option>
-          <option>BOL</option>
-          <option>POD</option>
-          <option>Rate Con</option>
-          <option>Insurance</option>
+        <select
+          className="h-10 rounded-lg border border-border bg-card px-3 text-sm outline-none"
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+        >
+          <option value="">All Types</option>
+          <option value="rate_confirmation">Rate Con</option>
+          <option value="bol">BOL</option>
+          <option value="pod">POD</option>
+          <option value="invoice">Invoice</option>
+          <option value="insurance">Insurance</option>
+          <option value="other">Other</option>
         </select>
-        <input 
-          type="date" 
-          className="h-12 w-48 rounded-xl border border-border bg-card px-4 text-[13px] font-bold text-foreground outline-none cursor-pointer hover:border-muted transition-colors" 
-        />
-        <button className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-card text-muted hover:text-accent hover:border-accent transition-all">
-          <Funnel size={20} weight="bold" />
-        </button>
       </div>
 
-      <div className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-2xl">
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-border bg-muted/30">
-                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Filename</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Type</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Load ID</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Uploaded By</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Date</th>
-                <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Size</th>
-                <th className="px-8 py-5"></th>
+              <tr className="border-b border-border bg-muted/30 text-xs font-semibold uppercase text-muted">
+                <th className="px-5 py-3">Filename</th>
+                <th className="px-5 py-3">Type</th>
+                <th className="px-5 py-3">Load ID</th>
+                <th className="px-5 py-3">Status</th>
+                <th className="px-5 py-3">Date</th>
+                <th className="px-5 py-3">Size</th>
+                <th className="px-5 py-3"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {DOCS.map((doc) => (
-                <tr key={doc.id} className="group hover:bg-card-hover transition-colors">
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "flex h-10 w-10 items-center justify-center rounded-xl",
-                        doc.ext === 'pdf' ? "bg-danger-light text-danger" : "bg-accent-light text-accent"
-                      )}>
-                        {doc.ext === 'pdf' ? <FilePdf size={24} weight="bold" /> : <Image size={24} weight="bold" />}
-                      </div>
-                      <span className="text-sm font-black text-foreground">{doc.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-5">
-                    <span className={cn(
-                      "badge px-3 h-6",
-                      doc.type === 'Rate Con' ? "badge-indigo" :
-                      doc.type === 'BOL' ? "badge-blue" :
-                      doc.type === 'POD' ? "badge-green" : "badge-amber"
-                    )}>
-                      {doc.type}
-                    </span>
-                  </td>
-                  <td className="px-8 py-5 text-[13px] font-black text-foreground">{doc.loadId}</td>
-                  <td className="px-8 py-5 text-[13px] font-bold text-muted-foreground">{doc.user}</td>
-                  <td className="px-8 py-5 text-[13px] font-bold text-muted">{doc.date}</td>
-                  <td className="px-8 py-5 text-[13px] font-bold text-muted">{doc.size}</td>
-                  <td className="px-8 py-5 text-right">
-                    <div className="flex gap-2 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="h-9 w-9 inline-flex items-center justify-center rounded-xl text-muted hover:bg-muted/10 hover:text-accent transition-all">
-                        <DownloadSimple size={20} weight="bold" />
-                      </button>
-                      <button className="h-9 w-9 inline-flex items-center justify-center rounded-xl text-muted hover:bg-danger-light hover:text-danger transition-all">
-                        <TrashSimple size={20} weight="bold" />
-                      </button>
-                    </div>
+              {filteredDocs.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-5 py-12 text-center text-sm text-muted">
+                    No documents found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredDocs.map((doc) => (
+                  <tr key={doc._id} className="group hover:bg-card-hover">
+                    <td className="px-5 py-3">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={cn(
+                            'flex h-9 w-9 items-center justify-center rounded-lg',
+                            getFileExtension(doc.fileType) === 'pdf'
+                              ? 'bg-danger-light text-danger'
+                              : 'bg-accent-light text-accent',
+                          )}
+                        >
+                          {getFileExtension(doc.fileType) === 'pdf' ? (
+                            <FilePdf size={20} />
+                          ) : getFileExtension(doc.fileType) === 'img' ? (
+                            <Image size={20} />
+                          ) : (
+                            <File size={20} />
+                          )}
+                        </div>
+                        <span className="text-sm font-medium text-foreground">{doc.fileName}</span>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3">
+                      <span className={cn('badge px-2 py-0.5 text-xs', TYPE_COLORS[doc.type] || 'badge-gray')}>
+                        {TYPE_LABELS[doc.type] || doc.type}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3 text-sm text-foreground">{doc.loadId || '—'}</td>
+                    <td className="px-5 py-3">
+                      <span
+                        className={cn(
+                          'rounded-full px-2 py-0.5 text-xs font-medium',
+                          doc.status === 'approved'
+                            ? 'bg-success-light text-success'
+                            : doc.status === 'rejected'
+                              ? 'bg-danger-light text-danger'
+                              : 'bg-warning-light text-warning',
+                        )}
+                      >
+                        {doc.status}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3 text-sm text-muted">
+                      {new Date(doc.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-5 py-3 text-sm text-muted">{formatFileSize(doc.fileSize)}</td>
+                    <td className="px-5 py-3 text-right">
+                      <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100">
+                        <a
+                          href={doc.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex h-8 w-8 items-center justify-center rounded-lg text-muted hover:bg-accent-light hover:text-accent"
+                        >
+                          <DownloadSimple size={18} />
+                        </a>
+                        <button
+                          onClick={() => handleDelete(doc._id)}
+                          className="flex h-8 w-8 items-center justify-center rounded-lg text-muted hover:bg-danger-light hover:text-danger"
+                        >
+                          <TrashSimple size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -127,56 +284,83 @@ export default function DocumentVaultPage() {
 
       {/* Upload Modal */}
       {isUploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 backdrop-blur-md bg-black/40 animate-in fade-in duration-300">
-          <div className="w-full max-w-lg rounded-3xl border border-border bg-card p-10 shadow-2xl animate-in zoom-in-95 duration-300">
-            <div className="flex items-center justify-between mb-8">
-               <h3 className="text-2xl font-black tracking-tight text-foreground">Upload Document</h3>
-               <button onClick={() => setIsUploadModalOpen(false)} className="text-muted hover:text-foreground">
-                  <X size={24} weight="bold" />
-               </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6">
+          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-foreground">Upload Document</h3>
+              <button onClick={() => setIsUploadModalOpen(false)} className="text-muted hover:text-foreground">
+                <X size={20} />
+              </button>
             </div>
 
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Load ID</label>
-                <select className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black outline-none focus:border-accent transition-all">
-                   <option>FL-20042 · Chicago → Dallas</option>
-                   <option>FL-20041 · Miami → Atlanta</option>
-                   <option>General Document (No Load ID)</option>
+            <form onSubmit={handleUpload} className="space-y-4">
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted">Document Type</label>
+                <select
+                  className="w-full rounded-lg border border-border bg-input px-3 py-2.5 text-sm outline-none"
+                  value={uploadType}
+                  onChange={(e) => setUploadType(e.target.value)}
+                  required
+                >
+                  <option value="bol">BOL (Bill of Lading)</option>
+                  <option value="pod">POD (Proof of Delivery)</option>
+                  <option value="rate_confirmation">Rate Confirmation</option>
+                  <option value="invoice">Invoice</option>
+                  <option value="insurance">Insurance Certificate</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 
-              <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Document Type</label>
-                <select className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black outline-none focus:border-accent transition-all">
-                   <option>BOL (Bill of Lading)</option>
-                   <option>POD (Proof of Delivery)</option>
-                   <option>Rate Confirmation</option>
-                   <option>Insurance Certificate</option>
-                   <option>Scale Ticket</option>
-                   <option>Lumper Receipt</option>
-                   <option>Other</option>
-                </select>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted">Load ID (optional)</label>
+                <input
+                  type="text"
+                  className="w-full rounded-lg border border-border bg-input px-3 py-2.5 text-sm outline-none"
+                  placeholder="e.g. 661f..."
+                  value={uploadLoadId}
+                  onChange={(e) => setUploadLoadId(e.target.value)}
+                />
               </div>
 
-              <div className="rounded-[2rem] border-2 border-dashed border-border p-12 bg-input/50 hover:border-accent/30 transition-all cursor-pointer text-center group">
-                <UploadSimple size={48} weight="duotone" className="mx-auto mb-4 text-muted group-hover:text-accent group-hover:scale-110 transition-all" />
-                <p className="text-sm font-black text-foreground uppercase tracking-widest">Drag file here or click to browse</p>
-                <p className="text-[10px] font-bold text-muted uppercase tracking-widest mt-2">PDF, JPG, PNG · Max 25MB</p>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted">File</label>
+                <input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
+                  onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+                  className="w-full text-sm text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white"
+                  required
+                />
+                <p className="mt-1 text-xs text-muted">Max 50MB. PDF, JPG, PNG, DOC</p>
               </div>
 
-              <div className="flex gap-4 pt-4">
-                <button 
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted">Notes (optional)</label>
+                <textarea
+                  className="w-full rounded-lg border border-border bg-input px-3 py-2.5 text-sm outline-none"
+                  rows={2}
+                  value={uploadNotes}
+                  onChange={(e) => setUploadNotes(e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
                   onClick={() => setIsUploadModalOpen(false)}
-                  className="btn btn-secondary flex-1 h-14 text-[11px] font-black uppercase tracking-widest"
+                  className="flex-1 rounded-lg border border-border py-2.5 text-sm font-medium text-foreground hover:bg-card-hover"
                 >
                   Cancel
                 </button>
-                <button className="btn btn-primary flex-1 h-14 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20">
-                  Upload & Secure
+                <button
+                  type="submit"
+                  disabled={isUploading || !uploadFile}
+                  className="flex-1 rounded-lg bg-accent py-2.5 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-50"
+                >
+                  {isUploading ? 'Uploading...' : 'Upload'}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}
