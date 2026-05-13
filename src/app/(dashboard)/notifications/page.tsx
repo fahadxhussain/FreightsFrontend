@@ -181,12 +181,12 @@ export default function NotificationsPage() {
             ? "bg-amber-500 text-white shadow-amber-500/20"
             : meta.color === "danger"
               ? "bg-danger text-white shadow-danger/20"
-              : "bg-accent text-white shadow-accent/20";
+              : "bg-primary text-white ";
 
     return (
       <div
         className={cn(
-          "h-16 w-16 flex items-center justify-center rounded-2xl shadow-lg flex-shrink-0 transition-transform group-hover:scale-110",
+          "h-16 w-16 flex items-center justify-center rounded-xl shadow-lg flex-shrink-0 transition-transform group-hover:scale-110",
           colorClass,
         )}
       >
@@ -204,10 +204,10 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">
             Notifications
           </h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-sm font-bold text-muted  mt-1">
             Stay updated with your latest logistics activity
           </p>
         </div>
@@ -215,7 +215,7 @@ export default function NotificationsPage() {
           onClick={handleMarkAllRead}
           disabled={unreadCount === 0 || markingAllRead}
           className={cn(
-            "btn h-12 px-6 text-[11px] font-black uppercase tracking-widest shadow-sm transition-all",
+            "btn h-12 px-6 text-[11px] font-semibold  shadow-sm transition-all",
             unreadCount === 0
               ? "btn-secondary opacity-50 cursor-not-allowed"
               : "btn-secondary",
@@ -239,10 +239,10 @@ export default function NotificationsPage() {
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={cn(
-              "whitespace-nowrap px-6 py-3 text-[11px] font-black uppercase tracking-wider rounded-2xl border transition-all",
+              "whitespace-nowrap px-6 py-3 text-[11px] font-semibold  rounded-md border transition-all",
               activeTab === tab
-                ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                : "bg-card border-border text-muted hover:border-muted hover:text-foreground",
+                ? "bg-primary border-primary text-white shadow-sm"
+                : "bg-card border-hairline text-muted hover:border-muted hover:text-ink",
             )}
           >
             {tab}
@@ -252,10 +252,10 @@ export default function NotificationsPage() {
 
       {/* Content */}
       {isLoading ? (
-        <div className="rounded-3xl border border-border bg-card shadow-2xl overflow-hidden divide-y divide-border">
+        <div className="rounded-xl border border-hairline bg-card shadow-2xl overflow-hidden divide-y divide-hairline">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="p-6 flex items-center gap-6 animate-pulse">
-              <div className="h-16 w-16 rounded-2xl bg-muted/20 flex-shrink-0" />
+              <div className="h-16 w-16 rounded-xl bg-muted/20 flex-shrink-0" />
               <div className="flex-1 space-y-3">
                 <div className="h-5 w-40 bg-muted/20 rounded-lg" />
                 <div className="h-4 w-64 bg-muted/20 rounded-lg" />
@@ -266,10 +266,10 @@ export default function NotificationsPage() {
       ) : error ? (
         <div className="flex flex-col items-center justify-center py-24 text-muted">
           <Warning size={48} weight="thin" className="mb-4 opacity-20" />
-          <p className="font-bold uppercase tracking-widest text-xs">{error}</p>
+          <p className="font-bold  text-xs">{error}</p>
           <button
             onClick={fetchNotifications}
-            className="btn btn-secondary mt-4 text-[10px] font-black"
+            className="btn btn-secondary mt-4  font-semibold"
           >
             Retry
           </button>
@@ -277,17 +277,17 @@ export default function NotificationsPage() {
       ) : filteredNotifications.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-muted">
           <BellSimple size={48} weight="thin" className="mb-4 opacity-20" />
-          <p className="font-bold uppercase tracking-widest text-xs">
+          <p className="font-bold  text-xs">
             No notifications yet
           </p>
-          <p className="text-[10px] text-muted mt-1">
+          <p className=" text-muted mt-1">
             {activeTab === "All"
               ? "You're all caught up — new notifications will appear here"
               : `No ${activeTab.toLowerCase()} notifications`}
           </p>
         </div>
       ) : (
-        <div className="rounded-3xl border border-border bg-card shadow-2xl overflow-hidden divide-y divide-border">
+        <div className="rounded-xl border border-hairline bg-card shadow-2xl overflow-hidden divide-y divide-hairline">
           {filteredNotifications.map((notif) => {
             const link = getLink(notif);
 
@@ -300,12 +300,12 @@ export default function NotificationsPage() {
                 className={cn(
                   "p-6 flex items-center gap-6 transition-all relative group",
                   link ? "cursor-pointer" : "cursor-default",
-                  notif.unread ? "bg-accent-light/30" : "hover:bg-card-hover",
+                  notif.unread ? "bg-surface-soft" : "hover:bg-surface-soft",
                 )}
               >
                 {/* Unread indicator */}
                 {notif.unread && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-accent rounded-r-full shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-r-full shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
                 )}
 
                 {renderIcon(notif.type)}
@@ -314,20 +314,20 @@ export default function NotificationsPage() {
                   <div className="flex items-center justify-between mb-1.5">
                     <h4
                       className={cn(
-                        "text-lg font-black tracking-tight",
-                        notif.unread ? "text-foreground" : "text-foreground/80",
+                        "text-lg font-semibold tracking-tight",
+                        notif.unread ? "text-ink" : "text-ink/80",
                       )}
                     >
                       {notif.title}
                     </h4>
-                    <span className="text-[10px] font-black text-muted uppercase tracking-widest">
+                    <span className=" font-semibold text-muted ">
                       {notif.timeAgo}
                     </span>
                   </div>
                   <p
                     className={cn(
                       "text-sm font-bold leading-relaxed",
-                      notif.unread ? "text-muted-foreground" : "text-muted",
+                      notif.unread ? "text-muted" : "text-muted",
                     )}
                   >
                     {notif.description}
@@ -339,7 +339,7 @@ export default function NotificationsPage() {
                     <ArrowRight
                       size={20}
                       weight="bold"
-                      className="text-accent"
+                      className="text-ink"
                     />
                   </div>
                 )}

@@ -89,24 +89,24 @@ function SkeletonRow() {
     <tr className="animate-pulse">
       <td className="p-5">
         <div className="flex items-center gap-4">
-          <div className="h-10 w-10 rounded-xl bg-input" />
+          <div className="h-10 w-10 rounded-xl bg-surface-soft" />
           <div className="space-y-2">
-            <div className="h-4 w-32 rounded-md bg-input" />
-            <div className="h-3 w-48 rounded-md bg-input" />
+            <div className="h-4 w-32 rounded-md bg-surface-soft" />
+            <div className="h-3 w-48 rounded-md bg-surface-soft" />
           </div>
         </div>
       </td>
       <td className="p-5">
-        <div className="h-6 w-20 rounded-lg bg-input" />
+        <div className="h-6 w-20 rounded-lg bg-surface-soft" />
       </td>
       <td className="p-5">
-        <div className="h-6 w-16 rounded-full bg-input" />
+        <div className="h-6 w-16 rounded-full bg-surface-soft" />
       </td>
       <td className="p-5">
-        <div className="h-4 w-24 rounded-md bg-input" />
+        <div className="h-4 w-24 rounded-md bg-surface-soft" />
       </td>
       <td className="p-5">
-        <div className="h-8 w-16 rounded-xl bg-input ml-auto" />
+        <div className="h-8 w-16 rounded-xl bg-surface-soft ml-auto" />
       </td>
     </tr>
   );
@@ -133,13 +133,13 @@ function ConfirmModal({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-      <div className="bg-card w-full max-w-md rounded-[2rem] border border-border shadow-2xl p-8 animate-in zoom-in-95">
+      <div className="bg-card w-full max-w-md rounded-xl border border-hairline shadow-2xl p-8 animate-in zoom-in-95">
         <div className="flex items-start gap-4 mb-6">
-          <div className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-2xl bg-danger-light">
+          <div className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-danger-light">
             <WarningCircle size={24} weight="fill" className="text-danger" />
           </div>
           <div>
-            <h3 className="text-lg font-black text-foreground">{title}</h3>
+            <h3 className="text-lg font-semibold text-ink">{title}</h3>
             <p className="text-sm font-bold text-muted mt-1">{message}</p>
           </div>
         </div>
@@ -147,14 +147,14 @@ function ConfirmModal({
           <button
             onClick={onCancel}
             disabled={loading}
-            className="btn btn-secondary h-11 px-6 text-[11px] font-black uppercase tracking-widest"
+            className="btn btn-secondary h-11 px-6 text-[11px] font-semibold "
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="btn btn-primary h-11 px-6 text-[11px] font-black uppercase tracking-widest bg-danger border-none hover:bg-danger/90 shadow-lg"
+            className="btn btn-primary h-11 px-6 text-[11px] font-semibold  bg-danger border-none hover:bg-danger/90 shadow-lg"
           >
             {loading ? "Deleting..." : confirmLabel}
           </button>
@@ -363,7 +363,7 @@ export default function TeamPage() {
   // ── Render Helpers ─────────────────────────────────────────────────────
   const statusClass = (status: string) =>
     cn(
-      "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest",
+      "inline-flex items-center gap-1.5 rounded-full px-3 py-1  font-semibold ",
       status === "active"
         ? "bg-success-light text-success"
         : status === "pending"
@@ -376,11 +376,11 @@ export default function TeamPage() {
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black tracking-tight text-foreground flex items-center gap-3">
-            <Users size={28} weight="fill" className="text-accent" />
+          <h1 className="text-2xl font-semibold tracking-tight text-ink flex items-center gap-3">
+            <Users size={28} weight="fill" className="text-ink" />
             Team Management
           </h1>
-          <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-xs font-bold text-muted  mt-1">
             {members.length} member{members.length !== 1 ? "s" : ""} ·{" "}
             {roles.length} role{roles.length !== 1 ? "s" : ""}
           </p>
@@ -388,7 +388,7 @@ export default function TeamPage() {
         <div className="flex gap-3">
           <button
             onClick={openCreateRole}
-            className="btn btn-secondary h-11 px-5 text-[11px] font-black uppercase tracking-widest"
+            className="btn btn-secondary h-11 px-5 text-[11px] font-semibold "
           >
             <ShieldCheck size={18} weight="bold" />
             New Role
@@ -398,7 +398,7 @@ export default function TeamPage() {
               inviteForm.reset();
               setShowInvite(true);
             }}
-            className="btn btn-primary h-11 px-5 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+            className="btn btn-primary h-11 px-5 text-[11px] font-semibold  shadow-sm"
           >
             <UserPlus size={18} weight="bold" />
             Invite Member
@@ -408,14 +408,14 @@ export default function TeamPage() {
 
       {/* ── Error State ─────────────────────────────────────────────────── */}
       {error && (
-        <div className="rounded-2xl border border-danger/30 bg-danger-light p-6 flex items-center justify-between">
+        <div className="rounded-xl border border-danger/30 bg-danger-light p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <WarningCircle size={24} weight="fill" className="text-danger" />
             <span className="text-sm font-bold text-danger">{error}</span>
           </div>
           <button
             onClick={fetchTeamData}
-            className="btn btn-secondary h-9 px-4 text-[10px] font-black uppercase tracking-widest"
+            className="btn btn-secondary h-9 px-4  font-semibold "
           >
             <ArrowsClockwise size={16} weight="bold" />
             Retry
@@ -443,14 +443,14 @@ export default function TeamPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name or email..."
-            className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3 text-sm font-bold outline-none focus:border-accent transition-all"
+            className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3 text-sm font-bold outline-none focus:border-primary transition-all"
           />
         </div>
         <div className="relative sm:w-48">
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="w-full rounded-2xl border border-border bg-input pl-5 pr-10 py-3 text-sm font-bold outline-none focus:border-accent transition-all appearance-none cursor-pointer"
+            className="w-full rounded-md border border-hairline bg-surface-soft pl-5 pr-10 py-3 text-sm font-bold outline-none focus:border-primary transition-all appearance-none cursor-pointer"
           >
             <option value="">All Roles</option>
             {roles.map((role) => (
@@ -478,7 +478,7 @@ export default function TeamPage() {
               setSearchQuery("");
               setRoleFilter("");
             }}
-            className="btn btn-secondary h-11 px-4 text-[10px] font-black uppercase tracking-widest"
+            className="btn btn-secondary h-11 px-4  font-semibold "
           >
             <X size={14} weight="bold" />
             Clear
@@ -487,29 +487,29 @@ export default function TeamPage() {
       </div>
 
       {/* ── Members Table ───────────────────────────────────────────────── */}
-      <div className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-hairline bg-card shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-border bg-input/40">
-                <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <tr className="border-b border-hairline bg-surface-soft/40">
+                <th className="p-5  font-semibold  text-muted">
                   Member
                 </th>
-                <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="p-5  font-semibold  text-muted">
                   Role
                 </th>
-                <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="p-5  font-semibold  text-muted">
                   Status
                 </th>
-                <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="p-5  font-semibold  text-muted">
                   Joined
                 </th>
-                <th className="p-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted text-right">
+                <th className="p-5  font-semibold  text-muted text-right">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-hairline">
               {loading ? (
                 <>
                   <SkeletonRow key="sk-1" />
@@ -521,10 +521,10 @@ export default function TeamPage() {
                 <tr>
                   <td colSpan={5}>
                     <div className="flex flex-col items-center justify-center py-20 text-center">
-                      <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-input mb-4">
+                      <div className="h-16 w-16 flex items-center justify-center rounded-xl bg-surface-soft mb-4">
                         <Users size={32} weight="bold" className="text-muted" />
                       </div>
-                      <h3 className="text-lg font-black text-foreground">
+                      <h3 className="text-lg font-semibold text-ink">
                         No members yet
                       </h3>
                       <p className="text-sm font-bold text-muted mt-1 max-w-xs">
@@ -535,7 +535,7 @@ export default function TeamPage() {
                           inviteForm.reset();
                           setShowInvite(true);
                         }}
-                        className="btn btn-primary h-11 px-6 mt-6 text-[11px] font-black uppercase tracking-widest shadow-lg"
+                        className="btn btn-primary h-11 px-6 mt-6 text-[11px] font-semibold  shadow-lg"
                       >
                         <UserPlus size={18} weight="bold" />
                         Invite Member
@@ -547,16 +547,16 @@ export default function TeamPage() {
                 members.map((member) => (
                   <tr
                     key={member.id || member._id}
-                    className="group hover:bg-input/20 transition-colors"
+                    className="group hover:bg-surface-soft/20 transition-colors"
                   >
                     <td className="p-5">
                       <div className="flex items-center gap-4">
-                        <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-accent-light text-accent font-black text-sm shadow-sm">
+                        <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-surface-soft text-ink font-semibold text-sm shadow-sm">
                           {member.profile?.firstName?.charAt(0) || "?"}
                           {member.profile?.lastName?.charAt(0) || ""}
                         </div>
                         <div>
-                          <div className="font-black text-foreground text-sm">
+                          <div className="font-semibold text-ink text-sm">
                             {member.profile
                               ? `${member.profile.firstName} ${member.profile.lastName}`
                               : "Unknown"}
@@ -568,7 +568,7 @@ export default function TeamPage() {
                       </div>
                     </td>
                     <td className="p-5">
-                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-light px-3 py-1.5 text-xs font-black uppercase tracking-widest text-indigo">
+                      <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-light px-3 py-1.5 text-xs font-semibold  text-indigo">
                         <ShieldCheck size={14} weight="bold" />
                         {member.role?.name || "No Role"}
                       </span>
@@ -605,14 +605,14 @@ export default function TeamPage() {
                         <div className="flex items-center justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => openReassign(member)}
-                            className="h-9 w-9 flex items-center justify-center rounded-xl bg-card border border-border text-foreground hover:bg-input transition-colors"
+                            className="h-9 w-9 flex items-center justify-center rounded-md bg-card border border-hairline text-ink hover:bg-surface-soft transition-colors"
                             title="Change role"
                           >
                             <PencilSimple size={16} weight="bold" />
                           </button>
                           <button
                             onClick={() => confirmRemoveMember(member)}
-                            className="h-9 w-9 flex items-center justify-center rounded-xl bg-danger-light border border-danger/20 text-danger hover:bg-danger hover:text-white transition-colors"
+                            className="h-9 w-9 flex items-center justify-center rounded-md bg-danger-light border border-danger/20 text-danger hover:bg-danger hover:text-white transition-colors"
                             title="Remove member"
                           >
                             <Trash size={16} weight="bold" />
@@ -631,14 +631,14 @@ export default function TeamPage() {
       {/* ── Role Management Section ─────────────────────────────────────── */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-black text-foreground flex items-center gap-2">
-            <ShieldCheck size={22} weight="fill" className="text-accent" />
+          <h2 className="text-lg font-semibold text-ink flex items-center gap-2">
+            <ShieldCheck size={22} weight="fill" className="text-ink" />
             Roles & Permissions
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {roles.length === 0 && !loading && (
-            <div className="col-span-full rounded-2xl border border-border bg-card p-10 text-center">
+            <div className="col-span-full rounded-xl border border-hairline bg-card p-10 text-center">
               <ShieldCheck
                 size={32}
                 weight="bold"
@@ -652,7 +652,7 @@ export default function TeamPage() {
           {roles.map((role) => (
             <div
               key={role._id}
-              className="rounded-2xl border border-border bg-card p-5 shadow-sm hover:border-accent/30 transition-colors group"
+              className="rounded-xl border border-hairline bg-card p-5 shadow-sm hover:border-ink transition-colors group"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
@@ -660,17 +660,17 @@ export default function TeamPage() {
                     <ShieldCheck size={20} weight="bold" />
                   </div>
                   <div>
-                    <h4 className="font-black text-foreground text-sm uppercase tracking-wide">
+                    <h4 className="font-semibold text-ink text-sm uppercase tracking-wide">
                       {role.name}
                     </h4>
-                    <p className="text-[10px] font-bold text-muted uppercase tracking-widest">
+                    <p className=" font-bold text-muted ">
                       {role.permissions?.length || 0} permission
                       {(role.permissions?.length || 0) !== 1 ? "s" : ""}
                     </p>
                   </div>
                 </div>
                 {role.isSystem && (
-                  <span className="text-[9px] font-black uppercase tracking-widest text-muted bg-input px-2 py-0.5 rounded-md">
+                  <span className="text-[9px] font-semibold  text-muted bg-surface-soft px-2 py-0.5 rounded-md">
                     System
                   </span>
                 )}
@@ -679,13 +679,13 @@ export default function TeamPage() {
                 {(role.permissions || []).slice(0, 4).map((p) => (
                   <span
                     key={p}
-                    className="text-[9px] font-bold text-muted bg-input px-2 py-0.5 rounded-md"
+                    className="text-[9px] font-bold text-muted bg-surface-soft px-2 py-0.5 rounded-md"
                   >
                     {PERMISSION_LABELS[p] || p}
                   </span>
                 ))}
                 {(role.permissions || []).length > 4 && (
-                  <span className="text-[9px] font-bold text-muted bg-input px-2 py-0.5 rounded-md">
+                  <span className="text-[9px] font-bold text-muted bg-surface-soft px-2 py-0.5 rounded-md">
                     +{(role.permissions || []).length - 4} more
                   </span>
                 )}
@@ -694,14 +694,14 @@ export default function TeamPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => openEditRole(role)}
-                    className="flex-1 btn btn-secondary h-9 text-[10px] font-black uppercase tracking-widest"
+                    className="flex-1 btn btn-secondary h-9  font-semibold "
                   >
                     <PencilSimple size={14} weight="bold" />
                     Edit
                   </button>
                   <button
                     onClick={() => confirmDeleteRole(role)}
-                    className="flex-1 btn btn-secondary h-9 text-[10px] font-black uppercase tracking-widest text-danger border-danger/20 hover:bg-danger-light"
+                    className="flex-1 btn btn-secondary h-9  font-semibold  text-danger border-danger/20 hover:bg-danger-light"
                   >
                     <Trash size={14} weight="bold" />
                     Delete
@@ -716,19 +716,19 @@ export default function TeamPage() {
       {/* ── Invite Modal ────────────────────────────────────────────────── */}
       {showInvite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-card w-full max-w-md rounded-[2rem] border border-border shadow-2xl p-8 animate-in zoom-in-95">
+          <div className="bg-card w-full max-w-md rounded-xl border border-hairline shadow-2xl p-8 animate-in zoom-in-95">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-black text-foreground">
+                <h2 className="text-xl font-semibold text-ink">
                   Invite Member
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Send an invitation email
                 </p>
               </div>
               <button
                 onClick={() => setShowInvite(false)}
-                className="h-10 w-10 flex items-center justify-center rounded-xl bg-input hover:bg-border transition-colors"
+                className="h-10 w-10 flex items-center justify-center rounded-md bg-surface-soft hover:bg-border transition-colors"
               >
                 <X size={18} weight="bold" />
               </button>
@@ -740,7 +740,7 @@ export default function TeamPage() {
             >
               {/* Email */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Email Address
                 </label>
                 <div className="relative">
@@ -752,7 +752,7 @@ export default function TeamPage() {
                   <input
                     type="email"
                     {...inviteForm.register("email")}
-                    className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="colleague@company.com"
                   />
                 </div>
@@ -765,7 +765,7 @@ export default function TeamPage() {
 
               {/* Role Dropdown */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Assign Role
                 </label>
                 <div className="relative">
@@ -776,7 +776,7 @@ export default function TeamPage() {
                   />
                   <select
                     {...inviteForm.register("roleId")}
-                    className="w-full rounded-2xl border border-border bg-input pl-12 pr-10 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all appearance-none cursor-pointer"
+                    className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-10 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all appearance-none cursor-pointer"
                   >
                     <option value="">Select a role...</option>
                     {roles.map((role) => (
@@ -810,14 +810,14 @@ export default function TeamPage() {
                 <button
                   type="button"
                   onClick={() => setShowInvite(false)}
-                  className="flex-1 btn btn-secondary h-11 text-[11px] font-black uppercase tracking-widest"
+                  className="flex-1 btn btn-secondary h-11 text-[11px] font-semibold "
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={inviting}
-                  className="flex-1 btn btn-primary h-11 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+                  className="flex-1 btn btn-primary h-11 text-[11px] font-semibold  shadow-sm"
                 >
                   {inviting ? (
                     <Spinner size={18} weight="bold" className="animate-spin" />
@@ -835,19 +835,19 @@ export default function TeamPage() {
       {/* ── Role Editor Modal ───────────────────────────────────────────── */}
       {showRoleEditor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-card w-full max-w-lg rounded-[2rem] border border-border shadow-2xl p-8 animate-in zoom-in-95 max-h-[85vh] overflow-y-auto">
+          <div className="bg-card w-full max-w-lg rounded-xl border border-hairline shadow-2xl p-8 animate-in zoom-in-95 max-h-[85vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-black text-foreground">
+                <h2 className="text-xl font-semibold text-ink">
                   {editingRoleId ? "Edit Role" : "Create Role"}
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Define name and permissions
                 </p>
               </div>
               <button
                 onClick={() => setShowRoleEditor(false)}
-                className="h-10 w-10 flex items-center justify-center rounded-xl bg-input hover:bg-border transition-colors"
+                className="h-10 w-10 flex items-center justify-center rounded-md bg-surface-soft hover:bg-border transition-colors"
               >
                 <X size={18} weight="bold" />
               </button>
@@ -859,13 +859,13 @@ export default function TeamPage() {
             >
               {/* Role Name */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Role Name
                 </label>
                 <input
                   type="text"
                   {...roleForm.register("name")}
-                  className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                   placeholder="e.g. dispatcher"
                 />
                 {roleForm.formState.errors.name && (
@@ -877,7 +877,7 @@ export default function TeamPage() {
 
               {/* Permissions */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Permissions
                 </label>
                 {roleForm.formState.errors.permissions && (
@@ -901,7 +901,7 @@ export default function TeamPage() {
                     return Array.from(categories.entries()).map(
                       ([category, perms]) => (
                         <div key={category}>
-                          <p className="text-[10px] font-black uppercase tracking-widest text-muted mb-1.5 ml-1">
+                          <p className=" font-semibold  text-muted mb-1.5 ml-1">
                             {category}
                           </p>
                           <div className="grid grid-cols-2 gap-2">
@@ -915,18 +915,18 @@ export default function TeamPage() {
                                   type="button"
                                   onClick={() => togglePermission(perm.key)}
                                   className={cn(
-                                    "flex items-center gap-2 rounded-xl px-3 py-2.5 text-left text-xs font-bold transition-all",
+                                    "flex items-center gap-2 rounded-md px-3 py-2.5 text-left text-xs font-bold transition-all",
                                     selected
-                                      ? "bg-accent-light text-accent ring-1 ring-accent/20"
-                                      : "bg-input text-muted hover:bg-border",
+                                      ? "bg-surface-soft text-ink ring-1 ring-primary"
+                                      : "bg-surface-soft text-muted hover:bg-border",
                                   )}
                                 >
                                   <div
                                     className={cn(
                                       "h-4 w-4 rounded-md border-2 flex items-center justify-center transition-all",
                                       selected
-                                        ? "bg-accent border-accent"
-                                        : "border-border bg-card",
+                                        ? "bg-primary border-primary"
+                                        : "border-hairline bg-card",
                                     )}
                                   >
                                     {selected && (
@@ -953,14 +953,14 @@ export default function TeamPage() {
                 <button
                   type="button"
                   onClick={() => setShowRoleEditor(false)}
-                  className="flex-1 btn btn-secondary h-11 text-[11px] font-black uppercase tracking-widest"
+                  className="flex-1 btn btn-secondary h-11 text-[11px] font-semibold "
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={savingRole}
-                  className="flex-1 btn btn-primary h-11 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+                  className="flex-1 btn btn-primary h-11 text-[11px] font-semibold  shadow-sm"
                 >
                   {savingRole ? (
                     <Spinner size={18} weight="bold" className="animate-spin" />
@@ -982,14 +982,14 @@ export default function TeamPage() {
       {/* ── Reassign Role Modal ─────────────────────────────────────────── */}
       {reassignTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-card w-full max-w-sm rounded-[2rem] border border-border shadow-2xl p-8 animate-in zoom-in-95">
+          <div className="bg-card w-full max-w-sm rounded-xl border border-hairline shadow-2xl p-8 animate-in zoom-in-95">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-black text-foreground">
+              <h2 className="text-xl font-semibold text-ink">
                 Change Role
               </h2>
               <button
                 onClick={() => setReassignTarget(null)}
-                className="h-10 w-10 flex items-center justify-center rounded-xl bg-input hover:bg-border transition-colors"
+                className="h-10 w-10 flex items-center justify-center rounded-md bg-surface-soft hover:bg-border transition-colors"
               >
                 <X size={18} weight="bold" />
               </button>
@@ -1000,13 +1000,13 @@ export default function TeamPage() {
             </p>
 
             <div className="space-y-2 mb-6">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 New Role
               </label>
               <select
                 value={reassignRoleId}
                 onChange={(e) => setReassignRoleId(e.target.value)}
-                className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all appearance-none cursor-pointer"
+                className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all appearance-none cursor-pointer"
               >
                 <option value="">Select a role...</option>
                 {roles.map((role) => (
@@ -1020,14 +1020,14 @@ export default function TeamPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setReassignTarget(null)}
-                className="flex-1 btn btn-secondary h-11 text-[11px] font-black uppercase tracking-widest"
+                className="flex-1 btn btn-secondary h-11 text-[11px] font-semibold "
               >
                 Cancel
               </button>
               <button
                 onClick={handleReassign}
                 disabled={reassigning || !reassignRoleId}
-                className="flex-1 btn btn-primary h-11 text-[11px] font-black uppercase tracking-widest shadow-lg"
+                className="flex-1 btn btn-primary h-11 text-[11px] font-semibold  shadow-lg"
               >
                 {reassigning ? (
                   <Spinner size={18} weight="bold" className="animate-spin" />

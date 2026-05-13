@@ -81,7 +81,7 @@ export default function AdminVerificationsPage() {
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -89,14 +89,14 @@ export default function AdminVerificationsPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Identity Verifications</h1>
+        <h1 className="text-2xl font-bold text-ink">Identity Verifications</h1>
         <p className="text-sm text-muted">Review and approve user identity documents</p>
       </div>
 
       {users.length === 0 ? (
-        <div className="rounded-xl border border-border bg-card p-12 text-center">
+        <div className="rounded-xl border border-hairline bg-card p-12 text-center">
           <CheckCircle size={48} className="mx-auto mb-4 text-success" />
-          <h3 className="text-lg font-semibold text-foreground">All caught up!</h3>
+          <h3 className="text-lg font-semibold text-ink">All caught up!</h3>
           <p className="text-sm text-muted">No pending verifications.</p>
         </div>
       ) : (
@@ -105,17 +105,17 @@ export default function AdminVerificationsPage() {
             <div
               key={u._id}
               className={cn(
-                'rounded-xl border border-border bg-card p-5 transition-all hover:border-accent/30',
-                selectedUser?._id === u._id && 'ring-2 ring-accent/20',
+                'rounded-xl border border-hairline bg-card p-5 transition-all hover:border-ink',
+                selectedUser?._id === u._id && 'ring-2 ring-primary',
               )}
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-light">
-                    <User size={24} className="text-accent" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-soft">
+                    <User size={24} className="text-ink" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground">
+                    <h3 className="font-semibold text-ink">
                       {u.firstName} {u.lastName}
                     </h3>
                     <p className="text-sm text-muted">{u.email}</p>
@@ -136,7 +136,7 @@ export default function AdminVerificationsPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setSelectedUser(selectedUser?._id === u._id ? null : u)}
-                    className="flex h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-sm font-medium text-muted hover:text-accent"
+                    className="flex h-9 items-center gap-1.5 rounded-lg border border-hairline px-3 text-sm font-medium text-muted hover:text-ink"
                   >
                     <Eye size={16} />
                     Documents ({u.verificationDocuments.length})
@@ -161,18 +161,18 @@ export default function AdminVerificationsPage() {
               </div>
 
               {selectedUser?._id === u._id && (
-                <div className="mt-4 grid grid-cols-2 gap-4 border-t border-border pt-4">
+                <div className="mt-4 grid grid-cols-2 gap-4 border-t border-hairline pt-4">
                   {u.verificationDocuments.map((doc, idx) => (
                     <a
                       key={idx}
                       href={doc.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 hover:border-accent/30"
+                      className="flex items-center gap-3 rounded-lg border border-hairline bg-card p-3 hover:border-ink"
                     >
-                      <FileText size={20} className="text-accent" />
+                      <FileText size={20} className="text-ink" />
                       <div>
-                        <p className="text-sm font-medium text-foreground">Document {idx + 1}</p>
+                        <p className="text-sm font-medium text-ink">Document {idx + 1}</p>
                         <p className="text-xs text-muted">{doc.type}</p>
                       </div>
                     </a>

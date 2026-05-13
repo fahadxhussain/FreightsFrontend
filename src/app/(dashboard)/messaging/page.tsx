@@ -125,13 +125,13 @@ export default function MessagingPage() {
   return (
     <div className="flex h-[calc(100vh-72px)] overflow-hidden">
       {/* Conversation List */}
-      <div className="w-80 border-r border-border bg-background flex flex-col">
-        <div className="p-4 border-b border-border">
-          <h2 className="text-lg font-black tracking-tight text-foreground">Messages</h2>
+      <div className="w-80 border-r border-hairline bg-canvas flex flex-col">
+        <div className="p-4 border-b border-hairline">
+          <h2 className="text-lg font-semibold tracking-tight text-ink">Messages</h2>
           <div className="relative mt-3">
             <MagnifyingGlass size={16} weight="bold" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
             <input
-              className="w-full rounded-xl border border-border bg-card pl-9 pr-3 py-2 text-xs font-medium outline-none focus:border-accent"
+              className="w-full rounded-xl border border-hairline bg-card pl-9 pr-3 py-2 text-xs font-medium outline-none focus:border-ink"
               placeholder="Search conversations..."
             />
           </div>
@@ -140,12 +140,12 @@ export default function MessagingPage() {
         <div className="flex-1 overflow-y-auto">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <CircleNotch size={24} weight="bold" className="animate-spin text-accent" />
+              <CircleNotch size={24} weight="bold" className="animate-spin text-primary" />
             </div>
           ) : conversations.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-muted">
               <Package size={40} weight="thin" className="mb-3 opacity-20" />
-              <p className="text-xs font-bold uppercase tracking-widest">No conversations</p>
+              <p className="text-xs font-bold ">No conversations</p>
             </div>
           ) : (
             conversations.map((conv) => (
@@ -153,17 +153,17 @@ export default function MessagingPage() {
                 key={conv.conversationId}
                 onClick={() => setSelectedConv(conv.conversationId)}
                 className={cn(
-                  "w-full px-4 py-3 border-b border-border hover:bg-card-hover transition-colors text-left",
-                  selectedConv === conv.conversationId && "bg-accent/5 border-accent/20",
+                  "w-full px-4 py-3 border-b border-hairline hover:bg-surface-soft transition-colors text-left",
+                  selectedConv === conv.conversationId && "bg-surface-soft border-hairline",
                 )}
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-[10px] font-black text-white">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
                     {getOtherName(conv).slice(0, 2)}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-foreground truncate">
+                      <span className="text-xs font-semibold text-ink truncate">
                         {getOtherName(conv)}
                       </span>
                       <span className="text-[9px] text-muted shrink-0 ml-2">
@@ -175,7 +175,7 @@ export default function MessagingPage() {
                         {conv.lastMessage.content}
                       </p>
                       {conv.unreadCount > 0 && (
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-[8px] font-black text-white ml-2">
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[8px] font-semibold text-white ml-2">
                           {conv.unreadCount}
                         </span>
                       )}
@@ -189,24 +189,24 @@ export default function MessagingPage() {
       </div>
 
       {/* Message Thread */}
-      <div className="flex-1 flex flex-col bg-background">
+      <div className="flex-1 flex flex-col bg-canvas">
         {selectedConv ? (
           <>
             {/* Header */}
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
+            <div className="px-5 py-3 border-b border-hairline flex items-center gap-3">
               <button
                 onClick={() => setSelectedConv(null)}
-                className="md:hidden text-muted hover:text-foreground"
+                className="md:hidden text-muted hover:text-ink"
               >
                 <ArrowLeft size={18} weight="bold" />
               </button>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-[9px] font-black text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-[9px] font-semibold text-white">
                 {(() => {
                   const conv = conversations.find((c) => c.conversationId === selectedConv);
                   return conv ? getOtherName(conv).slice(0, 2) : "?";
                 })()}
               </div>
-              <span className="text-sm font-black text-foreground">
+              <span className="text-sm font-semibold text-ink">
                 {(() => {
                   const conv = conversations.find((c) => c.conversationId === selectedConv);
                   return conv ? getOtherName(conv) : "";
@@ -224,8 +224,8 @@ export default function MessagingPage() {
                       className={cn(
                         "max-w-[70%] rounded-2xl px-4 py-2.5 text-xs",
                         isMine
-                          ? "bg-accent text-white rounded-br-md"
-                          : "bg-card border border-border text-foreground rounded-bl-md",
+                          ? "bg-primary text-white rounded-br-md"
+                          : "bg-card border border-hairline text-ink rounded-bl-md",
                       )}
                     >
                       <p>{msg.content}</p>
@@ -240,9 +240,9 @@ export default function MessagingPage() {
             </div>
 
             {/* Input */}
-            <div className="px-4 py-3 border-t border-border flex items-center gap-2">
+            <div className="px-4 py-3 border-t border-hairline flex items-center gap-2">
               <input
-                className="flex-1 rounded-xl border border-border bg-card px-4 py-2.5 text-xs font-medium outline-none focus:border-accent"
+                className="flex-1 rounded-xl border border-hairline bg-card px-4 py-2.5 text-xs font-medium outline-none focus:border-ink"
                 placeholder="Type a message..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
@@ -251,7 +251,7 @@ export default function MessagingPage() {
               <button
                 onClick={handleSend}
                 disabled={isSending || !newMessage.trim()}
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white hover:bg-accent-hover disabled:opacity-40 transition-colors"
+                className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white hover:bg-primary-active disabled:opacity-40 transition-colors"
               >
                 {isSending ? (
                   <CircleNotch size={18} weight="bold" className="animate-spin" />
@@ -265,7 +265,7 @@ export default function MessagingPage() {
           <div className="flex-1 flex items-center justify-center text-muted">
             <div className="text-center">
               <PaperPlaneTilt size={48} weight="thin" className="mx-auto mb-3 opacity-20" />
-              <p className="text-xs font-bold uppercase tracking-widest">Select a conversation</p>
+              <p className="text-xs font-bold ">Select a conversation</p>
             </div>
           </div>
         )}

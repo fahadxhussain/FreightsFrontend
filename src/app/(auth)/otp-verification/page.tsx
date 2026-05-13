@@ -182,7 +182,7 @@ function OtpVerificationForm() {
       <div className="flex flex-col items-center gap-4 py-10">
         <Warning size={40} className="text-warning" />
         <p className="text-sm text-muted font-medium">No email provided.</p>
-        <Link href="/register" className="btn btn-primary text-sm">
+        <Link href="/register" className="h-10 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors px-4 inline-flex items-center justify-center">
           Go to Registration
         </Link>
       </div>
@@ -193,34 +193,34 @@ function OtpVerificationForm() {
     <div className="flex flex-col gap-1">
       <Link
         href="/register"
-        className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted hover:text-accent transition-colors"
+        className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-ink transition-colors"
       >
         <ArrowLeft size={14} weight="bold" />
         Back
       </Link>
 
       <div className="mb-6 flex justify-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent-light shadow-inner">
-          <EnvelopeOpen size={40} weight="regular" className="text-accent" />
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+          <EnvelopeOpen size={40} weight="regular" className="text-primary" />
         </div>
       </div>
 
-      <h2 className="text-center text-[1.4rem] font-bold text-foreground tracking-tight">
+      <h2 className="text-center text-[1.4rem] font-semibold text-ink tracking-tight">
         {type === "reset" ? "Enter reset code" : "Verify your email"}
       </h2>
-      <p className="mb-8 mt-1 text-center text-sm text-muted font-medium">
+      <p className="mb-8 mt-1 text-center text-sm text-body-text font-medium">
         {type === "reset"
-          ? <>We sent a code to <span className="text-foreground font-bold">{maskedEmail}</span>. Enter it below to reset your password.</>
-          : <>We&apos;ve sent a 6-digit code to <span className="text-foreground font-bold">{maskedEmail}</span>. It expires in 10 minutes.</>
+          ? <>We sent a code to <span className="text-ink font-semibold">{maskedEmail}</span>. Enter it below to reset your password.</>
+          : <>We&apos;ve sent a 6-digit code to <span className="text-ink font-semibold">{maskedEmail}</span>. It expires in 10 minutes.</>
         }
       </p>
 
       {sendError && (
         <div className="mb-4 rounded-xl border border-danger/20 bg-danger/5 p-3 text-center">
-          <p className="text-xs font-bold text-danger">{sendError}</p>
+          <p className="text-xs font-medium text-danger">{sendError}</p>
           <button
             onClick={() => doSendOTP(true)}
-            className="mt-1 text-xs font-bold text-accent hover:underline"
+            className="mt-1 text-xs font-medium text-primary hover:underline"
           >
             Try again
           </button>
@@ -244,8 +244,8 @@ function OtpVerificationForm() {
             onPaste={handlePaste}
             disabled={isLoading}
             className={cn(
-              "h-14 w-12 rounded-xl border border-border bg-input text-center text-xl font-bold text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 disabled:opacity-50",
-              digit && "border-accent bg-accent-light",
+              "h-14 w-12 rounded-md border border-hairline bg-canvas text-center text-xl font-semibold text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink disabled:opacity-50",
+              digit && "border-primary bg-primary/10",
             )}
           />
         ))}
@@ -254,7 +254,7 @@ function OtpVerificationForm() {
       <button
         onClick={handleVerify}
         disabled={!isComplete || isLoading}
-        className="btn btn-primary btn-lg w-full shadow-lg shadow-accent/20"
+        className="w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors disabled:opacity-50"
       >
         {isLoading ? "Verifying…" : "Verify"}
       </button>
@@ -263,7 +263,7 @@ function OtpVerificationForm() {
         {cooldown > 0 ? (
           <>
             Resend code in{" "}
-            <span className="text-accent font-bold">
+            <span className="text-primary font-semibold">
               {Math.floor(cooldown / 60)}:{(cooldown % 60).toString().padStart(2, "0")}
             </span>
           </>
@@ -272,7 +272,7 @@ function OtpVerificationForm() {
             Didn&apos;t receive a code?{" "}
             <button
               onClick={handleResend}
-              className="font-bold text-accent hover:underline"
+              className="font-semibold text-primary hover:underline"
             >
               Resend
             </button>
@@ -288,7 +288,7 @@ export default function OtpVerificationPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center py-20">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
       }
     >

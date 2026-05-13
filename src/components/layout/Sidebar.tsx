@@ -96,28 +96,24 @@ export function Sidebar() {
   const role = user?.role || "broker";
   const navItems = NAV_BY_ROLE[role] || NAV_BY_ROLE.broker;
 
-  // Filter nav items by permission:
-  // - Carrier owners (role === 'carrier') see everything — skip permission checks
-  // - Carrier team members see only what their permissions allow
   const visibleNavItems = navItems.filter((item) => {
     if (!item.permission) return true;
-    // Carrier owner has implicit all-permissions
     if (role === "carrier" && userPermissions.length === 0) return true;
     return userPermissions.includes(item.permission);
   });
 
   return (
-    <aside className="fixed top-0 left-0 bottom-0 z-50 flex w-[240px] flex-col border-r border-border bg-sidebar shadow-2xl transition-all duration-300">
-      <div className="px-8 py-8">
+    <aside className="fixed top-0 left-0 bottom-0 z-50 flex w-[240px] flex-col border-r border-hairline bg-sidebar">
+      <div className="px-6 py-5">
         <Link
           href="/dashboard"
-          className="text-2xl font-black tracking-tighter text-accent transition-all hover:scale-105 inline-block"
+          className="text-xl font-semibold tracking-tight text-ink transition-all hover:opacity-80 inline-block"
         >
           FLOW
         </Link>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-4 py-2 scrollbar-hide">
+      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto px-3 py-2 scrollbar-hide">
         {visibleNavItems.map(({ href, label, Icon }) => {
           const isActive =
             pathname === href ||
@@ -127,19 +123,19 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                "group flex items-center gap-3 rounded-xl px-4 py-2.5 text-[12px] font-bold tracking-tight transition-all duration-300",
+                "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-accent text-white shadow-xl shadow-accent/20 translate-x-1"
-                  : "text-sidebar-foreground hover:bg-sidebar-hover hover:text-foreground hover:translate-x-1",
+                  ? "bg-primary text-primary-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-hover hover:text-ink",
               )}
             >
               <Icon
-                size={22}
+                size={20}
                 weight={isActive ? "bold" : "regular"}
                 className={cn(
                   isActive
-                    ? "text-white"
-                    : "text-muted group-hover:text-foreground",
+                    ? "text-primary-foreground"
+                    : "text-muted group-hover:text-ink",
                 )}
               />
               {label}
@@ -148,20 +144,18 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 mt-auto">
-        <div className="rounded-2xl border border-border bg-card-hover p-3 shadow-xl transition-all hover:border-accent/30 hover:translate-y-[-2px] group">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent text-sm font-black text-white shadow-xl shadow-accent/20 group-hover:rotate-12 transition-transform">
-              {user?.firstName?.slice(0, 1)}
-              {user?.lastName?.slice(0, 1)}
+      <div className="p-3 mt-auto border-t border-hairline">
+        <div className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-sidebar-hover">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-card text-xs font-semibold text-ink">
+            {user?.firstName?.slice(0, 1)}
+            {user?.lastName?.slice(0, 1)}
+          </div>
+          <div className="min-w-0">
+            <div className="truncate text-sm font-medium text-ink">
+              {user?.firstName} {user?.lastName}
             </div>
-            <div className="min-w-0">
-              <div className="truncate text-sm font-black text-foreground">
-                {user?.firstName} {user?.lastName}
-              </div>
-              <div className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">
-                {user?.role}
-              </div>
+            <div className="text-xs text-muted-foreground capitalize">
+              {user?.role?.replace("_", " ")}
             </div>
           </div>
         </div>

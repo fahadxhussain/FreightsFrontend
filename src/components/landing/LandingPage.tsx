@@ -13,16 +13,18 @@ import {
   ArrowRight,
   Menu,
   X,
-  ChevronRight,
+  Calendar,
+  MapPin,
+  Clock,
+  CheckCircle2,
 } from "lucide-react";
 
-// ── Animation variants ───────────────────────────────────────────────────────
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" as const },
+    transition: { delay: i * 0.08, duration: 0.5, ease: "easeOut" as const },
   }),
 };
 
@@ -31,7 +33,6 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
-// ── Navbar ───────────────────────────────────────────────────────────────────
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -43,7 +44,7 @@ function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: "Features", href: "#features" },
+    { label: "Product", href: "#features" },
     { label: "How it Works", href: "#how-it-works" },
   ];
 
@@ -54,27 +55,26 @@ function Navbar() {
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-card/80 backdrop-blur-xl border-b border-border shadow-sm"
+          ? "bg-canvas/90 backdrop-blur-md border-b border-hairline"
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 h-16">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white">
-            <Truck size={18} strokeWidth={2.5} />
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <Truck size={18} strokeWidth={2} />
           </div>
-          <span className="text-lg font-black tracking-tight text-foreground">
+          <span className="text-lg font-semibold tracking-tight text-ink">
             FLOW
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted transition-colors hover:text-ink"
             >
               {l.label}
             </a>
@@ -82,34 +82,32 @@ function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="rounded-lg px-4 py-2 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted transition-colors hover:text-ink px-4 py-2"
             >
-              Log In
+              Sign in
             </Link>
             <Link
               href="/role-selection"
-              className="btn btn-primary rounded-lg px-5 py-2 text-sm shadow-sm"
+              className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors"
             >
-              Get Started
+              Sign up free
             </Link>
           </div>
         </nav>
 
-        {/* Mobile toggle */}
         <button
-          className="md:hidden text-muted-foreground hover:text-foreground"
+          className="md:hidden text-muted hover:text-ink"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="border-b border-border bg-card/95 backdrop-blur-xl px-6 pb-6 pt-2 md:hidden"
+          className="border-b border-hairline bg-canvas px-6 pb-6 pt-2 md:hidden"
         >
           <div className="flex flex-col gap-4">
             {navLinks.map((l) => (
@@ -117,7 +115,7 @@ function Navbar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setMobileOpen(false)}
-                className="text-sm font-bold text-muted-foreground"
+                className="text-sm font-medium text-muted"
               >
                 {l.label}
               </a>
@@ -125,16 +123,16 @@ function Navbar() {
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="text-sm font-bold text-muted-foreground"
+              className="text-sm font-medium text-muted"
             >
-              Log In
+              Sign in
             </Link>
             <Link
               href="/role-selection"
               onClick={() => setMobileOpen(false)}
-              className="btn btn-primary w-full text-center text-sm"
+              className="inline-flex items-center justify-center h-10 text-sm font-semibold rounded-md bg-primary text-primary-foreground text-center"
             >
-              Get Started
+              Sign up free
             </Link>
           </div>
         </motion.div>
@@ -143,75 +141,106 @@ function Navbar() {
   );
 }
 
-// ── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32">
-      {/* Subtle background decoration */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute top-0 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-accent/5 blur-3xl" />
-        <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-indigo/5 blur-3xl" />
-      </div>
+    <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24 bg-canvas">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8 items-center">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="lg:col-span-7"
+          >
+            <motion.div variants={fadeUp} custom={0} className="mb-6">
+              <span className="badge-pill badge-pill-default">
+                Now in Open Beta
+              </span>
+            </motion.div>
 
-      <div className="mx-auto max-w-5xl px-6 text-center">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-col items-center"
-        >
-          <motion.div variants={fadeUp} custom={0} className="mb-6">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-muted">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Now in Open Beta
-            </span>
+            <motion.h1
+              variants={fadeUp}
+              custom={1}
+              className="text-4xl font-semibold leading-[1.05] tracking-tight text-ink md:text-5xl lg:text-[56px]"
+              style={{ letterSpacing: "-0.04em" }}
+            >
+              Freight &amp; Fleet.{" "}
+              <span className="text-muted">Simplified.</span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              custom={2}
+              className="mt-6 max-w-lg text-base leading-relaxed text-body-text"
+            >
+              The AI-powered logistics platform that connects brokers, carriers,
+              and drivers — automating matching, tracking, and payments in one
+              seamless flow.
+            </motion.p>
+
+            <motion.div
+              variants={fadeUp}
+              custom={3}
+              className="mt-8 flex flex-col items-start gap-3 sm:flex-row"
+            >
+              <Link
+                href="/role-selection"
+                className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors"
+              >
+                Get Started Free
+                <ArrowRight size={16} strokeWidth={2} />
+              </Link>
+              <a
+                href="#features"
+                className="inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold rounded-md border border-hairline bg-canvas text-ink hover:bg-surface-soft transition-colors"
+              >
+                Learn More
+              </a>
+            </motion.div>
           </motion.div>
-
-          <motion.h1
-            variants={fadeUp}
-            custom={1}
-            className="max-w-4xl text-4xl font-black leading-[1.1] tracking-tight text-foreground md:text-6xl lg:text-7xl"
-          >
-            Freight &amp; Fleet.{" "}
-            <span className="text-accent">Simplified.</span>
-          </motion.h1>
-
-          <motion.p
-            variants={fadeUp}
-            custom={2}
-            className="mt-6 max-w-2xl text-base font-medium leading-relaxed text-muted md:text-lg"
-          >
-            The AI-powered logistics platform that connects brokers, carriers,
-            and drivers — automating matching, tracking, and payments in one
-            seamless flow.
-          </motion.p>
 
           <motion.div
-            variants={fadeUp}
-            custom={3}
-            className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="lg:col-span-5"
           >
-            <Link
-              href="/role-selection"
-              className="btn btn-primary flex h-12 items-center gap-2 rounded-xl px-8 text-sm font-black uppercase tracking-widest shadow-lg shadow-accent/20"
-            >
-              Get Started Free
-              <ArrowRight size={16} strokeWidth={2.5} />
-            </Link>
-            <a
-              href="#features"
-              className="btn btn-secondary flex h-12 items-center gap-2 rounded-xl px-8 text-sm font-black uppercase tracking-widest"
-            >
-              Learn More
-            </a>
+            <div className="rounded-2xl border border-hairline bg-canvas p-1 shadow-sm">
+              <div className="rounded-xl border border-hairline bg-surface-soft p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-ink">Load #2847</span>
+                  <span className="badge-pill badge-pill-emerald">Matched</span>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm text-body-text">
+                    <MapPin size={16} className="text-muted" />
+                    <span>Chicago, IL → Dallas, TX</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-body-text">
+                    <Calendar size={16} className="text-muted" />
+                    <span>May 15 — May 18</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-body-text">
+                    <Clock size={16} className="text-muted" />
+                    <span>1,200 mi · 48 ft Dry Van</span>
+                  </div>
+                </div>
+                <div className="pt-3 border-t border-hairline flex items-center justify-between">
+                  <span className="text-lg font-semibold text-ink">$3,450</span>
+                  <span className="text-sm text-muted">$2.88/mi</span>
+                </div>
+                <button className="w-full h-10 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors">
+                  Book Load
+                </button>
+              </div>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ── Stats ────────────────────────────────────────────────────────────────────
 function Stats() {
   const items = [
     { value: "10K+", label: "Loads Moved" },
@@ -220,14 +249,14 @@ function Stats() {
   ];
 
   return (
-    <section className="border-y border-border bg-card/40 py-12 backdrop-blur-sm">
+    <section className="border-y border-hairline bg-surface-soft py-10">
       <div className="mx-auto max-w-5xl px-6">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 gap-8 divide-y divide-border sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+          className="grid grid-cols-1 gap-6 divide-y divide-hairline sm:grid-cols-3 sm:divide-x sm:divide-y-0"
         >
           {items.map((item, i) => (
             <motion.div
@@ -236,10 +265,10 @@ function Stats() {
               custom={i}
               className="flex flex-col items-center py-4 sm:py-0"
             >
-              <span className="text-3xl font-black text-foreground md:text-4xl">
+              <span className="text-3xl font-semibold text-ink md:text-4xl tracking-tight">
                 {item.value}
               </span>
-              <span className="mt-1 text-sm font-bold uppercase tracking-widest text-muted">
+              <span className="mt-1 text-sm text-muted">
                 {item.label}
               </span>
             </motion.div>
@@ -250,7 +279,6 @@ function Stats() {
   );
 }
 
-// ── Features ─────────────────────────────────────────────────────────────────
 function Features() {
   const features = [
     {
@@ -286,7 +314,7 @@ function Features() {
   ];
 
   return (
-    <section id="features" className="py-24 md:py-32">
+    <section id="features" className="py-24 md:py-32 bg-canvas">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           variants={staggerContainer}
@@ -298,21 +326,22 @@ function Features() {
           <motion.span
             variants={fadeUp}
             custom={0}
-            className="text-xs font-black uppercase tracking-widest text-accent"
+            className="text-sm font-medium text-muted"
           >
             Features
           </motion.span>
           <motion.h2
             variants={fadeUp}
             custom={1}
-            className="mt-3 text-3xl font-black tracking-tight text-foreground md:text-4xl"
+            className="mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+            style={{ letterSpacing: "-0.03em" }}
           >
             Everything you need to move freight
           </motion.h2>
           <motion.p
             variants={fadeUp}
             custom={2}
-            className="mx-auto mt-4 max-w-xl text-base font-medium text-muted"
+            className="mx-auto mt-4 max-w-xl text-base text-body-text"
           >
             From posting loads to final payment, FLOW handles the heavy lifting
             so you can focus on growing your business.
@@ -331,15 +360,15 @@ function Features() {
               key={f.title}
               variants={fadeUp}
               custom={i}
-              className="group rounded-2xl border border-border bg-card p-7 transition-all hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
+              className="rounded-xl bg-surface-card p-8 transition-colors hover:bg-surface-soft"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-light text-accent transition-colors group-hover:bg-accent group-hover:text-white">
-                <f.icon size={22} strokeWidth={2} />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-soft text-ink">
+                <f.icon size={20} strokeWidth={2} />
               </div>
-              <h3 className="mt-5 text-base font-black text-foreground">
+              <h3 className="mt-5 text-base font-semibold text-ink">
                 {f.title}
               </h3>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-muted">
+              <p className="mt-2 text-sm leading-relaxed text-body-text">
                 {f.desc}
               </p>
             </motion.div>
@@ -350,7 +379,6 @@ function Features() {
   );
 }
 
-// ── How It Works ─────────────────────────────────────────────────────────────
 function HowItWorks() {
   const steps = [
     {
@@ -371,7 +399,7 @@ function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="border-t border-border bg-card/30 py-24 md:py-32">
+    <section id="how-it-works" className="border-t border-hairline bg-surface-soft py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           variants={staggerContainer}
@@ -383,14 +411,15 @@ function HowItWorks() {
           <motion.span
             variants={fadeUp}
             custom={0}
-            className="text-xs font-black uppercase tracking-widest text-accent"
+            className="text-sm font-medium text-muted"
           >
             How it Works
           </motion.span>
           <motion.h2
             variants={fadeUp}
             custom={1}
-            className="mt-3 text-3xl font-black tracking-tight text-foreground md:text-4xl"
+            className="mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+            style={{ letterSpacing: "-0.03em" }}
           >
             Three steps to seamless logistics
           </motion.h2>
@@ -407,13 +436,13 @@ function HowItWorks() {
               viewport={{ once: true }}
               className="relative"
             >
-              <span className="text-5xl font-black text-border md:text-6xl">
+              <span className="text-5xl font-semibold text-hairline md:text-6xl tracking-tight">
                 {s.step}
               </span>
-              <h3 className="mt-4 text-lg font-black text-foreground">
+              <h3 className="mt-4 text-lg font-semibold text-ink">
                 {s.title}
               </h3>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-muted">
+              <p className="mt-2 text-sm leading-relaxed text-body-text">
                 {s.desc}
               </p>
             </motion.div>
@@ -424,46 +453,41 @@ function HowItWorks() {
   );
 }
 
-// ── CTA ──────────────────────────────────────────────────────────────────────
 function CTA() {
   return (
-    <section className="py-24 md:py-32">
+    <section className="py-24 md:py-32 bg-canvas">
       <div className="mx-auto max-w-5xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl border border-border bg-card p-10 text-center md:p-16"
+          className="rounded-xl bg-surface-card p-10 text-center md:p-16"
         >
-          {/* Background glow */}
-          <div className="pointer-events-none absolute inset-0 -z-0">
-            <div className="absolute top-1/2 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-3xl" />
-          </div>
-
-          <div className="relative z-10">
-            <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl">
-              Ready to move faster?
-            </h2>
-            <p className="mx-auto mt-4 max-w-lg text-base font-medium text-muted">
-              Join thousands of brokers, carriers, and drivers already using
-              FLOW to streamline their logistics operations.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                href="/role-selection"
-                className="btn btn-primary flex h-12 items-center gap-2 rounded-xl px-8 text-sm font-black uppercase tracking-widest shadow-lg shadow-accent/20"
-              >
-                Create Free Account
-                <ArrowRight size={16} strokeWidth={2.5} />
-              </Link>
-              <Link
-                href="/login"
-                className="btn btn-secondary flex h-12 items-center gap-2 rounded-xl px-8 text-sm font-black uppercase tracking-widest"
-              >
-                Log In
-              </Link>
-            </div>
+          <h2
+            className="text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            Ready to move faster?
+          </h2>
+          <p className="mx-auto mt-4 max-w-lg text-base text-body-text">
+            Join thousands of brokers, carriers, and drivers already using
+            FLOW to streamline their logistics operations.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/role-selection"
+              className="inline-flex items-center gap-2 h-11 px-8 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors"
+            >
+              Create Free Account
+              <ArrowRight size={16} strokeWidth={2} />
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 h-11 px-8 text-sm font-semibold rounded-md border border-hairline bg-canvas text-ink hover:bg-surface-soft transition-colors"
+            >
+              Log In
+            </Link>
           </div>
         </motion.div>
       </div>
@@ -471,49 +495,91 @@ function CTA() {
   );
 }
 
-// ── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
-  const links = [
-    { label: "Log In", href: "/login" },
-    { label: "Sign Up", href: "/role-selection" },
+  const columns = [
+    {
+      title: "Product",
+      links: [
+        { label: "Features", href: "#features" },
+        { label: "How it Works", href: "#how-it-works" },
+        { label: "Pricing", href: "#" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "About", href: "#" },
+        { label: "Careers", href: "#" },
+        { label: "Contact", href: "#" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Privacy", href: "#" },
+        { label: "Terms", href: "#" },
+      ],
+    },
   ];
 
   return (
-    <footer className="border-t border-border bg-card/40 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 md:flex-row">
-        <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-white">
-            <Truck size={14} strokeWidth={2.5} />
+    <footer className="bg-surface-dark text-on-dark-soft">
+      <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary-foreground text-primary">
+                <Truck size={14} strokeWidth={2} />
+              </div>
+              <span className="text-sm font-semibold tracking-tight text-white">
+                FLOW
+              </span>
+            </div>
+            <p className="text-sm text-on-dark-soft">
+              AI-powered logistics platform for the modern supply chain.
+            </p>
           </div>
-          <span className="text-sm font-black tracking-tight text-foreground">
-            FLOW
-          </span>
-        </div>
-
-        <nav className="flex items-center gap-6">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {l.label}
-            </Link>
+          {columns.map((col) => (
+            <div key={col.title}>
+              <h4 className="text-sm font-semibold text-white mb-4">
+                {col.title}
+              </h4>
+              <ul className="space-y-3">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-on-dark-soft hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </nav>
-
-        <p className="text-xs font-bold text-muted-foreground">
-          &copy; {new Date().getFullYear()} FLOW Logistics. All rights reserved.
-        </p>
+        </div>
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-on-dark-soft">
+            &copy; {new Date().getFullYear()} FLOW Logistics. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <Link href="/login" className="text-xs text-on-dark-soft hover:text-white transition-colors">
+              Sign in
+            </Link>
+            <Link href="/role-selection" className="text-xs text-on-dark-soft hover:text-white transition-colors">
+              Sign up
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
 }
 
-// ── Exported Landing Page ────────────────────────────────────────────────────
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-canvas">
       <Navbar />
       <main>
         <Hero />

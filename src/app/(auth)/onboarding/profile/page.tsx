@@ -56,8 +56,8 @@ export default function ProfileStep() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold">Personal Information</h2>
-        <p className="text-sm text-gray-500">Please provide your basic details.</p>
+        <h2 className="text-xl font-semibold text-ink">Personal Information</h2>
+        <p className="text-sm text-muted">Please provide your basic details.</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -103,7 +103,7 @@ export default function ProfileStep() {
             )}
           />
           <div className="flex justify-end">
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="h-10 rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors text-sm font-semibold">
               {isLoading ? 'Saving...' : 'Next: Business Details'}
             </Button>
           </div>

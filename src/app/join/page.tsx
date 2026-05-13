@@ -121,12 +121,12 @@ function JoinPageInner() {
   // ── Loading ───────────────────────────────────────────────────────────
   if (state.status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="bg-card rounded-[2rem] border border-border shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
-          <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-accent-light mx-auto mb-6">
-            <Spinner size={32} weight="bold" className="animate-spin text-accent" />
+      <div className="min-h-screen flex items-center justify-center bg-canvas p-4">
+        <div className="bg-card rounded-[2rem] border border-hairline shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
+          <div className="h-16 w-16 flex items-center justify-center rounded-xl bg-surface-soft mx-auto mb-6">
+            <Spinner size={32} weight="bold" className="animate-spin text-primary" />
           </div>
-          <h1 className="text-xl font-black text-foreground mb-2">
+          <h1 className="text-xl font-semibold text-ink mb-2">
             Accepting Invitation
           </h1>
           <p className="text-sm font-bold text-muted">
@@ -140,12 +140,12 @@ function JoinPageInner() {
   // ── Success ───────────────────────────────────────────────────────────
   if (state.status === "success") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="bg-card rounded-[2rem] border border-border shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
-          <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-success-light mx-auto mb-6">
+      <div className="min-h-screen flex items-center justify-center bg-canvas p-4">
+        <div className="bg-card rounded-[2rem] border border-hairline shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
+          <div className="h-16 w-16 flex items-center justify-center rounded-xl bg-success-light mx-auto mb-6">
             <CheckCircle size={32} weight="fill" className="text-success" />
           </div>
-          <h1 className="text-xl font-black text-foreground mb-2">
+          <h1 className="text-xl font-semibold text-ink mb-2">
             You&apos;re In!
           </h1>
           <p className="text-sm font-bold text-muted mb-6">
@@ -164,12 +164,12 @@ function JoinPageInner() {
   // ── Requires Registration ─────────────────────────────────────────────
   if (state.status === "requires_registration") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="bg-card rounded-[2rem] border border-border shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
-          <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-warning-light mx-auto mb-6">
+      <div className="min-h-screen flex items-center justify-center bg-canvas p-4">
+        <div className="bg-card rounded-[2rem] border border-hairline shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
+          <div className="h-16 w-16 flex items-center justify-center rounded-xl bg-warning-light mx-auto mb-6">
             <EnvelopeSimple size={32} weight="fill" className="text-warning" />
           </div>
-          <h1 className="text-xl font-black text-foreground mb-2">
+          <h1 className="text-xl font-semibold text-ink mb-2">
             Create an Account
           </h1>
           <p className="text-sm font-bold text-muted mb-2">
@@ -181,7 +181,7 @@ function JoinPageInner() {
           </p>
           <Link
             href={`/register?email=${encodeURIComponent(state.email)}&token=${encodeURIComponent(state.token)}`}
-            className="btn btn-primary h-12 px-8 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20 inline-flex items-center gap-2"
+            className="btn btn-primary h-12 px-8 text-[11px] font-semibold  shadow-lg  inline-flex items-center gap-2"
           >
             <UserPlus size={18} weight="bold" />
             Sign Up to Join
@@ -190,7 +190,7 @@ function JoinPageInner() {
             Already have an account?{" "}
             <Link
               href={`/login?redirect=/join?token=${encodeURIComponent(token || "")}`}
-              className="text-accent hover:underline"
+              className="text-ink hover:underline"
             >
               Sign in
             </Link>
@@ -202,12 +202,12 @@ function JoinPageInner() {
 
   // ── Error ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="bg-card rounded-[2rem] border border-border shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
-        <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-danger-light mx-auto mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-canvas p-4">
+      <div className="bg-card rounded-[2rem] border border-hairline shadow-2xl p-12 max-w-md w-full text-center animate-in zoom-in-95">
+        <div className="h-16 w-16 flex items-center justify-center rounded-xl bg-danger-light mx-auto mb-6">
           <WarningCircle size={32} weight="fill" className="text-danger" />
         </div>
-        <h1 className="text-xl font-black text-foreground mb-2">
+        <h1 className="text-xl font-semibold text-ink mb-2">
           {state.code === "INVITE_EXPIRED"
             ? "Invitation Expired"
             : state.code === "ALREADY_MEMBER"
@@ -226,21 +226,21 @@ function JoinPageInner() {
           {isAuthenticated ? (
             <Link
               href="/dashboard"
-              className="btn btn-primary h-12 px-8 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+              className="btn btn-primary h-12 px-8 text-[11px] font-semibold  shadow-lg "
             >
               Go to Dashboard
             </Link>
           ) : (
             <Link
               href="/login"
-              className="btn btn-primary h-12 px-8 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+              className="btn btn-primary h-12 px-8 text-[11px] font-semibold  shadow-lg "
             >
               Go to Login
             </Link>
           )}
           <Link
             href="/"
-            className="btn btn-secondary h-11 text-[11px] font-black uppercase tracking-widest"
+            className="btn btn-secondary h-11 text-[11px] font-semibold "
           >
             Back to Home
           </Link>
@@ -255,12 +255,12 @@ export default function JoinPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background p-4">
-          <div className="bg-card rounded-[2rem] border border-border shadow-2xl p-12 max-w-md w-full text-center">
-            <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-accent-light mx-auto mb-6">
-              <Spinner size={32} weight="bold" className="animate-spin text-accent" />
+        <div className="min-h-screen flex items-center justify-center bg-canvas p-4">
+          <div className="bg-card rounded-[2rem] border border-hairline shadow-2xl p-12 max-w-md w-full text-center">
+            <div className="h-16 w-16 flex items-center justify-center rounded-xl bg-surface-soft mx-auto mb-6">
+              <Spinner size={32} weight="bold" className="animate-spin text-primary" />
             </div>
-            <h1 className="text-xl font-black text-foreground">Loading...</h1>
+            <h1 className="text-xl font-semibold text-ink">Loading...</h1>
           </div>
         </div>
       }

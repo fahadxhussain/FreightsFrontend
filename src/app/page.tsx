@@ -25,8 +25,8 @@ export default function RootPage() {
   // While checking auth, show nothing (or a very subtle loader)
   if (!isAuthReady) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+      <div className="flex h-screen items-center justify-center bg-canvas">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -34,8 +34,8 @@ export default function RootPage() {
   // Authenticated users are redirected above; unauthenticated see the landing page
   if (isAuthenticated) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+      <div className="flex h-screen items-center justify-center bg-canvas">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }

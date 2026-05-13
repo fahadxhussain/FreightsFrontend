@@ -47,7 +47,6 @@ export default function LoginPage() {
       if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
       document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; SameSite=Lax`;
 
-      // Extract permissions from JWT
       let permissions: string[] = [];
       try {
         const claims = decodeJwt(accessToken) as Record<string, unknown>;
@@ -68,7 +67,6 @@ export default function LoginPage() {
       );
       toast.success("Welcome back!");
 
-      // Determine destination
       let destination = "/dashboard";
       if (!isOnboardingComplete) {
         const role = user?.role || "broker";
@@ -85,7 +83,6 @@ export default function LoginPage() {
         }
       }
 
-      // Use window.location for guaranteed navigation (router.push can be flaky in some Next.js builds)
       window.location.href = destination;
     } catch (error: any) {
       console.error("[LOGIN] Error:", error);
@@ -99,79 +96,79 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col gap-1">
-      <h1 className="text-center text-[2.2rem] font-black text-accent tracking-tighter">
+      <h1 className="text-center text-2xl font-semibold text-ink tracking-tight">
         FLOW
       </h1>
-      <h2 className="mt-1 text-center text-[1.4rem] font-bold text-foreground">
+      <h2 className="mt-2 text-center text-lg font-semibold text-ink">
         Welcome back
       </h2>
-      <p className="mb-8 text-center text-sm text-muted font-medium">
+      <p className="mb-8 text-center text-sm text-body-text">
         Sign in to your logistics dashboard
       </p>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         <div className="space-y-1.5">
-          <label className="ml-1 text-xs font-bold text-muted uppercase tracking-wider">
+          <label className="text-xs font-medium text-muted">
             Email Address
           </label>
           <div className="relative">
             <EnvelopeSimple
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("email")}
               type="email"
               placeholder="john@company.com"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 placeholder:text-muted-foreground/60 font-medium",
-                errors.email && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-colors focus:border-ink focus:ring-1 focus:ring-ink placeholder:text-muted-foreground",
+                errors.email && "border-error",
               )}
             />
           </div>
           {errors.email && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="text-xs text-error">
               {errors.email.message}
             </p>
           )}
         </div>
 
         <div className="space-y-1.5">
-          <label className="ml-1 text-xs font-bold text-muted uppercase tracking-wider">
+          <label className="text-xs font-medium text-muted">
             Password
           </label>
           <div className="relative">
             <Lock
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="Your password"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 pr-12 placeholder:text-muted-foreground/60 font-medium",
-                errors.password && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-colors focus:border-ink focus:ring-1 focus:ring-ink pr-12 placeholder:text-muted-foreground",
+                errors.password && "border-error",
               )}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink"
             >
               {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <div className="flex justify-end mt-1.5">
+          <div className="flex justify-end mt-1">
             <Link
               href="/forgot-password"
-              className="text-[11px] font-bold text-accent hover:underline uppercase tracking-wider"
+              className="text-xs font-medium text-muted hover:text-ink transition-colors"
             >
               Forgot Password?
             </Link>
           </div>
           {errors.password && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="text-xs text-error">
               {errors.password.message}
             </p>
           )}
@@ -180,17 +177,17 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="btn btn-primary btn-lg mt-2 w-full shadow-lg shadow-accent/20"
+          className="w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors disabled:opacity-50"
         >
           {isLoading ? "Signing in..." : "Sign In"}
         </button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-muted font-medium">
+      <p className="mt-8 text-center text-sm text-muted">
         Don&apos;t have an account?{" "}
         <Link
           href="/role-selection"
-          className="font-bold text-accent hover:underline"
+          className="font-medium text-ink hover:underline"
         >
           Sign Up
         </Link>

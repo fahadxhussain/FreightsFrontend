@@ -40,12 +40,12 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  rate_confirmation: 'badge-indigo',
-  bol: 'badge-blue',
-  pod: 'badge-green',
-  invoice: 'badge-amber',
-  insurance: 'badge-purple',
-  other: 'badge-gray',
+  rate_confirmation: 'badge-pill badge-pill-indigo',
+  bol: 'badge-pill badge-pill-blue',
+  pod: 'badge-pill badge-pill-green',
+  invoice: 'badge-pill badge-pill-amber',
+  insurance: 'badge-pill badge-pill-purple',
+  other: 'badge-pill badge-pill-gray',
 };
 
 export default function DocumentVaultPage() {
@@ -142,7 +142,7 @@ export default function DocumentVaultPage() {
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -151,12 +151,12 @@ export default function DocumentVaultPage() {
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Document Vault</h1>
+          <h1 className="text-2xl font-bold text-ink">Document Vault</h1>
           <p className="text-sm text-muted">Manage shipment documents and records</p>
         </div>
         <button
           onClick={() => setIsUploadModalOpen(true)}
-          className="flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover"
+          className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-active"
         >
           <Plus size={18} /> Upload Document
         </button>
@@ -166,14 +166,14 @@ export default function DocumentVaultPage() {
         <div className="relative flex-1 min-w-[300px]">
           <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
-            className="w-full rounded-lg border border-border bg-card px-10 py-2.5 text-sm outline-none focus:border-accent"
+            className="w-full rounded-lg border border-hairline bg-card px-10 py-2.5 text-sm outline-none focus:border-primary"
             placeholder="Search by filename or load ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <select
-          className="h-10 rounded-lg border border-border bg-card px-3 text-sm outline-none"
+          className="h-10 rounded-lg border border-hairline bg-card px-3 text-sm outline-none"
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
         >
@@ -187,11 +187,11 @@ export default function DocumentVaultPage() {
         </select>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="overflow-hidden rounded-xl border border-hairline bg-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-border bg-muted/30 text-xs font-semibold uppercase text-muted">
+              <tr className="border-b border-hairline bg-muted/30 text-xs font-semibold uppercase text-muted">
                 <th className="px-5 py-3">Filename</th>
                 <th className="px-5 py-3">Type</th>
                 <th className="px-5 py-3">Load ID</th>
@@ -201,7 +201,7 @@ export default function DocumentVaultPage() {
                 <th className="px-5 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-hairline">
               {filteredDocs.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-5 py-12 text-center text-sm text-muted">
@@ -210,7 +210,7 @@ export default function DocumentVaultPage() {
                 </tr>
               ) : (
                 filteredDocs.map((doc) => (
-                  <tr key={doc._id} className="group hover:bg-card-hover">
+                  <tr key={doc._id} className="group hover:bg-surface-soft">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
                         <div
@@ -218,7 +218,7 @@ export default function DocumentVaultPage() {
                             'flex h-9 w-9 items-center justify-center rounded-lg',
                             getFileExtension(doc.fileType) === 'pdf'
                               ? 'bg-danger-light text-danger'
-                              : 'bg-accent-light text-accent',
+                              : 'bg-surface-soft text-ink',
                           )}
                         >
                           {getFileExtension(doc.fileType) === 'pdf' ? (
@@ -229,15 +229,15 @@ export default function DocumentVaultPage() {
                             <File size={20} />
                           )}
                         </div>
-                        <span className="text-sm font-medium text-foreground">{doc.fileName}</span>
+                        <span className="text-sm font-medium text-ink">{doc.fileName}</span>
                       </div>
                     </td>
                     <td className="px-5 py-3">
-                      <span className={cn('badge px-2 py-0.5 text-xs', TYPE_COLORS[doc.type] || 'badge-gray')}>
+                      <span className={cn('badge px-2 py-0.5 text-xs', TYPE_COLORS[doc.type] || 'badge-pill badge-pill-gray')}>
                         {TYPE_LABELS[doc.type] || doc.type}
                       </span>
                     </td>
-                    <td className="px-5 py-3 text-sm text-foreground">{doc.loadId || '—'}</td>
+                    <td className="px-5 py-3 text-sm text-ink">{doc.loadId || '—'}</td>
                     <td className="px-5 py-3">
                       <span
                         className={cn(
@@ -262,7 +262,7 @@ export default function DocumentVaultPage() {
                           href={doc.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex h-8 w-8 items-center justify-center rounded-lg text-muted hover:bg-accent-light hover:text-accent"
+                          className="flex h-8 w-8 items-center justify-center rounded-lg text-muted hover:bg-primary-light hover:text-ink"
                         >
                           <DownloadSimple size={18} />
                         </a>
@@ -285,10 +285,10 @@ export default function DocumentVaultPage() {
       {/* Upload Modal */}
       {isUploadModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-6">
-          <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-xl">
+          <div className="w-full max-w-md rounded-xl border border-hairline bg-card p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-foreground">Upload Document</h3>
-              <button onClick={() => setIsUploadModalOpen(false)} className="text-muted hover:text-foreground">
+              <h3 className="text-lg font-semibold text-ink">Upload Document</h3>
+              <button onClick={() => setIsUploadModalOpen(false)} className="text-muted hover:text-ink">
                 <X size={20} />
               </button>
             </div>
@@ -297,7 +297,7 @@ export default function DocumentVaultPage() {
               <div>
                 <label className="mb-1 block text-xs font-medium text-muted">Document Type</label>
                 <select
-                  className="w-full rounded-lg border border-border bg-input px-3 py-2.5 text-sm outline-none"
+                  className="w-full rounded-lg border border-hairline bg-surface-soft px-3 py-2.5 text-sm outline-none"
                   value={uploadType}
                   onChange={(e) => setUploadType(e.target.value)}
                   required
@@ -315,7 +315,7 @@ export default function DocumentVaultPage() {
                 <label className="mb-1 block text-xs font-medium text-muted">Load ID (optional)</label>
                 <input
                   type="text"
-                  className="w-full rounded-lg border border-border bg-input px-3 py-2.5 text-sm outline-none"
+                  className="w-full rounded-lg border border-hairline bg-surface-soft px-3 py-2.5 text-sm outline-none"
                   placeholder="e.g. 661f..."
                   value={uploadLoadId}
                   onChange={(e) => setUploadLoadId(e.target.value)}
@@ -328,7 +328,7 @@ export default function DocumentVaultPage() {
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx"
                   onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                  className="w-full text-sm text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white"
+                  className="w-full text-sm text-muted file:mr-4 file:rounded-lg file:border-0 file:bg-primary file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white"
                   required
                 />
                 <p className="mt-1 text-xs text-muted">Max 50MB. PDF, JPG, PNG, DOC</p>
@@ -337,7 +337,7 @@ export default function DocumentVaultPage() {
               <div>
                 <label className="mb-1 block text-xs font-medium text-muted">Notes (optional)</label>
                 <textarea
-                  className="w-full rounded-lg border border-border bg-input px-3 py-2.5 text-sm outline-none"
+                  className="w-full rounded-lg border border-hairline bg-surface-soft px-3 py-2.5 text-sm outline-none"
                   rows={2}
                   value={uploadNotes}
                   onChange={(e) => setUploadNotes(e.target.value)}
@@ -348,14 +348,14 @@ export default function DocumentVaultPage() {
                 <button
                   type="button"
                   onClick={() => setIsUploadModalOpen(false)}
-                  className="flex-1 rounded-lg border border-border py-2.5 text-sm font-medium text-foreground hover:bg-card-hover"
+                  className="flex-1 rounded-lg border border-hairline py-2.5 text-sm font-medium text-ink hover:bg-surface-soft"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUploading || !uploadFile}
-                  className="flex-1 rounded-lg bg-accent py-2.5 text-sm font-semibold text-white hover:bg-accent-hover disabled:opacity-50"
+                  className="flex-1 rounded-lg bg-primary py-2.5 text-sm font-semibold text-white hover:bg-primary-active disabled:opacity-50"
                 >
                   {isUploading ? 'Uploading...' : 'Upload'}
                 </button>

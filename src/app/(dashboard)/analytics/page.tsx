@@ -114,10 +114,10 @@ export default function AnalyticsPage() {
     <div className="p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">
             Analytics
           </h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-sm font-bold text-muted  mt-1">
             Real-time performance metrics and insights
           </p>
         </div>
@@ -125,14 +125,14 @@ export default function AnalyticsPage() {
           <select
             value={range}
             onChange={(e) => setRange(e.target.value)}
-            className="h-12 w-48 rounded-xl border border-border bg-card px-4 text-[13px] font-bold text-foreground outline-none appearance-none cursor-pointer hover:border-muted transition-colors shadow-sm"
+            className="h-12 w-48 rounded-md border border-hairline bg-card px-4 text-[13px] font-bold text-ink outline-none appearance-none cursor-pointer hover:border-muted transition-colors shadow-sm"
           >
             <option>Last 7 Days</option>
             <option>Last 30 Days</option>
             <option>Last 3 Months</option>
             <option>Year to Date</option>
           </select>
-          <button className="btn btn-secondary h-12 px-6 text-[11px] font-black uppercase tracking-widest shadow-sm">
+          <button className="btn btn-secondary h-12 px-6 text-[11px] font-semibold  shadow-sm">
             <DownloadSimple size={20} weight="bold" />
             Export Data
           </button>
@@ -144,7 +144,7 @@ export default function AnalyticsPage() {
         {kpis.map((kpi, i) => (
           <div
             key={i}
-            className="rounded-[2rem] border border-border bg-card p-6 shadow-xl relative overflow-hidden group"
+            className="rounded-md border border-hairline bg-card p-6 shadow-xl relative overflow-hidden group"
           >
             <div
               className={cn(
@@ -155,7 +155,7 @@ export default function AnalyticsPage() {
             <div className="flex items-center gap-4 mb-4">
               <div
                 className={cn(
-                  "h-12 w-12 flex items-center justify-center rounded-2xl shadow-lg",
+                  "h-12 w-12 flex items-center justify-center rounded-xl shadow-lg",
                   `bg-${kpi.color}-light text-${kpi.color}`,
                 )}
               >
@@ -170,10 +170,10 @@ export default function AnalyticsPage() {
                 {kpi.trend}
               </div>
             </div>
-            <div className="text-3xl font-black text-foreground tracking-tighter">
+            <div className="text-3xl font-semibold text-ink tracking-tighter">
               {kpi.value}
             </div>
-            <div className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">
+            <div className=" font-semibold  text-muted mt-1">
               {kpi.label}
             </div>
           </div>
@@ -181,26 +181,26 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Main Chart */}
-      <div className="rounded-3xl border border-border bg-card p-10 shadow-2xl mb-8 overflow-hidden group">
+      <div className="rounded-xl border border-hairline bg-card p-10 shadow-2xl mb-8 overflow-hidden group">
         <div className="flex items-center justify-between mb-10">
           <div>
-            <h3 className="text-xl font-black tracking-tight text-foreground">
+            <h3 className="text-xl font-semibold tracking-tight text-ink">
               Revenue vs Expenses
             </h3>
-            <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+            <p className="text-xs font-bold text-muted  mt-1">
               Financial performance over the selected period
             </p>
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-success" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted">
+              <span className=" font-semibold  text-muted">
                 Revenue
               </span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-danger" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-muted">
+              <span className=" font-semibold  text-muted">
                 Expenses
               </span>
             </div>
@@ -281,8 +281,8 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Shipper Bar Chart */}
-        <div className="rounded-3xl border border-border bg-card p-10 shadow-2xl">
-          <h3 className="text-xl font-black tracking-tight text-foreground mb-8">
+        <div className="rounded-xl border border-hairline bg-card p-10 shadow-2xl">
+          <h3 className="text-xl font-semibold tracking-tight text-ink mb-8">
             Revenue by Shipper
           </h3>
           <div className="h-[250px] w-full">
@@ -347,8 +347,8 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Load Status Bar Chart */}
-        <div className="rounded-3xl border border-border bg-card p-10 shadow-2xl">
-          <h3 className="text-xl font-black tracking-tight text-foreground mb-8">
+        <div className="rounded-xl border border-hairline bg-card p-10 shadow-2xl">
+          <h3 className="text-xl font-semibold tracking-tight text-ink mb-8">
             Loads by Status
           </h3>
           <div className="h-[250px] w-full">
@@ -407,41 +407,41 @@ export default function AnalyticsPage() {
 
       {/* Secondary KPIs */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="rounded-[2rem] border border-border bg-card p-6 shadow-xl flex items-center gap-6">
-          <div className="h-16 w-16 flex items-center justify-center rounded-[1.25rem] bg-input border border-border text-accent">
+        <div className="rounded-xl border border-hairline bg-card p-6 shadow-xl flex items-center gap-6">
+          <div className="h-16 w-16 flex items-center justify-center rounded-[1.25rem] bg-surface-soft border border-hairline text-ink">
             <RoadHorizon size={32} weight="bold" />
           </div>
           <div>
-            <div className="text-2xl font-black text-foreground tracking-tighter">
+            <div className="text-2xl font-semibold text-ink tracking-tighter">
               42,800 mi
             </div>
-            <div className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">
+            <div className=" font-semibold  text-muted mt-1">
               Total Miles Shipped
             </div>
           </div>
         </div>
-        <div className="rounded-[2rem] border border-border bg-card p-6 shadow-xl flex items-center gap-6">
+        <div className="rounded-xl border border-hairline bg-card p-6 shadow-xl flex items-center gap-6">
           <div className="h-16 w-16 flex items-center justify-center rounded-[1.25rem] bg-success-light border border-success/20 text-success">
             <CurrencyDollar size={32} weight="bold" />
           </div>
           <div>
-            <div className="text-2xl font-black text-foreground tracking-tighter">
+            <div className="text-2xl font-semibold text-ink tracking-tighter">
               $2.12/mi
             </div>
-            <div className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">
+            <div className=" font-semibold  text-muted mt-1">
               Avg Rate per Mile
             </div>
           </div>
         </div>
-        <div className="rounded-[2rem] border border-border bg-card p-6 shadow-xl flex items-center gap-6">
+        <div className="rounded-xl border border-hairline bg-card p-6 shadow-xl flex items-center gap-6">
           <div className="h-16 w-16 flex items-center justify-center rounded-[1.25rem] bg-amber-500/10 border border-amber-500/20 text-amber-500">
             <Clock size={32} weight="bold" />
           </div>
           <div>
-            <div className="text-2xl font-black text-foreground tracking-tighter">
+            <div className="text-2xl font-semibold text-ink tracking-tighter">
               2.4 days
             </div>
-            <div className="text-[10px] font-black uppercase tracking-widest text-muted mt-1">
+            <div className=" font-semibold  text-muted mt-1">
               Avg Load Duration
             </div>
           </div>

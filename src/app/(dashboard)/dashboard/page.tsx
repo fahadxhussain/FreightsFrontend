@@ -95,7 +95,7 @@ export default function DashboardPage() {
         setSummary(counts);
         setRecentLoads(loads.slice(0, 8));
       } catch {
-        // defaults — keep all zeros
+        // defaults
       } finally {
         setIsLoading(false);
       }
@@ -104,46 +104,46 @@ export default function DashboardPage() {
   }, []);
 
   const colorMap: Record<string, string> = {
-    accent: "bg-accent-light text-accent",
-    amber: "bg-warning-light text-warning",
-    green: "bg-success-light text-success",
-    indigo: "bg-indigo-light text-indigo",
+    accent: "bg-surface-soft text-ink",
+    amber: "bg-surface-soft text-ink",
+    green: "bg-surface-soft text-ink",
+    indigo: "bg-surface-soft text-ink",
   };
 
   const statusBadge: Record<string, string> = {
-    posted: "bg-accent-light text-accent",
-    booked: "bg-indigo-light text-indigo",
-    in_transit: "bg-warning-light text-warning",
-    delivered: "bg-success-light text-success",
-    cancelled: "bg-danger-light text-danger",
+    posted: "badge-pill badge-pill-default",
+    booked: "badge-pill badge-pill-violet",
+    in_transit: "badge-pill badge-pill-orange",
+    delivered: "badge-pill badge-pill-emerald",
+    cancelled: "badge-pill badge-pill-pink",
   };
 
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="p-8 bg-canvas min-h-screen">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-sm text-muted">Welcome back, {user?.firstName}</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-ink">Dashboard</h1>
+          <p className="text-sm text-muted mt-1">Welcome back, {user?.firstName}</p>
         </div>
         {isBroker && (
           <button
             onClick={() => router.push("/loads/create")}
-            className="flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-hover"
+            className="inline-flex items-center gap-2 h-10 px-5 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors"
           >
             <Plus size={18} /> Post New Load
           </button>
         )}
       </div>
 
-      <div className="mb-6 grid grid-cols-4 gap-4">
+      <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           {
             value: summary.active,
@@ -172,11 +172,7 @@ export default function DashboardPage() {
         ].map(({ value, label, Icon, color }) => (
           <div
             key={label}
-            className="flex items-start gap-3.5 rounded-xl border border-border bg-card p-5"
-            style={{
-              borderLeftWidth: "3px",
-              borderLeftColor: `var(--${color})`,
-            }}
+            className="flex items-start gap-3.5 rounded-xl border border-hairline bg-card p-5"
           >
             <div
               className={cn(
@@ -187,26 +183,26 @@ export default function DashboardPage() {
               <Icon size={20} />
             </div>
             <div>
-              <div className="text-2xl font-extrabold text-foreground">
+              <div className="text-2xl font-semibold tracking-tight text-ink">
                 {value}
               </div>
-              <div className="text-xs text-muted">{label}</div>
+              <div className="text-xs text-muted mt-0.5">{label}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-[1fr_380px] gap-5">
-        <div className="rounded-xl border border-border bg-card">
-          <div className="flex items-center justify-between border-b border-border px-5 py-4">
-            <h3 className="text-base font-semibold text-foreground">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6">
+        <div className="rounded-xl border border-hairline bg-card overflow-hidden">
+          <div className="flex items-center justify-between border-b border-hairline px-5 py-4">
+            <h3 className="text-base font-semibold text-ink">
               Recent Loads
             </h3>
             <button
               onClick={() => router.push("/loads")}
-              className="text-sm text-accent hover:underline"
+              className="text-sm font-medium text-muted hover:text-ink transition-colors"
             >
-              View All →
+              View All
             </button>
           </div>
           {recentLoads.length === 0 ? (
@@ -216,7 +212,7 @@ export default function DashboardPage() {
           ) : (
             <table className="w-full">
               <thead>
-                <tr className="text-left text-xs font-semibold uppercase text-muted">
+                <tr className="text-left text-xs font-medium uppercase text-muted">
                   <th className="px-5 py-3">Route</th>
                   <th className="px-5 py-3">Equipment</th>
                   <th className="px-5 py-3">Rate</th>
@@ -227,24 +223,23 @@ export default function DashboardPage() {
                 {recentLoads.map((load: LoadRecord) => (
                   <tr
                     key={load._id}
-                    className="border-t border-border hover:bg-card-hover cursor-pointer"
+                    className="border-t border-hairline hover:bg-surface-soft cursor-pointer transition-colors"
                     onClick={() => router.push(`/loads/${load._id}`)}
                   >
-                    <td className="px-5 py-3 text-sm text-muted">
-                      {load.origin?.city} → {load.destination?.city}
+                    <td className="px-5 py-3 text-sm text-body-text">
+                      {load.origin?.city} &rarr; {load.destination?.city}
                     </td>
                     <td className="px-5 py-3">
-                      <span className="rounded-full bg-accent-light px-2.5 py-0.5 text-xs font-medium text-accent">
+                      <span className="badge-pill badge-pill-default">
                         {load.truckType}
                       </span>
                     </td>
-                    <td className="px-5 py-3 text-sm font-semibold text-foreground">
+                    <td className="px-5 py-3 text-sm font-semibold text-ink">
                       ${load.rate?.toLocaleString()}
                     </td>
                     <td className="px-5 py-3">
                       <span
                         className={cn(
-                          "rounded-full px-2.5 py-0.5 text-xs font-medium",
                           load.status ? statusBadge[load.status] || "" : "",
                         )}
                       >
@@ -258,40 +253,40 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="flex flex-col gap-5">
-          <div className="rounded-xl border border-border bg-card p-5">
-            <h3 className="mb-4 text-base font-semibold text-foreground">
+        <div className="flex flex-col gap-6">
+          <div className="rounded-xl border border-hairline bg-card p-5">
+            <h3 className="mb-4 text-base font-semibold text-ink">
               Quick Stats
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[
-                { label: "Posted", value: summary.posted, color: "bg-accent" },
-                { label: "Booked", value: summary.booked, color: "bg-indigo" },
+                { label: "Posted", value: summary.posted, color: "bg-ink" },
+                { label: "Booked", value: summary.booked, color: "bg-ink" },
                 {
                   label: "In Transit",
                   value: summary.inTransit,
-                  color: "bg-warning",
+                  color: "bg-ink",
                 },
                 {
                   label: "Delivered",
                   value: summary.delivered,
-                  color: "bg-success",
+                  color: "bg-ink",
                 },
                 {
                   label: "Cancelled",
                   value: summary.cancelled,
-                  color: "bg-danger",
+                  color: "bg-ink",
                 },
               ].map(({ label, value, color }) => (
                 <div
                   key={label}
-                  className="flex items-center justify-between rounded-lg bg-input px-4 py-3"
+                  className="flex items-center justify-between rounded-lg bg-surface-soft px-4 py-3"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={cn("h-3 w-3 rounded-full", color)} />
-                    <span className="text-sm text-foreground">{label}</span>
+                    <div className={cn("h-2 w-2 rounded-full", color)} />
+                    <span className="text-sm text-ink">{label}</span>
                   </div>
-                  <span className="text-sm font-semibold text-foreground">
+                  <span className="text-sm font-semibold text-ink">
                     {value}
                   </span>
                 </div>
@@ -299,10 +294,10 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-accent/30 bg-accent-light p-5">
+          <div className="rounded-xl border border-hairline bg-surface-card p-5">
             <div className="mb-3 flex items-center gap-2">
-              <Sparkle size={18} className="text-accent" />
-              <h3 className="text-base font-semibold text-foreground">
+              <Sparkle size={18} className="text-ink" />
+              <h3 className="text-base font-semibold text-ink">
                 AI Insights
               </h3>
             </div>

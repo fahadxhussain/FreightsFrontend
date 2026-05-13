@@ -168,10 +168,10 @@ export default function LoadListPage() {
     <div className="p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">
             Loads
           </h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-sm font-bold text-muted  mt-1">
             Manage your posted and active loads
           </p>
         </div>
@@ -188,7 +188,7 @@ export default function LoadListPage() {
           </button>
           <button
             onClick={() => router.push("/loads/create")}
-            className="btn btn-primary btn-lg shadow-xl shadow-accent/20"
+            className="btn btn-primary btn-lg shadow-sm"
           >
             <Plus size={20} weight="bold" />
             Post New Load
@@ -212,10 +212,10 @@ export default function LoadListPage() {
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={cn(
-              "whitespace-nowrap px-5 py-2.5 text-[11px] font-black uppercase tracking-wider rounded-xl border transition-all",
+              "whitespace-nowrap px-5 py-2.5 text-[11px] font-semibold  rounded-md border transition-all",
               activeTab === tab
-                ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                : "bg-card border-border text-muted hover:border-muted hover:text-foreground",
+                ? "bg-primary border-primary text-white shadow-sm"
+                : "bg-card border-hairline text-muted hover:border-muted hover:text-ink",
             )}
           >
             {tab}
@@ -232,14 +232,14 @@ export default function LoadListPage() {
             className="absolute left-4 top-1/2 -translate-y-1/2 text-muted"
           />
           <input
-            className="w-full rounded-xl border border-border bg-card px-11 py-3 text-[13px] font-medium outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5"
+            className="w-full rounded-md border border-hairline bg-card px-11 py-3 text-[13px] font-medium outline-none transition-all focus:border-primary focus:ring-1 focus:ring-ink"
             placeholder="Search by Load ID, Origin, or Destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <select
-          className="h-12 w-48 rounded-xl border border-border bg-card px-4 text-[13px] font-bold text-foreground outline-none appearance-none cursor-pointer hover:border-muted transition-colors"
+          className="h-12 w-48 rounded-md border border-hairline bg-card px-4 text-[13px] font-bold text-ink outline-none appearance-none cursor-pointer hover:border-muted transition-colors"
           value={equipmentFilter}
           onChange={(e) => setEquipmentFilter(e.target.value)}
         >
@@ -251,46 +251,46 @@ export default function LoadListPage() {
         </select>
         <input
           type="date"
-          className="h-12 w-48 rounded-xl border border-border bg-card px-4 text-[13px] font-bold text-foreground outline-none cursor-pointer hover:border-muted transition-colors"
+          className="h-12 w-48 rounded-md border border-hairline bg-card px-4 text-[13px] font-bold text-ink outline-none cursor-pointer hover:border-muted transition-colors"
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
         />
-        <button className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-card text-muted hover:text-accent hover:border-accent transition-all">
+        <button className="flex h-12 w-12 items-center justify-center rounded-md border border-hairline bg-card text-muted hover:text-ink hover:border-primary transition-all">
           <Funnel size={20} weight="bold" />
         </button>
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+      <div className="overflow-hidden rounded-md border border-hairline bg-card shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-border bg-muted/30">
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <tr className="border-b border-hairline bg-muted/30">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Load ID
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Origin
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Destination
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Equipment
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Rate
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Pickup
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <th className="px-6 py-4  font-semibold  text-muted">
                   Status
                 </th>
                 <th className="px-6 py-4"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-hairline">
               {isLoading ? (
                 Array(5)
                   .fill(0)
@@ -307,7 +307,7 @@ export default function LoadListPage() {
                       weight="thin"
                       className="mx-auto mb-4 opacity-20"
                     />
-                    <p className="font-bold uppercase tracking-widest text-xs">
+                    <p className="font-bold  text-xs">
                       No loads found
                     </p>
                   </td>
@@ -316,16 +316,16 @@ export default function LoadListPage() {
                 filteredLoads.map((load) => (
                   <tr
                     key={load._id}
-                    className="group hover:bg-card-hover transition-colors cursor-pointer"
+                    className="group hover:bg-surface-soft transition-colors cursor-pointer"
                     onClick={() => router.push(`/loads/${load._id}`)}
                   >
-                    <td className="px-6 py-5 text-[13px] font-black text-foreground">
+                    <td className="px-6 py-5 text-[13px] font-semibold text-ink">
                       {load._id.slice(-6).toUpperCase()}
                     </td>
-                    <td className="px-6 py-5 text-[13px] font-bold text-muted-foreground">
+                    <td className="px-6 py-5 text-[13px] font-bold text-muted">
                       {load.origin.city}, {load.origin.state}
                     </td>
-                    <td className="px-6 py-5 text-[13px] font-bold text-muted-foreground">
+                    <td className="px-6 py-5 text-[13px] font-bold text-muted">
                       {load.destination.city}, {load.destination.state}
                     </td>
                     <td className="px-6 py-5">
@@ -333,18 +333,18 @@ export default function LoadListPage() {
                         className={cn(
                           "badge",
                           load.truckType === "Flatbed"
-                            ? "badge-blue"
+                            ? "badge-pill badge-pill-blue"
                             : load.truckType === "Reefer"
-                              ? "badge-indigo"
+                              ? "badge-pill badge-pill-indigo"
                               : load.truckType === "Dry Van"
-                                ? "badge-amber"
-                                : "badge-gray",
+                                ? "badge-pill badge-pill-amber"
+                                : "badge-pill badge-pill-gray",
                         )}
                       >
                         {load.truckType}
                       </span>
                     </td>
-                    <td className="px-6 py-5 text-[13px] font-black text-foreground">
+                    <td className="px-6 py-5 text-[13px] font-semibold text-ink">
                       ${load.rate.toLocaleString()}
                     </td>
                     <td className="px-6 py-5 text-[13px] font-bold text-muted">
@@ -355,27 +355,27 @@ export default function LoadListPage() {
                         className={cn(
                           "badge",
                           load.status === "draft"
-                            ? "badge-gray"
+                            ? "badge-pill badge-pill-gray"
                             : load.status === "posted"
-                              ? "badge-green"
+                              ? "badge-pill badge-pill-green"
                               : load.status === "in_transit"
-                                ? "badge-amber"
+                                ? "badge-pill badge-pill-amber"
                                 : load.status === "booked"
-                                  ? "badge-indigo"
+                                  ? "badge-pill badge-pill-indigo"
                                   : load.status === "delivered"
-                                    ? "badge-green"
+                                    ? "badge-pill badge-pill-green"
                                     : load.status === "completed"
-                                      ? "badge-green"
+                                      ? "badge-pill badge-pill-green"
                                       : load.status === "cancelled"
-                                        ? "badge-red"
-                                        : "badge-gray",
+                                        ? "badge-pill badge-pill-red"
+                                        : "badge-pill badge-pill-gray",
                         )}
                       >
                         {load.status?.replace(/_/g, " ")}
                       </span>
                     </td>
                     <td className="px-6 py-5 text-right">
-                      <button className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-muted hover:bg-muted/50 hover:text-foreground transition-all">
+                      <button className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-muted hover:bg-muted/50 hover:text-ink transition-all">
                         <DotsThreeVertical size={20} weight="bold" />
                       </button>
                     </td>
@@ -387,24 +387,24 @@ export default function LoadListPage() {
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between border-t border-border bg-muted/10 px-8 py-5">
-          <span className="text-xs font-bold text-muted uppercase tracking-wider">
+        <div className="flex items-center justify-between border-t border-hairline bg-muted/10 px-8 py-5">
+          <span className="text-xs font-bold text-muted ">
             Page {currentPage} — {filteredLoads.length} loads
           </span>
           <div className="flex gap-2">
             <button
-              className="btn btn-secondary h-9 px-4 text-[10px] font-black uppercase tracking-widest disabled:opacity-30"
+              className="btn btn-secondary h-9 px-4  font-semibold  disabled:opacity-30"
               disabled={currentPage <= 1}
               onClick={handlePrevPage}
             >
               <ArrowLeft size={14} weight="bold" />
               Prev
             </button>
-            <button className="h-9 w-9 rounded-lg border text-xs font-black bg-accent border-accent text-white">
+            <button className="h-9 w-9 rounded-lg border text-xs font-semibold bg-primary border-primary text-white">
               {currentPage}
             </button>
             <button
-              className="btn btn-secondary h-9 px-4 text-[10px] font-black uppercase tracking-widest disabled:opacity-30"
+              className="btn btn-secondary h-9 px-4  font-semibold  disabled:opacity-30"
               disabled={!hasMore}
               onClick={handleNextPage}
             >

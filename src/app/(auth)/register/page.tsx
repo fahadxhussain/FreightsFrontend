@@ -112,45 +112,45 @@ function RegisterForm() {
     <div className="flex flex-col gap-1">
       <Link
         href="/role-selection"
-        className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted hover:text-accent transition-colors"
+        className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-ink transition-colors"
       >
         <ArrowLeft size={14} weight="bold" />
         Back
       </Link>
 
-      <h1 className="text-center text-[2.2rem] font-black text-accent tracking-tighter">
+      <h1 className="text-center text-[2.2rem] font-semibold text-ink tracking-tight">
         FLOW
       </h1>
-      <h2 className="mt-1 text-center text-[1.4rem] font-bold text-foreground tracking-tight">
+      <h2 className="mt-1 text-center text-[1.4rem] font-semibold text-ink tracking-tight">
         Create your account
       </h2>
-      <p className="mb-8 text-center text-sm text-muted font-medium">
+      <p className="mb-8 text-center text-sm text-body-text font-medium">
         Join thousands of freight professionals
       </p>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {/* Full Name */}
         <div className="space-y-1.5">
-          <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">
+          <label className="ml-1 text-xs font-medium text-muted">
             Full Name
           </label>
           <div className="relative">
             <User
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("fullName")}
               type="text"
               placeholder="John Smith"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 font-medium",
-                errors.fullName && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink placeholder:text-muted-foreground font-medium",
+                errors.fullName && "border-danger focus:ring-danger",
               )}
             />
           </div>
           {errors.fullName && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="ml-1 text-xs font-medium text-danger">
               {errors.fullName.message}
             </p>
           )}
@@ -158,26 +158,26 @@ function RegisterForm() {
 
         {/* Email */}
         <div className="space-y-1.5">
-          <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">
+          <label className="ml-1 text-xs font-medium text-muted">
             Email Address
           </label>
           <div className="relative">
             <EnvelopeSimple
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("email")}
               type="email"
               placeholder="john@company.com"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 font-medium",
-                errors.email && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink placeholder:text-muted-foreground font-medium",
+                errors.email && "border-danger focus:ring-danger",
               )}
             />
           </div>
           {errors.email && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="ml-1 text-xs font-medium text-danger">
               {errors.email.message}
             </p>
           )}
@@ -185,26 +185,26 @@ function RegisterForm() {
 
         {/* Phone */}
         <div className="space-y-1.5">
-          <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">
+          <label className="ml-1 text-xs font-medium text-muted">
             Phone Number
           </label>
           <div className="relative">
             <Phone
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("phone")}
               type="tel"
               placeholder="+1 (555) 000-0000"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 font-medium",
-                errors.phone && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink placeholder:text-muted-foreground font-medium",
+                errors.phone && "border-danger focus:ring-danger",
               )}
             />
           </div>
           {errors.phone && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="ml-1 text-xs font-medium text-danger">
               {errors.phone.message}
             </p>
           )}
@@ -212,27 +212,27 @@ function RegisterForm() {
 
         {/* Password */}
         <div className="space-y-1.5">
-          <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">
+          <label className="ml-1 text-xs font-medium text-muted">
             Password
           </label>
           <div className="relative">
             <Lock
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("password")}
               type={showPassword ? "text" : "password"}
               placeholder="Minimum 8 characters"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 pr-12 font-medium",
-                errors.password && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink pr-12 placeholder:text-muted-foreground font-medium",
+                errors.password && "border-danger focus:ring-danger",
               )}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink"
             >
               {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
             </button>
@@ -253,14 +253,14 @@ function RegisterForm() {
                           : strength.level === 3
                             ? "bg-indigo"
                             : "bg-success"
-                      : "bg-border/40",
+                      : "bg-hairline",
                   )}
                 />
               ))}
             </div>
           )}
           {errors.password && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="ml-1 text-xs font-medium text-danger">
               {errors.password.message}
             </p>
           )}
@@ -268,33 +268,33 @@ function RegisterForm() {
 
         {/* Confirm Password */}
         <div className="space-y-1.5">
-          <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">
+          <label className="ml-1 text-xs font-medium text-muted">
             Confirm Password
           </label>
           <div className="relative">
             <Lock
               size={18}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               {...form.register("confirmPassword")}
               type={showConfirm ? "text" : "password"}
               placeholder="Re-enter password"
               className={cn(
-                "w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 pr-12 font-medium",
-                errors.confirmPassword && "border-danger focus:ring-danger/5",
+                "h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink pr-12 placeholder:text-muted-foreground font-medium",
+                errors.confirmPassword && "border-danger focus:ring-danger",
               )}
             />
             <button
               type="button"
               onClick={() => setShowConfirm(!showConfirm)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink"
             >
               {showConfirm ? <EyeSlash size={18} /> : <Eye size={18} />}
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="ml-1 text-[11px] font-bold text-danger">
+            <p className="ml-1 text-xs font-medium text-danger">
               {errors.confirmPassword.message}
             </p>
           )}
@@ -306,21 +306,21 @@ function RegisterForm() {
             <input
               type="checkbox"
               {...form.register("agreeToTerms")}
-              className="mt-0.5 h-4 w-4 rounded-md border-border bg-input accent-accent cursor-pointer"
+              className="mt-0.5 h-4 w-4 rounded-md border-hairline bg-canvas accent-primary cursor-pointer"
             />
             <span className="leading-relaxed">
               I agree to the{" "}
-              <a href="#" className="font-bold text-accent hover:underline">
+              <a href="#" className="font-semibold text-primary hover:underline">
                 Terms of Service
               </a>{" "}
               and{" "}
-              <a href="#" className="font-bold text-accent hover:underline">
+              <a href="#" className="font-semibold text-primary hover:underline">
                 Privacy Policy
               </a>
             </span>
           </label>
           {errors.agreeToTerms && (
-            <p className="mt-1.5 ml-7 text-[11px] font-bold text-danger">
+            <p className="mt-1.5 ml-7 text-xs font-medium text-danger">
               {errors.agreeToTerms.message}
             </p>
           )}
@@ -329,7 +329,7 @@ function RegisterForm() {
         <button
           type="submit"
           disabled={!isValid || isLoading}
-          className="btn btn-primary btn-lg mt-4 w-full shadow-lg shadow-accent/20"
+          className="mt-4 w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors disabled:opacity-50"
         >
           {isLoading ? "Creating account..." : "Create Account"}
         </button>
@@ -337,7 +337,7 @@ function RegisterForm() {
 
       <p className="mt-8 text-center text-sm text-muted font-medium">
         Already have an account?{" "}
-        <Link href="/login" className="font-bold text-accent hover:underline">
+        <Link href="/login" className="font-semibold text-primary hover:underline">
           Sign In
         </Link>
       </p>
@@ -350,7 +350,7 @@ export default function RegisterPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center py-20">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
         </div>
       }
     >

@@ -394,15 +394,15 @@ export default function CreateLoadPage() {
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="mb-4 inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+            className="mb-4 inline-flex items-center gap-1.5  font-semibold  text-muted hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} weight="bold" />
             Back to Loads
           </button>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">
             Post a New Load
           </h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-sm font-bold text-muted  mt-1">
             Fill in the details to reach carriers
           </p>
         </div>
@@ -414,17 +414,17 @@ export default function CreateLoadPage() {
               <div
                 className={cn(
                   "flex flex-col items-center gap-2",
-                  step >= s.num ? "text-foreground" : "text-muted",
+                  step >= s.num ? "text-ink" : "text-muted",
                 )}
               >
                 <div
                   className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-black transition-all",
+                    "flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-semibold transition-all",
                     step === s.num
-                      ? "border-accent bg-accent text-white shadow-lg shadow-accent/20"
+                      ? "border-primary bg-primary text-white shadow-sm"
                       : step > s.num
                         ? "border-success bg-success text-white"
-                        : "border-border bg-card",
+                        : "border-hairline bg-card",
                   )}
                 >
                   {step > s.num ? (
@@ -436,7 +436,7 @@ export default function CreateLoadPage() {
                     />
                   )}
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-widest">
+                <span className="text-[9px] font-semibold ">
                   {s.label}
                 </span>
               </div>
@@ -453,23 +453,23 @@ export default function CreateLoadPage() {
         </div>
 
         {/* Card */}
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-2xl backdrop-blur-md">
+        <div className="rounded-xl border border-hairline bg-card p-8 shadow-2xl backdrop-blur-md">
           {/* ================================================================ */}
           {/* STEP 1 — Basic Details                                         */}
           {/* ================================================================ */}
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in duration-300">
-              <h3 className="text-lg font-black tracking-tight text-foreground mb-2 flex items-center gap-2">
-                <Package size={22} weight="bold" className="text-accent" />
+              <h3 className="text-lg font-semibold tracking-tight text-ink mb-2 flex items-center gap-2">
+                <Package size={22} weight="bold" className="text-ink" />
                 Load Details
               </h3>
 
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Load Title / Reference
                 </label>
                 <input
-                  className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                   placeholder="e.g., Produce shipment to Dallas"
                   value={form.title}
                   onChange={(e) => update("title", e.target.value)}
@@ -478,7 +478,7 @@ export default function CreateLoadPage() {
 
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Load Category
                   </label>
                   <div className="flex gap-2">
@@ -487,10 +487,10 @@ export default function CreateLoadPage() {
                         key={cat}
                         onClick={() => update("category", cat)}
                         className={cn(
-                          "flex-1 px-4 py-3 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all",
+                          "flex-1 px-4 py-3 rounded-md border  font-semibold  transition-all",
                           form.category === cat
-                            ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                            : "bg-input border-border text-muted hover:border-muted",
+                            ? "bg-primary border-primary text-white shadow-sm"
+                            : "bg-surface-soft border-hairline text-muted hover:border-muted",
                         )}
                       >
                         {cat}
@@ -499,11 +499,11 @@ export default function CreateLoadPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Equipment Type
                   </label>
                   <select
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none appearance-none cursor-pointer"
                     value={form.equipmentType}
                     onChange={(e) => update("equipmentType", e.target.value)}
                   >
@@ -516,11 +516,11 @@ export default function CreateLoadPage() {
 
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Commodity Type
                   </label>
                   <select
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none appearance-none cursor-pointer"
                     value={form.commodity}
                     onChange={(e) => update("commodity", e.target.value)}
                   >
@@ -530,12 +530,12 @@ export default function CreateLoadPage() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Total Weight (lbs)
                   </label>
                   <input
                     type="number"
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="e.g., 42000"
                     value={form.weight}
                     onChange={(e) => update("weight", e.target.value)}
@@ -544,7 +544,7 @@ export default function CreateLoadPage() {
               </div>
 
               <div className="space-y-3">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Special Requirements
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -560,10 +560,10 @@ export default function CreateLoadPage() {
                           )
                         }
                         className={cn(
-                          "px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all",
+                          "px-4 py-2.5 rounded-md border  font-semibold  transition-all",
                           active
-                            ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                            : "bg-input border-border text-muted hover:border-muted",
+                            ? "bg-primary border-primary text-white shadow-sm"
+                            : "bg-surface-soft border-hairline text-muted hover:border-muted",
                         )}
                       >
                         {req}
@@ -582,33 +582,33 @@ export default function CreateLoadPage() {
             <div className="space-y-6 animate-in fade-in duration-300">
               {/* Origin */}
               <div className="space-y-4">
-                <div className="flex items-center gap-3 text-accent">
+                <div className="flex items-center gap-3 text-ink">
                   <MapPinLine size={22} weight="bold" />
-                  <h3 className="text-base font-black tracking-tight">
+                  <h3 className="text-base font-semibold tracking-tight">
                     Pickup Location
                   </h3>
                 </div>
                 <input
-                  className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                   placeholder="Street address"
                   value={form.originAddress}
                   onChange={(e) => update("originAddress", e.target.value)}
                 />
                 <div className="grid grid-cols-3 gap-4">
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="City"
                     value={form.originCity}
                     onChange={(e) => update("originCity", e.target.value)}
                   />
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="State"
                     value={form.originState}
                     onChange={(e) => update("originState", e.target.value)}
                   />
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="ZIP"
                     value={form.originZip}
                     onChange={(e) => update("originZip", e.target.value)}
@@ -616,7 +616,7 @@ export default function CreateLoadPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="Contact name"
                     value={form.originContactName}
                     onChange={(e) =>
@@ -624,7 +624,7 @@ export default function CreateLoadPage() {
                     }
                   />
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="Contact phone"
                     value={form.originContactPhone}
                     onChange={(e) =>
@@ -640,7 +640,7 @@ export default function CreateLoadPage() {
                     />
                     <input
                       type="date"
-                      className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
+                      className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
                       value={form.pickupDate}
                       onChange={(e) => update("pickupDate", e.target.value)}
                     />
@@ -652,7 +652,7 @@ export default function CreateLoadPage() {
                     />
                     <input
                       type="time"
-                      className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
+                      className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
                       value={form.pickupTime}
                       onChange={(e) => update("pickupTime", e.target.value)}
                     />
@@ -666,31 +666,31 @@ export default function CreateLoadPage() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-success">
                   <FlagCheckered size={22} weight="bold" />
-                  <h3 className="text-base font-black tracking-tight">
+                  <h3 className="text-base font-semibold tracking-tight">
                     Delivery Location
                   </h3>
                 </div>
                 <input
-                  className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                   placeholder="Street address"
                   value={form.destAddress}
                   onChange={(e) => update("destAddress", e.target.value)}
                 />
                 <div className="grid grid-cols-3 gap-4">
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="City"
                     value={form.destCity}
                     onChange={(e) => update("destCity", e.target.value)}
                   />
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="State"
                     value={form.destState}
                     onChange={(e) => update("destState", e.target.value)}
                   />
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="ZIP"
                     value={form.destZip}
                     onChange={(e) => update("destZip", e.target.value)}
@@ -698,13 +698,13 @@ export default function CreateLoadPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="Contact name"
                     value={form.destContactName}
                     onChange={(e) => update("destContactName", e.target.value)}
                   />
                   <input
-                    className="rounded-2xl border border-border bg-input px-4 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="rounded-md border border-hairline bg-surface-soft px-4 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="Contact phone"
                     value={form.destContactPhone}
                     onChange={(e) => update("destContactPhone", e.target.value)}
@@ -718,7 +718,7 @@ export default function CreateLoadPage() {
                     />
                     <input
                       type="date"
-                      className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
+                      className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
                       value={form.deliveryDate}
                       onChange={(e) => update("deliveryDate", e.target.value)}
                     />
@@ -730,7 +730,7 @@ export default function CreateLoadPage() {
                     />
                     <input
                       type="time"
-                      className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
+                      className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-4 text-sm font-bold outline-none cursor-pointer"
                       value={form.deliveryTime}
                       onChange={(e) => update("deliveryTime", e.target.value)}
                     />
@@ -739,17 +739,17 @@ export default function CreateLoadPage() {
               </div>
 
               {/* Map placeholder */}
-              <div className="aspect-[21/9] w-full rounded-2xl bg-input border-2 border-dashed border-border flex items-center justify-center text-muted hover:border-accent/30 transition-colors">
+              <div className="aspect-[21/9] w-full rounded-md bg-surface-soft border-2 border-dashed border-hairline flex items-center justify-center text-muted hover:border-ink transition-colors">
                 <div className="text-center">
                   <MapTrifold
                     size={36}
                     weight="duotone"
                     className="mx-auto mb-2 opacity-20"
                   />
-                  <p className="text-[9px] font-black uppercase tracking-widest">
+                  <p className="text-[9px] font-semibold ">
                     Route Preview Map
                   </p>
-                  <p className="text-[10px] font-bold text-muted/60 mt-0.5">
+                  <p className=" font-bold text-muted/60 mt-0.5">
                     {form.originCity && form.destCity
                       ? `${form.originCity}, ${form.originState} → ${form.destCity}, ${form.destState}`
                       : "Enter pickup and delivery addresses to preview route"}
@@ -764,18 +764,18 @@ export default function CreateLoadPage() {
           {/* ================================================================ */}
           {step === 3 && (
             <div className="space-y-6 animate-in fade-in duration-300">
-              <h3 className="text-lg font-black tracking-tight text-foreground mb-2 flex items-center gap-2">
+              <h3 className="text-lg font-semibold tracking-tight text-ink mb-2 flex items-center gap-2">
                 <CurrencyDollar
                   size={22}
                   weight="bold"
-                  className="text-accent"
+                  className="text-ink"
                 />
                 Pricing
               </h3>
 
               {/* Rate type */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Rate Type
                 </label>
                 <div className="flex gap-3">
@@ -784,10 +784,10 @@ export default function CreateLoadPage() {
                       key={rt.value}
                       onClick={() => update("rateType", rt.value)}
                       className={cn(
-                        "flex-1 px-6 py-4 rounded-2xl border text-[10px] font-black uppercase tracking-widest transition-all",
+                        "flex-1 px-6 py-4 rounded-md border  font-semibold  transition-all",
                         form.rateType === rt.value
-                          ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                          : "bg-input border-border text-muted hover:border-muted",
+                          ? "bg-primary border-primary text-white shadow-sm"
+                          : "bg-surface-soft border-hairline text-muted hover:border-muted",
                       )}
                     >
                       {rt.label}
@@ -798,12 +798,12 @@ export default function CreateLoadPage() {
 
               {/* Rate amount */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Rate Amount ($)
                 </label>
                 <input
                   type="number"
-                  className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-3xl font-black text-foreground outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-3xl font-semibold text-ink outline-none focus:border-primary transition-all"
                   placeholder="0"
                   value={form.rate}
                   onChange={(e) => update("rate", e.target.value)}
@@ -811,36 +811,36 @@ export default function CreateLoadPage() {
               </div>
 
               {/* AI Pricing */}
-              <div className="rounded-2xl border border-accent/20 bg-accent-light p-5">
-                <div className="flex items-center gap-3 mb-4 text-accent">
+              <div className="rounded-md border border-primary bg-surface-soft p-5">
+                <div className="flex items-center gap-3 mb-4 text-ink">
                   <Sparkle size={22} weight="fill" />
-                  <strong className="text-sm font-black uppercase tracking-widest">
+                  <strong className="text-sm font-semibold ">
                     AI Pricing Suggestion
                   </strong>
                 </div>
                 {form.aiMarket > 0 ? (
                   <>
-                    <p className="text-sm font-medium text-muted-foreground mb-4">
+                    <p className="text-sm font-medium text-muted mb-4">
                       {form.originCity || "Origin"} →{" "}
                       {form.destCity || "Destination"} market average:{" "}
-                      <span className="text-foreground font-black">
+                      <span className="text-ink font-semibold">
                         ${form.aiMarket.toLocaleString()}
                       </span>
                     </p>
                     <div className="flex gap-3">
-                      <span className="badge badge-green px-3 py-1.5 text-[10px] font-black">
+                      <span className="badge badge-pill badge-pill-green px-3 py-1.5  font-semibold">
                         Low: ${form.aiLow.toLocaleString()}
                       </span>
-                      <span className="badge badge-blue px-3 py-1.5 text-[10px] font-black">
+                      <span className="badge badge-pill badge-pill-blue px-3 py-1.5  font-semibold">
                         Market: ${form.aiMarket.toLocaleString()}
                       </span>
-                      <span className="badge badge-amber px-3 py-1.5 text-[10px] font-black">
+                      <span className="badge badge-pill badge-pill-amber px-3 py-1.5  font-semibold">
                         High: ${form.aiHigh.toLocaleString()}
                       </span>
                     </div>
                   </>
                 ) : (
-                  <p className="text-sm font-medium text-muted-foreground mb-4">
+                  <p className="text-sm font-medium text-muted mb-4">
                     AI pricing suggestions will appear once you proceed.
                   </p>
                 )}
@@ -849,24 +849,24 @@ export default function CreateLoadPage() {
               {/* Additional rates */}
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Detention Rate ($/hr)
                   </label>
                   <input
                     type="number"
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="Optional"
                     value={form.detentionRate}
                     onChange={(e) => update("detentionRate", e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     TONU Rate ($)
                   </label>
                   <input
                     type="number"
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="Optional"
                     value={form.tonuRate}
                     onChange={(e) => update("tonuRate", e.target.value)}
@@ -875,14 +875,14 @@ export default function CreateLoadPage() {
               </div>
 
               {/* Escrow toggle */}
-              <div className="flex items-center justify-between rounded-2xl bg-input p-5 border border-border">
+              <div className="flex items-center justify-between rounded-md bg-surface-soft p-5 border border-hairline">
                 <div className="flex items-center gap-3">
-                  <LockSimple size={20} weight="bold" className="text-accent" />
+                  <LockSimple size={20} weight="bold" className="text-ink" />
                   <div>
-                    <div className="text-[11px] font-black uppercase tracking-widest text-foreground">
+                    <div className="text-[11px] font-semibold  text-ink">
                       Hold Payment in Escrow
                     </div>
-                    <div className="text-[10px] font-bold text-muted mt-0.5">
+                    <div className=" font-bold text-muted mt-0.5">
                       Funds released upon delivery confirmation
                     </div>
                   </div>
@@ -891,7 +891,7 @@ export default function CreateLoadPage() {
                   onClick={() => update("useEscrow", !form.useEscrow)}
                   className={cn(
                     "relative inline-flex h-7 w-12 items-center rounded-full transition-colors",
-                    form.useEscrow ? "bg-accent" : "bg-border",
+                    form.useEscrow ? "bg-primary" : "bg-border",
                   )}
                 >
                   <span
@@ -910,31 +910,31 @@ export default function CreateLoadPage() {
           {/* ================================================================ */}
           {step === 4 && (
             <div className="space-y-6 animate-in fade-in duration-300">
-              <h3 className="text-lg font-black tracking-tight text-foreground mb-2 flex items-center gap-2">
-                <ListChecks size={22} weight="bold" className="text-accent" />
+              <h3 className="text-lg font-semibold tracking-tight text-ink mb-2 flex items-center gap-2">
+                <ListChecks size={22} weight="bold" className="text-ink" />
                 Requirements
               </h3>
 
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Trailer Length (ft)
                   </label>
                   <input
                     type="number"
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="e.g., 53"
                     value={form.trailerLength}
                     onChange={(e) => update("trailerLength", e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Max Weight (lbs)
                   </label>
                   <input
                     type="number"
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-bold outline-none focus:border-accent transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-bold outline-none focus:border-primary transition-all"
                     placeholder="e.g., 45000"
                     value={form.weightLimit}
                     onChange={(e) => update("weightLimit", e.target.value)}
@@ -944,7 +944,7 @@ export default function CreateLoadPage() {
 
               {/* Condition toggles */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Condition Flags
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -974,10 +974,10 @@ export default function CreateLoadPage() {
                       key={key}
                       onClick={() => update(key, !form[key])}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all",
+                        "flex items-center gap-2 px-4 py-2.5 rounded-md border  font-semibold  transition-all",
                         form[key]
-                          ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                          : "bg-input border-border text-muted hover:border-muted",
+                          ? "bg-primary border-primary text-white shadow-sm"
+                          : "bg-surface-soft border-hairline text-muted hover:border-muted",
                       )}
                     >
                       <Icon size={16} weight={form[key] ? "fill" : "regular"} />
@@ -989,7 +989,7 @@ export default function CreateLoadPage() {
 
               {/* Required documents */}
               <div className="space-y-3">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Required Documents
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -999,10 +999,10 @@ export default function CreateLoadPage() {
                       <label
                         key={doc}
                         className={cn(
-                          "flex items-center gap-3 rounded-2xl border p-4 cursor-pointer transition-all",
+                          "flex items-center gap-3 rounded-xl border p-4 cursor-pointer transition-all",
                           checked
-                            ? "border-accent/30 bg-accent-light"
-                            : "border-border bg-input hover:border-muted",
+                            ? "border-ink bg-surface-soft"
+                            : "border-hairline bg-surface-soft hover:border-muted",
                         )}
                       >
                         <input
@@ -1016,7 +1016,7 @@ export default function CreateLoadPage() {
                             )
                           }
                         />
-                        <span className="text-[12px] font-bold text-foreground">
+                        <span className="text-[12px] font-bold text-ink">
                           {doc}
                         </span>
                       </label>
@@ -1027,16 +1027,16 @@ export default function CreateLoadPage() {
 
               {/* Notes */}
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Notes to Carrier
                 </label>
                 <textarea
-                  className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-medium outline-none focus:border-accent transition-all h-28 resize-none"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-medium outline-none focus:border-primary transition-all h-28 resize-none"
                   placeholder="Any special instructions..."
                   value={form.notesToCarrier}
                   onChange={(e) => update("notesToCarrier", e.target.value)}
                 />
-                <div className="text-[10px] font-bold text-muted text-right">
+                <div className=" font-bold text-muted text-right">
                   {form.notesToCarrier.length} / 500
                 </div>
               </div>
@@ -1048,25 +1048,25 @@ export default function CreateLoadPage() {
           {/* ================================================================ */}
           {step === 5 && (
             <div className="space-y-5 animate-in fade-in duration-300">
-              <h3 className="text-lg font-black tracking-tight text-foreground mb-2 flex items-center gap-2">
-                <Eye size={22} weight="bold" className="text-accent" />
+              <h3 className="text-lg font-semibold tracking-tight text-ink mb-2 flex items-center gap-2">
+                <Eye size={22} weight="bold" className="text-ink" />
                 Review & Post
               </h3>
 
               {/* Load Details summary */}
-              <div className="rounded-2xl bg-input p-5 border border-border">
+              <div className="rounded-xl bg-surface-soft p-5 border border-hairline">
                 <div className="flex justify-between mb-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <span className=" font-semibold  text-muted">
                     Load Details
                   </span>
                   <button
                     onClick={() => setStep(1)}
-                    className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                    className=" font-semibold  text-ink hover:underline"
                   >
                     Edit
                   </button>
                 </div>
-                <div className="text-[15px] font-black text-foreground">
+                <div className="text-[15px] font-semibold text-ink">
                   {form.title ||
                     `${form.commodity} — ${form.originCity || "Origin"} to ${form.destCity || "Dest"}`}
                 </div>
@@ -1080,19 +1080,19 @@ export default function CreateLoadPage() {
               </div>
 
               {/* Route summary */}
-              <div className="rounded-2xl bg-input p-5 border border-border">
+              <div className="rounded-xl bg-surface-soft p-5 border border-hairline">
                 <div className="flex justify-between mb-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <span className=" font-semibold  text-muted">
                     Route & Schedule
                   </span>
                   <button
                     onClick={() => setStep(2)}
-                    className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                    className=" font-semibold  text-ink hover:underline"
                   >
                     Edit
                   </button>
                 </div>
-                <div className="flex items-center gap-2 text-sm font-black text-foreground">
+                <div className="flex items-center gap-2 text-sm font-semibold text-ink">
                   {form.originCity || "Origin"}, {form.originState}{" "}
                   <ArrowRight size={14} weight="bold" className="text-muted" />{" "}
                   {form.destCity || "Dest"}, {form.destState}
@@ -1106,21 +1106,21 @@ export default function CreateLoadPage() {
               </div>
 
               {/* Pricing summary */}
-              <div className="rounded-2xl bg-input p-5 border border-border">
+              <div className="rounded-xl bg-surface-soft p-5 border border-hairline">
                 <div className="flex justify-between mb-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <span className=" font-semibold  text-muted">
                     Pricing
                   </span>
                   <button
                     onClick={() => setStep(3)}
-                    className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                    className=" font-semibold  text-ink hover:underline"
                   >
                     Edit
                   </button>
                 </div>
-                <div className="text-2xl font-black text-success">
+                <div className="text-2xl font-semibold text-success">
                   ${Number(form.rate || 0).toLocaleString()}{" "}
-                  <span className="text-xs text-muted font-bold ml-1 uppercase tracking-widest">
+                  <span className="text-xs text-muted font-bold ml-1 ">
                     {form.rateType === "per_mile" ? "Per Mile" : "Flat Rate"}
                   </span>
                 </div>
@@ -1130,7 +1130,7 @@ export default function CreateLoadPage() {
                   )}
                   {form.tonuRate && <span>TONU: ${form.tonuRate}</span>}
                   {form.useEscrow && (
-                    <span className="text-accent flex items-center gap-1">
+                    <span className="text-ink flex items-center gap-1">
                       <LockSimple size={12} weight="bold" /> Escrow
                     </span>
                   )}
@@ -1138,42 +1138,42 @@ export default function CreateLoadPage() {
               </div>
 
               {/* Requirements summary */}
-              <div className="rounded-2xl bg-input p-5 border border-border">
+              <div className="rounded-xl bg-surface-soft p-5 border border-hairline">
                 <div className="flex justify-between mb-3">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <span className=" font-semibold  text-muted">
                     Requirements
                   </span>
                   <button
                     onClick={() => setStep(4)}
-                    className="text-[10px] font-black uppercase tracking-widest text-accent hover:underline"
+                    className=" font-semibold  text-ink hover:underline"
                   >
                     Edit
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {form.requiredDocs.map((doc) => (
-                    <span key={doc} className="badge badge-green text-[9px]">
+                    <span key={doc} className="badge badge-pill badge-pill-green text-[9px]">
                       {doc}
                     </span>
                   ))}
                   {form.hazmat && (
-                    <span className="badge badge-red text-[9px]">Hazmat</span>
+                    <span className="badge badge-pill badge-pill-red text-[9px]">Hazmat</span>
                   )}
                   {form.teamDriver && (
-                    <span className="badge badge-amber text-[9px]">
+                    <span className="badge badge-pill badge-pill-amber text-[9px]">
                       Team Driver
                     </span>
                   )}
                   {form.liftgate && (
-                    <span className="badge badge-indigo text-[9px]">
+                    <span className="badge badge-pill badge-pill-indigo text-[9px]">
                       Liftgate
                     </span>
                   )}
                   {form.tarping && (
-                    <span className="badge badge-blue text-[9px]">Tarping</span>
+                    <span className="badge badge-pill badge-pill-blue text-[9px]">Tarping</span>
                   )}
                   {form.trailerLength && (
-                    <span className="badge badge-gray text-[9px]">
+                    <span className="badge badge-pill badge-pill-gray text-[9px]">
                       {form.trailerLength}ft Trailer
                     </span>
                   )}
@@ -1189,7 +1189,7 @@ export default function CreateLoadPage() {
             <button
               onClick={handleBack}
               className={cn(
-                "btn btn-secondary flex-1 h-14 text-sm font-black uppercase tracking-widest",
+                "btn btn-secondary flex-1 h-14 text-sm font-semibold ",
                 step === 1 && "opacity-0 pointer-events-none",
               )}
             >
@@ -1200,7 +1200,7 @@ export default function CreateLoadPage() {
             {step < 5 ? (
               <button
                 onClick={handleNext}
-                className="btn btn-primary flex-1 h-14 text-sm font-black uppercase tracking-widest shadow-xl shadow-accent/20"
+                className="btn btn-primary flex-1 h-14 text-sm font-semibold  shadow-sm"
               >
                 Next Step
                 <ArrowRight size={20} weight="bold" />
@@ -1210,14 +1210,14 @@ export default function CreateLoadPage() {
                 <button
                   onClick={handleSaveDraft}
                   disabled={isSubmitting}
-                  className="btn btn-secondary flex-1 h-14 text-sm font-black uppercase tracking-widest"
+                  className="btn btn-secondary flex-1 h-14 text-sm font-semibold "
                 >
                   {isSubmitting ? "Saving..." : "Save as Draft"}
                 </button>
                 <button
                   onClick={handlePost}
                   disabled={isSubmitting}
-                  className="btn btn-primary flex-1 h-14 bg-success border-none text-sm font-black uppercase tracking-widest shadow-xl shadow-success/20"
+                  className="btn btn-primary flex-1 h-14 bg-success border-none text-sm font-semibold  shadow-sm"
                 >
                   {isSubmitting ? (
                     "Posting..."

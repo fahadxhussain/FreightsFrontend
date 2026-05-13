@@ -80,24 +80,24 @@ function statusBadge(status: string) {
     case "accepted":
     case "won":
     case "booked":
-      return "badge-green";
+      return "badge-pill badge-pill-green";
     case "in_transit":
-      return "badge-amber";
+      return "badge-pill badge-pill-amber";
     case "pending":
     case "sent":
-      return "badge-indigo";
+      return "badge-pill badge-pill-indigo";
     case "countered":
-      return "badge-amber";
+      return "badge-pill badge-pill-amber";
     case "denied":
     case "declined":
-      return "badge-red";
+      return "badge-pill badge-pill-red";
     case "delivered":
-      return "badge-green";
+      return "badge-pill badge-pill-green";
     case "cancelled":
     case "expired":
-      return "badge-red";
+      return "badge-pill badge-pill-red";
     default:
-      return "badge-gray";
+      return "badge-pill badge-pill-gray";
   }
 }
 
@@ -128,11 +128,11 @@ function statusLabel(status: string) {
 
 function equipmentBadge(truckType: string) {
   const t = truckType?.toLowerCase() || "";
-  if (t === "flatbed") return "badge-blue";
-  if (t === "reefer") return "badge-indigo";
-  if (t === "dry_van" || t === "dry van") return "badge-green";
-  if (t === "step_deck" || t === "step deck") return "badge-amber";
-  return "badge-gray";
+  if (t === "flatbed") return "badge-pill badge-pill-blue";
+  if (t === "reefer") return "badge-pill badge-pill-indigo";
+  if (t === "dry_van" || t === "dry van") return "badge-pill badge-pill-green";
+  if (t === "step_deck" || t === "step deck") return "badge-pill badge-pill-amber";
+  return "badge-pill badge-pill-gray";
 }
 
 function formatDate(d: string) {
@@ -339,11 +339,11 @@ export default function MyBookingsPage() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
-            <BookmarkSimple size={28} weight="bold" className="text-accent" />
+          <h1 className="text-3xl font-semibold tracking-tight text-ink flex items-center gap-3">
+            <BookmarkSimple size={28} weight="bold" className="text-ink" />
             My Bookings
           </h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-sm font-bold text-muted  mt-1">
             Track and manage your bids and active shipments
           </p>
         </div>
@@ -367,10 +367,10 @@ export default function MyBookingsPage() {
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={cn(
-              "whitespace-nowrap px-6 py-3 text-[11px] font-black uppercase tracking-wider rounded-2xl border transition-all",
+              "whitespace-nowrap px-6 py-3 text-[11px] font-semibold  rounded-md border transition-all",
               activeTab === tab
-                ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                : "bg-card border-border text-muted hover:border-muted hover:text-foreground",
+                ? "bg-primary border-primary text-white shadow-sm"
+                : "bg-card border-hairline text-muted hover:border-muted hover:text-ink",
             )}
           >
             {tab}
@@ -384,18 +384,18 @@ export default function MyBookingsPage() {
           Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="h-36 rounded-2xl border border-border bg-card animate-pulse"
+              className="h-36 rounded-xl border border-hairline bg-card animate-pulse"
             />
           ))
         ) : error && bookings.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-muted">
             <Warning size={48} weight="thin" className="mb-4 opacity-20" />
-            <p className="font-bold uppercase tracking-widest text-xs">
+            <p className="font-bold  text-xs">
               {error}
             </p>
             <button
               onClick={fetchBookings}
-              className="btn btn-secondary mt-4 text-[10px] font-black"
+              className="btn btn-secondary mt-4  font-semibold"
             >
               Retry
             </button>
@@ -407,10 +407,10 @@ export default function MyBookingsPage() {
               weight="thin"
               className="mb-4 opacity-20"
             />
-            <p className="font-bold uppercase tracking-widest text-xs">
+            <p className="font-bold  text-xs">
               No bookings found
             </p>
-            <p className="text-[10px] text-muted mt-1">
+            <p className=" text-muted mt-1">
               {activeTab === "Active"
                 ? "Start bidding on loads in the marketplace"
                 : `No ${activeTab.toLowerCase()} bookings`}
@@ -418,7 +418,7 @@ export default function MyBookingsPage() {
             {activeTab === "Active" || activeTab === "Pending Bids" ? (
               <button
                 onClick={() => router.push("/marketplace")}
-                className="btn btn-primary h-12 px-6 mt-6 text-[10px] font-black uppercase tracking-widest"
+                className="btn btn-primary h-12 px-6 mt-6  font-semibold "
               >
                 Browse Marketplace
               </button>
@@ -438,21 +438,21 @@ export default function MyBookingsPage() {
               <div
                 key={booking._id}
                 className={cn(
-                  "rounded-2xl border p-5 transition-all hover:border-accent/20 cursor-pointer group shadow-sm",
+                  "rounded-xl border p-5 transition-all hover:border-primary/20 cursor-pointer group shadow-sm",
                   isCountered
                     ? "border-warning/40 bg-warning-light/30"
-                    : "border-border bg-card",
+                    : "border-hairline bg-card",
                 )}
                 onClick={() => router.push(`/loads/${ld._id}`)}
               >
                 {/* Top row */}
                 <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
                   <div className="flex items-center gap-4 flex-wrap">
-                    <div className="badge badge-blue h-7 px-3">
+                    <div className="badge badge-pill badge-pill-blue h-7 px-3">
                       FL-{ld._id.slice(-6).toUpperCase()}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-base font-black text-foreground tracking-tight">
+                      <span className="text-base font-semibold text-ink tracking-tight">
                         {ld.origin.city}, {ld.origin.state}
                       </span>
                       <ArrowRight
@@ -460,13 +460,13 @@ export default function MyBookingsPage() {
                         weight="bold"
                         className="text-muted"
                       />
-                      <span className="text-base font-black text-foreground tracking-tight">
+                      <span className="text-base font-semibold text-ink tracking-tight">
                         {ld.destination.city}, {ld.destination.state}
                       </span>
                     </div>
                     <span
                       className={cn(
-                        "badge text-[10px] px-3 py-1 h-7",
+                        "badge  px-3 py-1 h-7",
                         statusBadge(booking.status),
                       )}
                     >
@@ -478,10 +478,10 @@ export default function MyBookingsPage() {
                   <div className="text-right shrink-0">
                     {isCountered && booking.originalRate ? (
                       <>
-                        <div className="text-[10px] font-bold text-muted line-through">
+                        <div className=" font-bold text-muted line-through">
                           ${booking.originalRate.toLocaleString()}
                         </div>
-                        <div className="text-xl font-black text-warning tracking-tight">
+                        <div className="text-xl font-semibold text-warning tracking-tight">
                           $
                           {(
                             booking.counterAmount || booking.proposedRate
@@ -489,7 +489,7 @@ export default function MyBookingsPage() {
                         </div>
                       </>
                     ) : (
-                      <div className="text-xl font-black text-success tracking-tight">
+                      <div className="text-xl font-semibold text-success tracking-tight">
                         $
                         {(
                           booking.proposedRate ||
@@ -535,7 +535,7 @@ export default function MyBookingsPage() {
                           e.stopPropagation();
                           router.push(`/tracking/${ld._id}`);
                         }}
-                        className="btn btn-primary btn-sm h-10 px-5 text-[10px] font-black"
+                        className="btn btn-primary btn-sm h-10 px-5  font-semibold"
                       >
                         <MapPinLine size={16} weight="bold" /> Track Shipment
                       </button>
@@ -544,7 +544,7 @@ export default function MyBookingsPage() {
                           e.stopPropagation();
                           router.push("/messaging");
                         }}
-                        className="btn btn-secondary btn-sm h-10 px-5 text-[10px] font-black"
+                        className="btn btn-secondary btn-sm h-10 px-5  font-semibold"
                       >
                         <ChatText size={16} weight="bold" /> Open Chat
                       </button>
@@ -559,7 +559,7 @@ export default function MyBookingsPage() {
                           handleAcceptCounter(ld._id, booking._id);
                         }}
                         disabled={actionLoading === booking._id}
-                        className="btn btn-sm h-10 px-5 text-[10px] font-black"
+                        className="btn btn-sm h-10 px-5  font-semibold"
                         style={{
                           backgroundColor: "var(--success)",
                           color: "white",
@@ -585,7 +585,7 @@ export default function MyBookingsPage() {
                           handleSendCounter(ld._id, booking._id);
                         }}
                         disabled={actionLoading === booking._id}
-                        className="btn btn-secondary btn-sm h-10 px-5 text-[10px] font-black"
+                        className="btn btn-secondary btn-sm h-10 px-5  font-semibold"
                       >
                         {actionLoading === booking._id ? (
                           <CircleNotch
@@ -606,7 +606,7 @@ export default function MyBookingsPage() {
                           handleDeclineCounter(ld._id, booking._id);
                         }}
                         disabled={actionLoading === booking._id}
-                        className="btn btn-sm h-10 px-5 text-[10px] font-black text-danger border border-danger/30 hover:bg-danger-light"
+                        className="btn btn-sm h-10 px-5  font-semibold text-danger border border-danger/30 hover:bg-danger-light"
                       >
                         {actionLoading === booking._id ? (
                           <CircleNotch
@@ -625,7 +625,7 @@ export default function MyBookingsPage() {
 
                   {isPending && !isCountered && (
                     <div className="flex gap-2 items-center">
-                      <span className="text-[10px] font-bold text-muted italic">
+                      <span className=" font-bold text-muted italic">
                         Awaiting broker response...
                       </span>
                       <button
@@ -634,7 +634,7 @@ export default function MyBookingsPage() {
                           handleCancelBid(ld._id, booking._id);
                         }}
                         disabled={actionLoading === booking._id}
-                        className="btn btn-sm h-9 px-4 text-[10px] font-black text-danger border border-danger/30 hover:bg-danger-light"
+                        className="btn btn-sm h-9 px-4  font-semibold text-danger border border-danger/30 hover:bg-danger-light"
                       >
                         {actionLoading === booking._id ? (
                           <CircleNotch
@@ -658,7 +658,7 @@ export default function MyBookingsPage() {
                           e.stopPropagation();
                           router.push(`/documents`);
                         }}
-                        className="btn btn-secondary btn-sm h-10 px-5 text-[10px] font-black"
+                        className="btn btn-secondary btn-sm h-10 px-5  font-semibold"
                       >
                         <FileText size={16} weight="bold" /> View Invoice
                       </button>
@@ -667,7 +667,7 @@ export default function MyBookingsPage() {
                           e.stopPropagation();
                           router.push(`/reviews`);
                         }}
-                        className="btn btn-sm h-10 px-5 text-[10px] font-black"
+                        className="btn btn-sm h-10 px-5  font-semibold"
                         style={{
                           backgroundColor: "var(--warning)",
                           color: "white",

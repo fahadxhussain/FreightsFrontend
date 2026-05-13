@@ -61,7 +61,7 @@ function ResetPasswordForm() {
       <div className="flex flex-col items-center gap-4 py-10">
         <Warning size={40} className="text-warning" />
         <p className="text-sm text-muted font-medium">No email provided.</p>
-        <Link href="/forgot-password" className="btn btn-primary text-sm">
+        <Link href="/forgot-password" className="h-10 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors px-4 inline-flex items-center justify-center">
           Request Password Reset
         </Link>
       </div>
@@ -70,58 +70,58 @@ function ResetPasswordForm() {
 
   return (
     <div className="flex flex-col gap-1">
-      <Link href="/forgot-password" className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted hover:text-accent transition-colors">
+      <Link href="/forgot-password" className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-ink transition-colors">
         <ArrowLeft size={14} weight="bold" />
         Back
       </Link>
 
-      <h1 className="text-center text-[2rem] font-black text-accent tracking-tighter">
+      <h1 className="text-center text-[2rem] font-semibold text-ink tracking-tight">
         New Password
       </h1>
-      <h2 className="mt-1 text-center text-[1.1rem] font-bold text-foreground">
+      <h2 className="mt-1 text-center text-[1.1rem] font-semibold text-ink">
         Create your new password
       </h2>
-      <p className="mb-8 text-center text-sm text-muted font-medium">
+      <p className="mb-8 text-center text-sm text-body-text font-medium">
         Enter the code we sent to your email and choose a new password
       </p>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-1.5">
-          <label className="ml-1 text-xs font-bold text-muted uppercase tracking-wider">Email</label>
-          <input {...form.register("email")} type="email" value={form.watch("email")} readOnly className="w-full rounded-xl border border-border bg-muted px-4 py-3 text-sm text-muted font-medium cursor-not-allowed" />
+          <label className="ml-1 text-xs font-medium text-muted">Email</label>
+          <input {...form.register("email")} type="email" value={form.watch("email")} readOnly className="h-10 w-full rounded-md border border-hairline bg-surface-soft px-4 py-2 text-sm text-muted font-medium cursor-not-allowed" />
         </div>
 
         <div className="space-y-1.5">
-          <label className="ml-1 text-xs font-bold text-muted uppercase tracking-wider">Reset Code</label>
-          <input {...form.register("otp")} type="text" inputMode="numeric" maxLength={6} placeholder="000000" className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-center text-xl font-bold tracking-[8px] outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 placeholder:text-muted-foreground/30", errors.otp && "border-danger focus:ring-danger/5")} />
-          {errors.otp && <p className="ml-1 text-[11px] font-bold text-danger">{errors.otp.message}</p>}
+          <label className="ml-1 text-xs font-medium text-muted">Reset Code</label>
+          <input {...form.register("otp")} type="text" inputMode="numeric" maxLength={6} placeholder="000000" className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-4 py-2 text-center text-xl font-semibold tracking-[8px] outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink placeholder:text-muted-foreground", errors.otp && "border-danger focus:ring-danger")} />
+          {errors.otp && <p className="ml-1 text-xs font-medium text-danger">{errors.otp.message}</p>}
         </div>
 
         <div className="space-y-1.5">
-          <label className="ml-1 text-xs font-bold text-muted uppercase tracking-wider">New Password</label>
+          <label className="ml-1 text-xs font-medium text-muted">New Password</label>
           <div className="relative">
-            <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input {...form.register("newPassword")} type={showPassword ? "text" : "password"} placeholder="Min. 8 chars with upper, lower, digit" className={cn("w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 pr-12 placeholder:text-muted-foreground/60 font-medium", errors.newPassword && "border-danger focus:ring-danger/5")} />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground">
+            <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
+            <input {...form.register("newPassword")} type={showPassword ? "text" : "password"} placeholder="Min. 8 chars with upper, lower, digit" className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink pr-12 placeholder:text-muted-foreground font-medium", errors.newPassword && "border-danger focus:ring-danger")} />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink">
               {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {errors.newPassword && <p className="ml-1 text-[11px] font-bold text-danger">{errors.newPassword.message}</p>}
+          {errors.newPassword && <p className="ml-1 text-xs font-medium text-danger">{errors.newPassword.message}</p>}
         </div>
 
         <div className="space-y-1.5">
-          <label className="ml-1 text-xs font-bold text-muted uppercase tracking-wider">Confirm Password</label>
+          <label className="ml-1 text-xs font-medium text-muted">Confirm Password</label>
           <div className="relative">
-            <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input {...form.register("confirmPassword")} type={showConfirm ? "text" : "password"} placeholder="Repeat new password" className={cn("w-full rounded-xl border border-border bg-input px-11 py-3 text-sm text-foreground outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5 pr-12 placeholder:text-muted-foreground/60 font-medium", errors.confirmPassword && "border-danger focus:ring-danger/5")} />
-            <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground">
+            <Lock size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
+            <input {...form.register("confirmPassword")} type={showConfirm ? "text" : "password"} placeholder="Repeat new password" className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-11 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink pr-12 placeholder:text-muted-foreground font-medium", errors.confirmPassword && "border-danger focus:ring-danger")} />
+            <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink">
               {showConfirm ? <EyeSlash size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {errors.confirmPassword && <p className="ml-1 text-[11px] font-bold text-danger">{errors.confirmPassword.message}</p>}
+          {errors.confirmPassword && <p className="ml-1 text-xs font-medium text-danger">{errors.confirmPassword.message}</p>}
         </div>
 
-        <button type="submit" disabled={isLoading} className="btn btn-primary btn-lg w-full shadow-lg shadow-accent/20 mt-2">
+        <button type="submit" disabled={isLoading} className="mt-2 w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors disabled:opacity-50">
           {isLoading ? "Resetting..." : "Reset Password"}
         </button>
       </form>
@@ -131,7 +131,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" /></div>}>
+    <Suspense fallback={<div className="flex items-center justify-center py-20"><div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>}>
       <ResetPasswordForm />
     </Suspense>
   );

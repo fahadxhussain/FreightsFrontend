@@ -12,7 +12,7 @@ export function ThemeToggle() {
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return <div className="h-10 w-10" />;
+    return <div className="h-9 w-9" />;
   }
 
   const isDark = theme === 'dark';
@@ -21,30 +21,28 @@ export function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-card text-muted transition-all duration-300 hover:border-accent hover:text-accent group overflow-hidden",
-        isDark ? "shadow-inner" : "shadow-sm"
+        "relative flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-canvas text-muted transition-colors hover:border-hairline hover:text-ink overflow-hidden",
       )}
       aria-label="Toggle theme"
     >
-      <div className="relative h-6 w-6">
+      <div className="relative h-5 w-5">
         <Sun 
-          size={22} 
-          weight="bold"
+          size={20} 
+          weight="regular"
           className={cn(
-            "absolute inset-0 transition-all duration-500 transform",
-            isDark ? "scale-100 rotate-0 opacity-100" : "scale-0 -rotate-90 opacity-0"
+            "absolute inset-0 transition-all duration-300",
+            isDark ? "opacity-100" : "opacity-0"
           )} 
         />
         <Moon 
-          size={22} 
-          weight="bold"
+          size={20} 
+          weight="regular"
           className={cn(
-            "absolute inset-0 transition-all duration-500 transform",
-            isDark ? "scale-0 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
+            "absolute inset-0 transition-all duration-300",
+            isDark ? "opacity-0" : "opacity-100"
           )} 
         />
       </div>
-      <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity" />
     </button>
   );
 }

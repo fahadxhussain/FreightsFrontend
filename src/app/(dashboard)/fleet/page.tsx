@@ -65,15 +65,15 @@ function maskVin(vin: string | undefined | null): string {
 function statusBadge(status: string) {
   switch (status) {
     case "available":
-      return "badge-green";
+      return "badge-pill badge-pill-green";
     case "in_transit":
-      return "badge-amber";
+      return "badge-pill badge-pill-amber";
     case "booked":
-      return "badge-indigo";
+      return "badge-pill badge-pill-indigo";
     case "disabled":
-      return "badge-gray";
+      return "badge-pill badge-pill-gray";
     default:
-      return "badge-muted";
+      return "badge-pill badge-pill-muted";
   }
 }
 
@@ -219,10 +219,10 @@ export default function FleetOverviewPage() {
       {/* ── page header ────────────────────────────────────────────────────────────────── */}
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">
             Fleet
           </h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+          <p className="text-sm font-bold text-muted  mt-1">
             Manage your trucks, trailers, and drivers
           </p>
         </div>
@@ -241,7 +241,7 @@ export default function FleetOverviewPage() {
           </button>
           <Link
             href="/fleet/add"
-            className="btn btn-primary h-12 px-6 shadow-xl shadow-accent/20"
+            className="btn btn-primary h-12 px-6 shadow-sm"
           >
             <Plus size={20} weight="bold" />
             Add Vehicle
@@ -261,7 +261,7 @@ export default function FleetOverviewPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by Internal ID, VIN, or License Plate"
-            className="w-full rounded-2xl border border-border bg-card py-3.5 pl-12 pr-5 text-[13px] font-medium text-foreground placeholder:text-muted outline-none transition-all focus:border-accent focus:ring-4 focus:ring-accent/5"
+            className="w-full rounded-md border border-hairline bg-card py-3.5 pl-12 pr-5 text-[13px] font-medium text-ink placeholder:text-muted outline-none transition-all focus:border-primary focus:ring-1 focus:ring-ink"
           />
         </div>
       </div>
@@ -277,10 +277,10 @@ export default function FleetOverviewPage() {
             key={label}
             onClick={() => setActiveTab(label)}
             className={cn(
-              "flex items-center gap-2 px-6 py-3 text-[11px] font-black uppercase tracking-wider rounded-2xl border transition-all",
+              "flex items-center gap-2 px-6 py-3 text-[11px] font-semibold  rounded-md border transition-all",
               activeTab === label
-                ? "bg-accent border-accent text-white shadow-lg shadow-accent/20"
-                : "bg-card border-border text-muted hover:border-muted hover:text-foreground",
+                ? "bg-primary border-primary text-white shadow-sm"
+                : "bg-card border-hairline text-muted hover:border-muted hover:text-ink",
             )}
           >
             <Icon size={18} weight={activeTab === label ? "bold" : "regular"} />
@@ -299,14 +299,14 @@ export default function FleetOverviewPage() {
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-64 rounded-3xl border border-border bg-card animate-pulse"
+                  className="h-64 rounded-xl border border-hairline bg-card animate-pulse"
                 />
               ))}
             </div>
           ) : filteredVehicles.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-muted">
               <Cube size={48} weight="thin" className="mb-4 opacity-40" />
-              <p className="text-sm font-bold uppercase tracking-widest">
+              <p className="text-sm font-bold ">
                 {searchQuery
                   ? "No vehicles match your search"
                   : "No vehicles in fleet yet"}
@@ -323,7 +323,7 @@ export default function FleetOverviewPage() {
               {filteredVehicles.map((vehicle) => (
                 <div
                   key={vehicle._id}
-                  className="group rounded-3xl border border-border bg-card p-6 shadow-xl transition-all hover:border-accent/30 hover:-translate-y-1"
+                  className="group rounded-xl border border-hairline bg-card p-6 shadow-xl transition-all hover:border-ink hover:-translate-y-1"
                 >
                   {/* top row: truck icon + id + status */}
                   <div className="flex items-center justify-between mb-5">
@@ -335,17 +335,17 @@ export default function FleetOverviewPage() {
                             ? "bg-success-light text-success"
                             : vehicle.status === "disabled"
                               ? "bg-muted/10 text-muted"
-                              : "bg-accent-light text-accent",
+                              : "bg-surface-soft text-ink",
                         )}
                       >
                         <Truck size={22} weight="bold" />
                       </div>
                       <div>
-                        <div className="text-[13px] font-black text-foreground tracking-tight">
+                        <div className="text-[13px] font-semibold text-ink tracking-tight">
                           {vehicle.internalId ||
                             vehicle._id.slice(-6).toUpperCase()}
                         </div>
-                        <div className="text-[10px] font-bold text-muted uppercase tracking-widest">
+                        <div className=" font-bold text-muted ">
                           VIN: {maskVin(vehicle.vin)}
                         </div>
                       </div>
@@ -363,10 +363,10 @@ export default function FleetOverviewPage() {
                       <div className="mb-4 flex justify-end">
                         <span
                           className={cn(
-                            "badge text-[10px] font-black uppercase tracking-widest",
+                            "badge  font-semibold ",
                             alert.type === "expired"
-                              ? "badge-red"
-                              : "badge-amber",
+                              ? "badge-pill badge-pill-red"
+                              : "badge-pill badge-pill-amber",
                           )}
                         >
                           <Warning size={12} weight="bold" className="mr-1" />
@@ -378,7 +378,7 @@ export default function FleetOverviewPage() {
 
                   {/* type + year/make/model */}
                   <div className="flex flex-wrap items-center gap-2 mb-5">
-                    <span className="badge badge-blue">
+                    <span className="badge badge-pill badge-pill-blue">
                       {vehicle.type?.replace(/_/g, " ") || "N/A"}
                     </span>
                     <span className="text-[11px] font-medium text-muted">
@@ -387,20 +387,20 @@ export default function FleetOverviewPage() {
                   </div>
 
                   {/* driver info */}
-                  <div className="flex items-center justify-between rounded-2xl bg-input/50 border border-border/50 px-4 py-3 mb-5">
+                  <div className="flex items-center justify-between rounded-xl bg-surface-soft/50 border border-hairline/50 px-4 py-3 mb-5">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-card border border-border text-muted">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-card border border-hairline text-muted">
                         <IdentificationBadge size={16} weight="bold" />
                       </div>
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-muted mb-0.5">
+                        <div className=" font-semibold  text-muted mb-0.5">
                           Driver
                         </div>
                         <div
                           className={cn(
-                            "text-[13px] font-black",
+                            "text-[13px] font-semibold",
                             vehicle.assignedDriverId
-                              ? "text-foreground"
+                              ? "text-ink"
                               : "text-muted italic",
                           )}
                         >
@@ -414,7 +414,7 @@ export default function FleetOverviewPage() {
                   <div className="flex gap-3">
                     <button
                       onClick={() => router.push(`/fleet/${vehicle._id}`)}
-                      className="btn btn-secondary flex-1 h-10 text-[11px] font-black uppercase tracking-widest"
+                      className="btn btn-secondary flex-1 h-10 text-[11px] font-semibold "
                     >
                       Details
                     </button>
@@ -422,18 +422,18 @@ export default function FleetOverviewPage() {
                     !vehicle.assignedDriverId ? (
                       <button
                         onClick={() => handleQuickAssign(vehicle)}
-                        className="btn btn-primary flex-1 h-10 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/10"
+                        className="btn btn-primary flex-1 h-10 text-[11px] font-semibold  shadow-sm"
                       >
                         Assign
                       </button>
                     ) : vehicle.status === "disabled" ? (
-                      <button className="btn btn-secondary flex-1 h-10 text-[11px] font-black uppercase tracking-widest">
+                      <button className="btn btn-secondary flex-1 h-10 text-[11px] font-semibold ">
                         Enable
                       </button>
                     ) : (
                       <button
                         onClick={() => router.push(`/fleet/${vehicle._id}`)}
-                        className="btn btn-secondary flex-1 h-10 text-[11px] font-black uppercase tracking-widest"
+                        className="btn btn-secondary flex-1 h-10 text-[11px] font-semibold "
                       >
                         <CaretRight size={14} weight="bold" />
                         View
@@ -446,16 +446,16 @@ export default function FleetOverviewPage() {
               {/* add-vehicle placeholder card */}
               <Link
                 href="/fleet/add"
-                className="flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-border bg-muted/5 p-6 transition-all hover:border-accent/50 hover:bg-accent/5 group"
+                className="flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-hairline bg-muted/5 p-6 transition-all hover:border-ink hover:bg-primary/5 group"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-card border border-border text-muted group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all shadow-sm">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-card border border-hairline text-muted group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all shadow-sm">
                   <Plus size={32} weight="bold" />
                 </div>
                 <div className="text-center">
-                  <div className="text-sm font-black text-foreground">
+                  <div className="text-sm font-semibold text-ink">
                     Add New Vehicle
                   </div>
-                  <p className="text-[11px] font-bold text-muted uppercase tracking-widest mt-1">
+                  <p className="text-[11px] font-bold text-muted  mt-1">
                     Register truck or trailer
                   </p>
                 </div>
@@ -474,14 +474,14 @@ export default function FleetOverviewPage() {
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-28 rounded-2xl border border-border bg-card animate-pulse"
+                  className="h-28 rounded-xl border border-hairline bg-card animate-pulse"
                 />
               ))}
             </div>
           ) : drivers.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-muted">
               <User size={40} weight="thin" className="mb-3 opacity-40" />
-              <p className="text-sm font-bold uppercase tracking-widest">
+              <p className="text-sm font-bold ">
                 No drivers in team yet
               </p>
               <p className="text-xs text-muted mt-1">
@@ -493,14 +493,14 @@ export default function FleetOverviewPage() {
               {drivers.map((d) => (
                 <div
                   key={d.userId}
-                  className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm"
+                  className="flex items-center gap-4 rounded-xl border border-hairline bg-card p-5 shadow-sm"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-light text-accent text-sm font-black">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-soft text-ink text-sm font-semibold">
                     {d.profile.firstName?.[0]}
                     {d.profile.lastName?.[0]}
                   </div>
                   <div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {d.profile.firstName} {d.profile.lastName}
                     </div>
                     <div className="text-[11px] font-medium text-muted">
@@ -514,12 +514,12 @@ export default function FleetOverviewPage() {
 
           {/* compliance table */}
           <div>
-            <h3 className="text-lg font-black tracking-tight text-foreground mb-4">
+            <h3 className="text-lg font-semibold tracking-tight text-ink mb-4">
               Compliance — Document Expiry
             </h3>
             {isLoadingCompliance ? (
-              <div className="rounded-2xl border border-border bg-card overflow-hidden">
-                <div className="divide-y divide-border">
+              <div className="rounded-xl border border-hairline bg-card overflow-hidden">
+                <div className="divide-y divide-hairline">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <div
                       key={i}
@@ -529,39 +529,39 @@ export default function FleetOverviewPage() {
                 </div>
               </div>
             ) : compliance.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 rounded-2xl border border-border bg-card text-muted">
+              <div className="flex flex-col items-center justify-center py-12 rounded-xl border border-hairline bg-card text-muted">
                 <Warning size={32} weight="thin" className="mb-2 opacity-40" />
-                <p className="text-xs font-bold uppercase tracking-widest">
+                <p className="text-xs font-bold ">
                   All documents are up to date
                 </p>
               </div>
             ) : (
-              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+              <div className="overflow-hidden rounded-xl border border-hairline bg-card shadow-xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-border bg-muted/30">
-                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <tr className="border-b border-hairline bg-muted/30">
+                        <th className="px-6 py-4  font-semibold  text-muted">
                           Driver Name
                         </th>
-                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                        <th className="px-6 py-4  font-semibold  text-muted">
                           CDL Expiry
                         </th>
-                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                        <th className="px-6 py-4  font-semibold  text-muted">
                           Medical Card Expiry
                         </th>
-                        <th className="px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                        <th className="px-6 py-4  font-semibold  text-muted">
                           Days Remaining
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border">
+                    <tbody className="divide-y divide-hairline">
                       {compliance.map((row) => (
                         <tr
                           key={row._id}
-                          className="group hover:bg-card-hover transition-colors"
+                          className="group hover:bg-surface-soft transition-colors"
                         >
-                          <td className="px-6 py-4 text-[13px] font-black text-foreground">
+                          <td className="px-6 py-4 text-[13px] font-semibold text-ink">
                             {row.driverName}
                           </td>
                           <td className="px-6 py-4 text-[13px] font-medium text-muted">
@@ -577,10 +577,10 @@ export default function FleetOverviewPage() {
                               className={cn(
                                 "badge",
                                 row.daysRemaining <= 7
-                                  ? "badge-red"
+                                  ? "badge-pill badge-pill-red"
                                   : row.daysRemaining <= 30
-                                    ? "badge-amber"
-                                    : "badge-green",
+                                    ? "badge-pill badge-pill-amber"
+                                    : "badge-pill badge-pill-green",
                               )}
                             >
                               {row.daysRemaining} days
@@ -601,7 +601,7 @@ export default function FleetOverviewPage() {
       {activeTab === "Trailer" && (
         <div className="flex flex-col items-center justify-center py-24 text-muted">
           <Cube size={48} weight="thin" className="mb-4 opacity-40" />
-          <p className="text-sm font-bold uppercase tracking-widest">
+          <p className="text-sm font-bold ">
             Trailer management coming soon
           </p>
           <p className="text-xs text-muted mt-1">

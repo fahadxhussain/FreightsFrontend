@@ -6,18 +6,17 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { useAppSelector } from "@/store/hooks";
 
-// Paths that are ONLY accessible to specific roles (ALLOW-list)
 const ROLE_ALLOWED_PATHS: Record<string, string[]> = {
-  "/loads": ["broker"], // Only brokers manage loads
-  "/loads/create": ["broker"], // Only brokers create loads
-  "/fleet": ["carrier", "independent_driver", "company_driver"], // Fleet management
-  "/fleet/add": ["carrier", "independent_driver"], // Add vehicle
-  "/team": ["carrier"], // Only carriers have teams
+  "/loads": ["broker"],
+  "/loads/create": ["broker"],
+  "/fleet": ["carrier", "independent_driver", "company_driver"],
+  "/fleet/add": ["carrier", "independent_driver"],
+  "/team": ["carrier"],
   "/team/roles": ["carrier"],
   "/team/invite": ["carrier"],
-  "/admin": ["admin"], // Admin panel
-  "/analytics": ["carrier"], // Carrier analytics
-  "/payments": ["broker", "carrier"], // Payment dashboards
+  "/admin": ["admin"],
+  "/analytics": ["carrier"],
+  "/payments": ["broker", "carrier"],
   "/my-bookings": ["broker", "carrier", "independent_driver", "company_driver"],
   "/documents": ["carrier", "independent_driver", "company_driver"],
   "/notifications": [
@@ -39,7 +38,6 @@ export default function DashboardLayout({
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
-    // Give AuthInitializer time to read token from localStorage
     const timer = setTimeout(() => {
       setIsAuthReady(true);
     }, 300);
@@ -50,13 +48,11 @@ export default function DashboardLayout({
   useEffect(() => {
     if (!isAuthReady) return;
 
-    // Redirect unauthenticated users to login
     if (!user?.role) {
       router.replace("/login");
       return;
     }
 
-    // Check if current path is restricted — use ALLOW-list
     for (const [basePath, allowedRoles] of Object.entries(ROLE_ALLOWED_PATHS)) {
       if (pathname.startsWith(basePath) && !allowedRoles.includes(user.role)) {
         router.replace("/dashboard");
@@ -67,14 +63,14 @@ export default function DashboardLayout({
 
   if (!isAuthReady) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+      <div className="flex h-screen items-center justify-center bg-canvas">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-canvas">
       <Sidebar />
       <div className="ml-[240px] flex flex-1 flex-col">
         <Topbar />

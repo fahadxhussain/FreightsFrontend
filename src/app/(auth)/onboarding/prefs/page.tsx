@@ -46,7 +46,6 @@ export default function PrefsOnboardingPage() {
   const completeOnboarding = async () => {
     setIsLoading(true);
     try {
-      // Mark prefs step complete
       await api.patch('/auth/onboarding/prefs', {
         notificationPreferences: prefs,
         equipmentTypes: equipment,
@@ -67,14 +66,14 @@ export default function PrefsOnboardingPage() {
   if (isCompleted) {
     return (
       <div className="flex flex-col items-center justify-center py-10 text-center animate-in fade-in zoom-in duration-500">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success-light text-success shadow-inner">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/10 text-success">
           <CheckCircle size={48} weight="fill" />
         </div>
-        <h2 className="text-2xl font-black tracking-tight text-foreground">All done!</h2>
-        <p className="mt-2 text-muted font-medium">Your preferences have been saved.</p>
+        <h2 className="text-2xl font-semibold tracking-tight text-ink">All done!</h2>
+        <p className="mt-2 text-body-text font-medium">Your preferences have been saved.</p>
         <button
           onClick={() => window.location.href = '/dashboard'}
-          className="btn btn-primary btn-lg mt-8 shadow-lg shadow-accent/20"
+          className="mt-8 inline-flex items-center justify-center gap-2 h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors px-6"
         >
           <Gauge size={20} weight="bold" />
           Go to Dashboard
@@ -91,57 +90,55 @@ export default function PrefsOnboardingPage() {
   return (
     <div className="w-full max-w-[560px] animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8 text-center">
-        <div className="text-[1.8rem] font-black text-accent tracking-tighter">FLOW</div>
-        <h2 className="mt-2 text-xl font-bold text-foreground">Preferences</h2>
-        <p className="text-sm text-muted font-medium">Customize your experience</p>
+        <div className="text-[1.8rem] font-semibold text-ink tracking-tight">FLOW</div>
+        <h2 className="mt-2 text-xl font-semibold text-ink">Preferences</h2>
+        <p className="text-sm text-body-text font-medium">Customize your experience</p>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-8 shadow-xl backdrop-blur-md space-y-8">
-        {/* Notifications */}
+      <div className="rounded-xl border border-hairline bg-card p-8 space-y-8">
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-accent">
+          <div className="flex items-center gap-2 text-primary">
             <Bell size={22} weight="bold" />
-            <h3 className="text-base font-bold">Notifications</h3>
+            <h3 className="text-base font-semibold">Notifications</h3>
           </div>
           <div className="space-y-3">
             {NOTIFICATION_PREFS.map((pref) => (
               <label
                 key={pref.id}
-                className="flex items-start gap-3 rounded-xl border border-border bg-input p-4 cursor-pointer hover:border-muted transition-colors"
+                className="flex items-start gap-3 rounded-xl border border-hairline bg-canvas p-4 cursor-pointer hover:border-muted transition-colors"
               >
                 <input
                   type="checkbox"
                   checked={prefs[pref.id]}
                   onChange={() => togglePref(pref.id)}
-                  className="mt-0.5 h-4 w-4 rounded border-border bg-card accent-accent"
+                  className="mt-0.5 h-4 w-4 rounded border-hairline bg-canvas accent-primary"
                 />
                 <div>
-                  <p className="text-sm font-bold text-foreground">{pref.label}</p>
-                  <p className="text-xs text-muted font-medium">{pref.desc}</p>
+                  <p className="text-sm font-semibold text-ink">{pref.label}</p>
+                  <p className="text-xs text-body-text font-medium">{pref.desc}</p>
                 </div>
               </label>
             ))}
           </div>
         </div>
 
-        {/* Equipment types (carriers/drivers only) */}
         {isCarrierOrDriver && (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-accent">
+            <div className="flex items-center gap-2 text-primary">
               <Truck size={22} weight="bold" />
-              <h3 className="text-base font-bold">Equipment Types</h3>
+              <h3 className="text-base font-semibold">Equipment Types</h3>
             </div>
-            <p className="text-xs text-muted font-medium">Select the equipment you operate. This helps match you with relevant loads.</p>
+            <p className="text-xs text-body-text font-medium">Select the equipment you operate. This helps match you with relevant loads.</p>
             <div className="flex flex-wrap gap-2">
               {EQUIPMENT_TYPES.map((type) => (
                 <button
                   key={type}
                   onClick={() => toggleEquipment(type)}
                   className={cn(
-                    'px-3 py-1.5 rounded-lg text-xs font-bold border transition-all',
+                    'px-3 py-1.5 rounded-md text-xs font-semibold border transition-all',
                     equipment.includes(type)
-                      ? 'bg-accent text-white border-accent shadow-sm'
-                      : 'bg-card text-muted border-border hover:border-muted'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-card text-muted border-hairline hover:border-muted'
                   )}
                 >
                   {type}
@@ -151,16 +148,15 @@ export default function PrefsOnboardingPage() {
           </div>
         )}
 
-        {/* Home state */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-accent">
+          <div className="flex items-center gap-2 text-primary">
             <MapPin size={22} weight="bold" />
-            <h3 className="text-base font-bold">Home State</h3>
+            <h3 className="text-base font-semibold">Home State</h3>
           </div>
           <select
             value={homeState}
             onChange={(e) => setHomeState(e.target.value)}
-            className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none"
+            className="h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none font-medium"
           >
             <option value="">Select your home state</option>
             <option value="AL">Alabama</option>
@@ -208,7 +204,7 @@ export default function PrefsOnboardingPage() {
         <button
           onClick={completeOnboarding}
           disabled={isLoading}
-          className="btn btn-primary btn-lg w-full shadow-lg shadow-accent/20"
+          className="w-full h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
         >
           {isLoading ? 'Saving...' : 'Complete Setup'}
           <CheckCircle size={18} weight="bold" />

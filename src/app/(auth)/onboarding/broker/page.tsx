@@ -13,8 +13,6 @@ import {
   CheckCircle,
   ArrowLeft,
   ArrowRight,
-  MagnifyingGlass,
-  WarningCircle,
   Bank,
   LinkSimple,
   Camera,
@@ -172,14 +170,14 @@ export default function BrokerOnboardingPage() {
   if (isCompleted) {
     return (
       <div className="flex flex-col items-center justify-center py-10 text-center animate-in fade-in zoom-in duration-500">
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success-light text-success shadow-inner">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/10 text-success">
           <CheckCircle size={48} weight="fill" />
         </div>
-        <h2 className="text-2xl font-black tracking-tight text-foreground">You&apos;re all set!</h2>
-        <p className="mt-2 text-muted font-medium">Welcome to FLOW. Your brokerage is ready to post loads.</p>
+        <h2 className="text-2xl font-semibold tracking-tight text-ink">You&apos;re all set!</h2>
+        <p className="mt-2 text-body-text font-medium">Welcome to FLOW. Your brokerage is ready to post loads.</p>
         <button
           onClick={() => window.location.href = '/dashboard'}
-          className="btn btn-primary btn-lg mt-8 shadow-lg shadow-accent/20"
+          className="mt-8 inline-flex items-center justify-center gap-2 h-11 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors px-6"
         >
           <Gauge size={20} weight="bold" />
           Go to Dashboard
@@ -192,9 +190,9 @@ export default function BrokerOnboardingPage() {
     <div className="w-full max-w-[640px] animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
       <div className="mb-8 text-center">
-        <div className="text-[1.8rem] font-black text-accent tracking-tighter">FLOW</div>
-        <h2 className="mt-2 text-xl font-bold text-foreground">Broker Onboarding</h2>
-        <p className="text-sm text-muted font-medium">Set up your brokerage profile</p>
+        <div className="text-[1.8rem] font-semibold text-ink tracking-tight">FLOW</div>
+        <h2 className="mt-2 text-xl font-semibold text-ink">Broker Onboarding</h2>
+        <p className="text-sm text-body-text font-medium">Set up your brokerage profile</p>
       </div>
 
       {/* Steps */}
@@ -203,21 +201,21 @@ export default function BrokerOnboardingPage() {
           <div key={s.num} className="flex items-center">
             <div className={cn(
               "flex flex-col items-center gap-2",
-              step >= s.num ? "text-foreground" : "text-muted"
+              step >= s.num ? "text-ink" : "text-muted"
             )}>
               <div className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-black transition-all",
-                step === s.num ? "border-accent bg-accent text-white shadow-lg shadow-accent/20" :
-                step > s.num ? "border-success bg-success text-white" : "border-border bg-card"
+                "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all",
+                step === s.num ? "border-primary bg-primary text-primary-foreground" :
+                step > s.num ? "border-success bg-success text-white" : "border-hairline bg-card"
               )}>
                 {step > s.num ? <Check size={18} weight="bold" /> : s.num}
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider">{s.label}</span>
+              <span className="text-xs font-medium">{s.label}</span>
             </div>
             {i < STEPS.length - 1 && (
               <div className={cn(
                 "mx-4 mb-6 h-[2px] w-12 rounded-full",
-                step > s.num ? "bg-success" : "bg-border"
+                step > s.num ? "bg-success" : "bg-hairline"
               )} />
             )}
           </div>
@@ -225,30 +223,30 @@ export default function BrokerOnboardingPage() {
       </div>
 
       {/* Content */}
-      <div className="rounded-2xl border border-border bg-card p-8 shadow-xl backdrop-blur-md">
+      <div className="rounded-xl border border-hairline bg-card p-8">
         {step === 1 && (
           <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="flex items-center gap-2 text-accent">
+            <div className="flex items-center gap-2 text-primary">
               <Briefcase size={24} weight="bold" />
-              <h3 className="text-lg font-bold">Set up your business profile</h3>
+              <h3 className="text-lg font-semibold">Set up your business profile</h3>
             </div>
 
             <div className="grid gap-5">
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Company Name</label>
+                <label className="ml-1 text-xs font-medium text-muted">Company Name</label>
                 <input
                   {...businessForm.register('companyName')}
-                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.companyName && "border-danger")}
+                  className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", businessForm.formState.errors.companyName && "border-danger")}
                   placeholder="e.g., Smith Brokerage LLC"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Business Type</label>
+                  <label className="ml-1 text-xs font-medium text-muted">Business Type</label>
                   <select
                     {...businessForm.register('businessType')}
-                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none appearance-none"
+                    className="h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none appearance-none font-medium"
                   >
                     <option>LLC</option>
                     <option>Inc.</option>
@@ -256,68 +254,68 @@ export default function BrokerOnboardingPage() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">EIN</label>
+                  <label className="ml-1 text-xs font-medium text-muted">EIN</label>
                   <input
                     {...businessForm.register('ein')}
-                    className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.ein && "border-danger")}
+                    className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", businessForm.formState.errors.ein && "border-danger")}
                     placeholder="XX-XXXXXXX"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Street Address</label>
+                <label className="ml-1 text-xs font-medium text-muted">Street Address</label>
                 <input
                   {...businessForm.register('street')}
-                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.street && "border-danger")}
+                  className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", businessForm.formState.errors.street && "border-danger")}
                   placeholder="123 Broker Ave"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1.5">
-                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">City</label>
+                  <label className="ml-1 text-xs font-medium text-muted">City</label>
                   <input
                     {...businessForm.register('city')}
-                    className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.city && "border-danger")}
+                    className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", businessForm.formState.errors.city && "border-danger")}
                     placeholder="Chicago"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">State</label>
+                  <label className="ml-1 text-xs font-medium text-muted">State</label>
                   <select
                     {...businessForm.register('state')}
-                    className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none appearance-none"
+                    className="h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none appearance-none font-medium"
                   >
                     <option>IL</option><option>TX</option><option>CA</option><option>NY</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">ZIP</label>
+                  <label className="ml-1 text-xs font-medium text-muted">ZIP</label>
                   <input
                     {...businessForm.register('zip')}
-                    className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.zip && "border-danger")}
+                    className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", businessForm.formState.errors.zip && "border-danger")}
                     placeholder="60601"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Business Phone</label>
+                <label className="ml-1 text-xs font-medium text-muted">Business Phone</label>
                 <input
                   {...businessForm.register('phone')}
-                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.phone && "border-danger")}
+                  className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", businessForm.formState.errors.phone && "border-danger")}
                   placeholder="+1 (555) 000-0000"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Company Logo (optional)</label>
-                <div className="flex items-center gap-4 rounded-xl border-2 border-dashed border-border p-4 hover:border-muted transition-colors cursor-pointer">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-input text-muted">
+                <label className="ml-1 text-xs font-medium text-muted">Company Logo (optional)</label>
+                <div className="flex items-center gap-4 rounded-xl border-2 border-dashed border-hairline p-4 hover:border-muted transition-colors cursor-pointer">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-md bg-canvas text-muted">
                     <Camera size={24} />
                   </div>
-                  <div className="text-xs font-bold text-muted uppercase tracking-wider">Click to upload logo</div>
+                  <div className="text-xs font-medium text-muted">Click to upload logo</div>
                 </div>
               </div>
             </div>
@@ -326,18 +324,18 @@ export default function BrokerOnboardingPage() {
 
         {step === 2 && (
           <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="flex items-center gap-2 text-accent">
+            <div className="flex items-center gap-2 text-primary">
               <Certificate size={24} weight="bold" />
-              <h3 className="text-lg font-bold">Broker Authority</h3>
+              <h3 className="text-lg font-semibold">Broker Authority</h3>
             </div>
-            <p className="text-sm font-medium text-muted">Enter your MC number. This will be manually verified by our admin team before you can post loads.</p>
+            <p className="text-sm font-medium text-body-text">Enter your MC number. This will be manually verified by our admin team before you can post loads.</p>
 
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">MC Number</label>
+                <label className="ml-1 text-xs font-medium text-muted">MC Number</label>
                 <input
                   {...authorityForm.register('mcNumber')}
-                  className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", authorityForm.formState.errors.mcNumber && "border-danger")}
+                  className={cn("h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none transition-all focus:border-ink focus:ring-1 focus:ring-ink font-medium", authorityForm.formState.errors.mcNumber && "border-danger")}
                   placeholder="MC-XXXXXXX"
                 />
                 {authorityForm.formState.errors.mcNumber && (
@@ -345,9 +343,9 @@ export default function BrokerOnboardingPage() {
                 )}
               </div>
 
-              <div className="rounded-xl border border-border bg-accent/5 p-4 flex items-start gap-3">
-                <CheckCircle size={20} className="text-accent shrink-0 mt-0.5" weight="fill" />
-                <p className="text-xs font-medium text-accent-dark">
+              <div className="rounded-xl border border-hairline bg-primary/5 p-4 flex items-start gap-3">
+                <CheckCircle size={20} className="text-primary shrink-0 mt-0.5" weight="fill" />
+                <p className="text-xs font-medium text-primary">
                   Broker authority is required for all freight brokerages on the FLOW platform.
                 </p>
               </div>
@@ -357,36 +355,36 @@ export default function BrokerOnboardingPage() {
 
         {step === 3 && (
           <div className="space-y-6 animate-in fade-in duration-300">
-            <div className="flex items-center gap-2 text-accent">
+            <div className="flex items-center gap-2 text-primary">
               <CreditCard size={24} weight="bold" />
-              <h3 className="text-lg font-bold">Connect your payment account</h3>
+              <h3 className="text-lg font-semibold">Connect your payment account</h3>
             </div>
-            <p className="text-sm font-medium text-muted">FLOW uses Stripe to process all payments securely. As a broker, you&apos;ll make payments through this account.</p>
+            <p className="text-sm font-medium text-body-text">FLOW uses Stripe to process all payments securely. As a broker, you&apos;ll make payments through this account.</p>
 
             <div className="py-6 flex items-center justify-center gap-5">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#635BFF] text-2xl font-black text-white shadow-xl shadow-[#635BFF]/20">S</div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-md bg-[#635BFF] text-2xl font-semibold text-white">S</div>
               <div className="text-muted"><LinkSimple size={24} weight="bold" /></div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-light text-accent text-2xl shadow-xl shadow-accent/10"><Bank size={28} weight="bold" /></div>
+              <div className="flex h-14 w-14 items-center justify-center rounded-md bg-primary/10 text-primary text-2xl"><Bank size={28} weight="bold" /></div>
             </div>
 
             {!stripeConnected ? (
               <div className="space-y-3">
                 <button
                   onClick={() => { setStripeConnected(true); toast.success('Stripe connected!'); }}
-                  className="btn btn-primary btn-lg w-full bg-[#635BFF] hover:bg-[#5851e5] shadow-lg shadow-[#635BFF]/20"
+                  className="w-full h-11 rounded-md bg-[#635BFF] text-white text-sm font-semibold hover:bg-[#5851e5] transition-colors"
                 >
                   Connect with Stripe
                 </button>
-                <p className="text-center text-[10px] font-bold text-muted uppercase tracking-widest">You&apos;ll be redirected to Stripe to complete setup</p>
+                <p className="text-center text-xs font-medium text-muted">You&apos;ll be redirected to Stripe to complete setup</p>
               </div>
             ) : (
-              <div className="rounded-xl border border-border bg-input p-4 animate-in zoom-in duration-300">
+              <div className="rounded-xl border border-hairline bg-canvas p-4 animate-in zoom-in duration-300">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-success-light text-success">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-success/10 text-success">
                     <CheckCircle size={20} weight="fill" />
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-foreground">Stripe Connected</div>
+                    <div className="text-sm font-semibold text-ink">Stripe Connected</div>
                     <div className="text-xs font-medium text-muted">Chase Business &bull;&bull;&bull;&bull;8812</div>
                   </div>
                 </div>
@@ -398,7 +396,7 @@ export default function BrokerOnboardingPage() {
         <div className="mt-10 flex justify-between gap-4">
           <button
             onClick={handleBack}
-            className={cn("btn btn-secondary flex-1 py-3 h-12", step === 1 && "opacity-0 pointer-events-none")}
+            className={cn("flex-1 h-10 rounded-md border border-hairline bg-card text-ink hover:bg-surface-soft transition-colors text-sm font-medium inline-flex items-center justify-center gap-2", step === 1 && "opacity-0 pointer-events-none")}
           >
             <ArrowLeft size={18} weight="bold" />
             Back
@@ -407,7 +405,7 @@ export default function BrokerOnboardingPage() {
           {step < 3 ? (
             <button
               onClick={handleNext}
-              className="btn btn-primary flex-1 py-3 h-12 shadow-lg shadow-accent/10"
+              className="flex-1 h-10 rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors text-sm font-semibold inline-flex items-center justify-center gap-2"
             >
               Continue
               <ArrowRight size={18} weight="bold" />
@@ -416,7 +414,7 @@ export default function BrokerOnboardingPage() {
             <button
               onClick={completeOnboarding}
               disabled={isLoading || !stripeConnected}
-              className="btn btn-primary flex-1 py-3 h-12 bg-success hover:bg-success/90 shadow-lg shadow-success/10 border-none"
+              className="flex-1 h-10 rounded-md bg-success text-white hover:bg-success/90 transition-colors text-sm font-semibold inline-flex items-center justify-center gap-2"
             >
               {isLoading ? 'Completing...' : 'Complete Onboarding'}
               <Check size={18} weight="bold" />

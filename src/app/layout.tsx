@@ -8,11 +8,12 @@ import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Flow - AI-Powered Freight & Fleet Booking",
+  title: "FLOW - AI-Powered Freight & Fleet Booking",
   description:
     "High-fidelity logistics platform for brokers, drivers, and shippers.",
 };
@@ -28,10 +29,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+      <body className="flex min-h-full flex-col bg-canvas font-sans text-ink">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
         >
           <StoreProvider>

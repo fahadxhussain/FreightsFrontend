@@ -7,7 +7,6 @@ import {
   TrashSimple,
   MapPin,
   CurrencyDollar,
-  Truck,
   ArrowRight,
   CircleNotch,
   CheckCircle,
@@ -53,7 +52,6 @@ export default function PreferredLanesPanel() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form state
   const [originState, setOriginState] = useState("");
   const [destState, setDestState] = useState("");
   const [minRatePerMile, setMinRatePerMile] = useState("");
@@ -136,16 +134,16 @@ export default function PreferredLanesPanel() {
   };
 
   return (
-    <div className="rounded-[2rem] border border-border bg-card shadow-xl">
-      <div className="p-6 border-b border-border">
+    <div className="rounded-xl border border-hairline bg-card">
+      <div className="p-6 border-b border-hairline">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-light text-accent shadow-lg shadow-accent/10">
-              <MapTrifold size={20} weight="bold" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-soft text-ink">
+              <MapTrifold size={20} weight="regular" />
             </div>
             <div>
-              <h3 className="text-base font-black tracking-tight text-foreground">My Preferred Lanes</h3>
-              <p className="text-[10px] font-bold text-muted uppercase tracking-widest">
+              <h3 className="text-base font-semibold tracking-tight text-ink">My Preferred Lanes</h3>
+              <p className="text-xs text-muted mt-0.5">
                 Get alerts for loads matching your routes
               </p>
             </div>
@@ -153,11 +151,13 @@ export default function PreferredLanesPanel() {
           <button
             onClick={() => setShowAddForm((v) => !v)}
             className={cn(
-              "btn h-10 px-5 text-[10px] font-black uppercase tracking-widest shadow-lg",
-              showAddForm ? "btn-secondary" : "btn-primary",
+              "inline-flex items-center gap-2 h-10 px-5 text-xs font-semibold rounded-md transition-colors",
+              showAddForm
+                ? "border border-hairline bg-card text-ink hover:bg-surface-soft"
+                : "bg-primary text-primary-foreground hover:bg-primary-active",
             )}
           >
-            {showAddForm ? <X size={16} weight="bold" /> : <Plus size={16} weight="bold" />}
+            {showAddForm ? <X size={16} weight="regular" /> : <Plus size={16} weight="regular" />}
             {showAddForm ? "Cancel" : "Add Lane"}
           </button>
         </div>
@@ -165,14 +165,14 @@ export default function PreferredLanesPanel() {
 
       {/* Add Lane Form */}
       {showAddForm && (
-        <div className="p-6 border-b border-border bg-input/30 animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="p-6 border-b border-hairline bg-surface-soft/50 animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">Origin State</label>
+              <label className="text-xs font-medium text-muted">Origin State</label>
               <select
                 value={originState}
                 onChange={(e) => setOriginState(e.target.value)}
-                className="w-full rounded-2xl border border-border bg-input px-4 py-3 text-sm font-black outline-none focus:border-accent"
+                className="h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none focus:border-ink"
               >
                 <option value="">Select...</option>
                 {US_STATES.map((s) => (
@@ -181,11 +181,11 @@ export default function PreferredLanesPanel() {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">Destination State</label>
+              <label className="text-xs font-medium text-muted">Destination State</label>
               <select
                 value={destState}
                 onChange={(e) => setDestState(e.target.value)}
-                className="w-full rounded-2xl border border-border bg-input px-4 py-3 text-sm font-black outline-none focus:border-accent"
+                className="h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none focus:border-ink"
               >
                 <option value="">Select...</option>
                 {US_STATES.filter((s) => s !== originState).map((s) => (
@@ -197,55 +197,55 @@ export default function PreferredLanesPanel() {
 
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">Min $/mile (optional)</label>
+              <label className="text-xs font-medium text-muted">Min $/mile (optional)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm font-bold">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm font-medium">$</span>
                 <input
                   type="number"
                   value={minRatePerMile}
                   onChange={(e) => setMinRatePerMile(e.target.value)}
                   placeholder="0.00"
-                  className="w-full rounded-2xl border border-border bg-input pl-7 pr-4 py-3 text-sm font-black outline-none focus:border-accent"
+                  className="h-10 w-full rounded-md border border-hairline bg-canvas pl-7 pr-3.5 py-2 text-sm text-ink outline-none focus:border-ink"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">Min $/trip (optional)</label>
+              <label className="text-xs font-medium text-muted">Min $/trip (optional)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm font-bold">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm font-medium">$</span>
                 <input
                   type="number"
                   value={minRatePerTrip}
                   onChange={(e) => setMinRatePerTrip(e.target.value)}
                   placeholder="0"
-                  className="w-full rounded-2xl border border-border bg-input pl-7 pr-4 py-3 text-sm font-black outline-none focus:border-accent"
+                  className="h-10 w-full rounded-md border border-hairline bg-canvas pl-7 pr-3.5 py-2 text-sm text-ink outline-none focus:border-ink"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">Max distance (mi)</label>
+              <label className="text-xs font-medium text-muted">Max distance (mi)</label>
               <input
                 type="number"
                 value={maxDistance}
                 onChange={(e) => setMaxDistance(e.target.value)}
                 placeholder="Any"
-                className="w-full rounded-2xl border border-border bg-input px-4 py-3 text-sm font-black outline-none focus:border-accent"
+                className="h-10 w-full rounded-md border border-hairline bg-canvas px-3.5 py-2 text-sm text-ink outline-none focus:border-ink"
               />
             </div>
           </div>
 
           <div className="space-y-2 mb-5">
-            <label className="text-[9px] font-black uppercase tracking-[0.2em] text-muted">Equipment Types (optional)</label>
+            <label className="text-xs font-medium text-muted">Equipment Types (optional)</label>
             <div className="flex flex-wrap gap-2">
               {EQUIPMENT_OPTIONS.map((eq) => (
                 <button
                   key={eq.value}
                   onClick={() => toggleTruckType(eq.value)}
                   className={cn(
-                    "px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-xl border transition-all",
+                    "px-3 py-1.5 text-xs font-medium rounded-md border transition-colors",
                     selectedTruckTypes.includes(eq.value)
-                      ? "bg-accent border-accent text-white"
-                      : "bg-input border-border text-muted hover:border-muted",
+                      ? "bg-primary border-primary text-primary-foreground"
+                      : "bg-canvas border-hairline text-muted hover:border-hairline hover:text-ink",
                   )}
                 >
                   {eq.label}
@@ -257,57 +257,57 @@ export default function PreferredLanesPanel() {
           <button
             onClick={handleAddLane}
             disabled={isSubmitting}
-            className="btn btn-primary h-12 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20 disabled:opacity-60"
+            className="inline-flex items-center justify-center h-11 px-6 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors disabled:opacity-50"
           >
-            {isSubmitting ? <CircleNotch size={16} weight="bold" className="animate-spin" /> : "Save Lane"}
+            {isSubmitting ? <CircleNotch size={16} weight="regular" className="animate-spin" /> : "Save Lane"}
           </button>
         </div>
       )}
 
       {/* Lanes List */}
-      <div className="divide-y divide-border">
+      <div className="divide-y divide-hairline">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <CircleNotch size={24} weight="bold" className="animate-spin text-accent" />
+            <CircleNotch size={24} weight="regular" className="animate-spin text-primary" />
           </div>
         ) : lanes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted px-6">
             <MapTrifold size={40} weight="thin" className="mb-3 opacity-20" />
-            <p className="text-xs font-bold uppercase tracking-widest">No preferred lanes</p>
-            <p className="text-[10px] mt-1 text-center">Add lanes to get notified when matching loads are posted</p>
+            <p className="text-sm font-medium">No preferred lanes</p>
+            <p className="text-xs mt-1 text-center text-muted-foreground">Add lanes to get notified when matching loads are posted</p>
           </div>
         ) : (
           lanes.map((lane) => (
-            <div key={lane._id} className="flex items-center justify-between px-6 py-4 hover:bg-card-hover transition-colors group">
-              <div className="flex items-center gap-4">
+            <div key={lane._id} className="flex items-center justify-between px-6 py-4 hover:bg-surface-soft transition-colors group">
+              <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-black text-foreground">{lane.originState}</span>
-                  <ArrowRight size={14} weight="bold" className="text-muted" />
-                  <span className="text-sm font-black text-foreground">{lane.destinationState}</span>
+                  <span className="text-sm font-semibold text-ink">{lane.originState}</span>
+                  <ArrowRight size={14} weight="regular" className="text-muted" />
+                  <span className="text-sm font-semibold text-ink">{lane.destinationState}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   {lane.minRatePerMile && (
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-muted">
-                      <CurrencyDollar size={12} weight="bold" /> {lane.minRatePerMile}/mi
+                    <span className="flex items-center gap-1 text-xs text-muted">
+                      <CurrencyDollar size={12} weight="regular" /> {lane.minRatePerMile}/mi
                     </span>
                   )}
                   {lane.minRatePerTrip && (
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-muted">
+                    <span className="flex items-center gap-1 text-xs text-muted">
                       Min ${lane.minRatePerTrip}
                     </span>
                   )}
                   {lane.maxDistance && (
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-muted">
-                      <MapPin size={12} weight="bold" /> ≤{lane.maxDistance} mi
+                    <span className="flex items-center gap-1 text-xs text-muted">
+                      <MapPin size={12} weight="regular" /> &le;{lane.maxDistance} mi
                     </span>
                   )}
                   {lane.truckTypes.length > 0 && (
                     <div className="flex items-center gap-1">
                       {lane.truckTypes.slice(0, 2).map((t) => (
-                        <span key={t} className="badge badge-gray text-[9px] h-5">{t}</span>
+                        <span key={t} className="badge-pill badge-pill-default text-xs">{t}</span>
                       ))}
                       {lane.truckTypes.length > 2 && (
-                        <span className="text-[9px] text-muted font-bold">+{lane.truckTypes.length - 2}</span>
+                        <span className="text-xs text-muted">+{lane.truckTypes.length - 2}</span>
                       )}
                     </div>
                   )}
@@ -315,15 +315,15 @@ export default function PreferredLanesPanel() {
               </div>
               <div className="flex items-center gap-3">
                 {lane.alertEnabled && (
-                  <span className="flex items-center gap-1 text-[9px] font-black text-success uppercase tracking-widest">
+                  <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
                     <CheckCircle size={12} weight="fill" /> Active
                   </span>
                 )}
                 <button
                   onClick={() => handleDeleteLane(lane._id)}
-                  className="flex h-8 w-8 items-center justify-center rounded-xl text-muted hover:bg-danger-light hover:text-danger opacity-0 group-hover:opacity-100 transition-all"
+                  className="flex h-8 w-8 items-center justify-center rounded-md text-muted hover:bg-surface-card hover:text-error opacity-0 group-hover:opacity-100 transition-all"
                 >
-                  <TrashSimple size={16} weight="bold" />
+                  <TrashSimple size={16} weight="regular" />
                 </button>
               </div>
             </div>

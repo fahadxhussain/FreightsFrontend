@@ -244,7 +244,7 @@ export default function TruckDetailPage() {
       <div className="p-6 animate-in fade-in duration-300">
         <div className="max-w-4xl mx-auto">
           <div className="h-8 w-32 bg-card animate-pulse rounded-lg mb-8" />
-          <div className="rounded-3xl border border-border bg-card p-10">
+          <div className="rounded-3xl border border-hairline bg-card p-10">
             <div className="space-y-6">
               <div className="h-8 w-64 bg-muted/20 animate-pulse rounded-lg" />
               <div className="h-4 w-48 bg-muted/20 animate-pulse rounded-lg" />
@@ -276,7 +276,7 @@ export default function TruckDetailPage() {
         {/* back link */}
         <Link
           href="/fleet"
-          className="mb-6 inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+          className="mb-6 inline-flex items-center gap-1.5 text-[10px] font-semibold  text-muted hover:text-ink transition-colors"
         >
           <ArrowLeft size={14} weight="bold" />
           Back to Fleet
@@ -285,10 +285,10 @@ export default function TruckDetailPage() {
         {/* header */}
         <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-foreground">
+            <h1 className="text-3xl font-semibold tracking-tight text-ink">
               {truck.year} {truck.make} {truck.model}
             </h1>
-            <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">
+            <p className="text-sm font-bold text-muted  mt-1">
               {truck.internalId ||
                 `Truck #${truck._id.slice(-6).toUpperCase()}`}
             </p>
@@ -306,38 +306,38 @@ export default function TruckDetailPage() {
         {/* spec cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* main specs */}
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-xl">
-            <h3 className="text-lg font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
-              <Truck size={22} weight="bold" className="text-accent" />
+          <div className="rounded-3xl border border-hairline bg-card p-8 shadow-xl">
+            <h3 className="text-lg font-semibold tracking-tight text-ink mb-6 flex items-center gap-2">
+              <Truck size={22} weight="bold" className="text-primary" />
               Vehicle Specifications
             </h3>
             <div className="grid grid-cols-2 gap-5">
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                <div className="text-[10px] font-semibold  text-muted mb-1">
                   Year
                 </div>
-                <div className="text-sm font-black text-foreground">
+                <div className="text-sm font-semibold text-ink">
                   {truck.year || "N/A"}
                 </div>
               </div>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                <div className="text-[10px] font-semibold  text-muted mb-1">
                   Make
                 </div>
-                <div className="text-sm font-black text-foreground">
+                <div className="text-sm font-semibold text-ink">
                   {truck.make || "N/A"}
                 </div>
               </div>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                <div className="text-[10px] font-semibold  text-muted mb-1">
                   Model
                 </div>
-                <div className="text-sm font-black text-foreground">
+                <div className="text-sm font-semibold text-ink">
                   {truck.model || "N/A"}
                 </div>
               </div>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                <div className="text-[10px] font-semibold  text-muted mb-1">
                   Equipment Type
                 </div>
                 <span className="badge badge-blue">
@@ -345,18 +345,18 @@ export default function TruckDetailPage() {
                 </span>
               </div>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                <div className="text-[10px] font-semibold  text-muted mb-1">
                   VIN
                 </div>
-                <div className="text-sm font-mono font-bold text-foreground">
+                <div className="text-sm font-mono font-bold text-ink">
                   {truck.vin || "N/A"}
                 </div>
               </div>
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                <div className="text-[10px] font-semibold  text-muted mb-1">
                   License Plate
                 </div>
-                <div className="text-sm font-black text-foreground">
+                <div className="text-sm font-semibold text-ink">
                   {truck.plateNumber
                     ? `${truck.plateNumber}${truck.plateState ? ` (${truck.plateState})` : ""}`
                     : "N/A"}
@@ -364,21 +364,21 @@ export default function TruckDetailPage() {
               </div>
               {truck.engine && (
                 <div className="col-span-2">
-                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                  <div className="text-[10px] font-semibold  text-muted mb-1">
                     <Engine size={12} weight="bold" className="inline mr-1" />
                     Engine
                   </div>
-                  <div className="text-sm font-bold text-foreground">
+                  <div className="text-sm font-bold text-ink">
                     {truck.engine}
                   </div>
                 </div>
               )}
               {truck.maxPayload != null && (
                 <div>
-                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-1">
+                  <div className="text-[10px] font-semibold  text-muted mb-1">
                     Max Payload
                   </div>
-                  <div className="text-sm font-black text-foreground">
+                  <div className="text-sm font-semibold text-ink">
                     {truck.maxPayload.toLocaleString()} lbs
                   </div>
                 </div>
@@ -387,27 +387,27 @@ export default function TruckDetailPage() {
           </div>
 
           {/* driver / assignment section */}
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-xl">
-            <h3 className="text-lg font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
+          <div className="rounded-3xl border border-hairline bg-card p-8 shadow-xl">
+            <h3 className="text-lg font-semibold tracking-tight text-ink mb-6 flex items-center gap-2">
               <IdentificationBadge
                 size={22}
                 weight="bold"
-                className="text-accent"
+                className="text-primary"
               />
               Assigned Driver
             </h3>
 
             {truck.assignedDriverId ? (
               <div className="space-y-5">
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-input/50 border border-border/50">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-light text-accent text-sm font-black">
+                <div className="flex items-center gap-4 p-4 rounded-2xl bg-surface-soft/50 border border-hairline/50">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-soft text-ink text-sm font-semibold">
                     {truck.assignedDriverName
                       ?.split(" ")
                       .map((n) => n[0])
                       .join("") || "?"}
                   </div>
                   <div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {truck.assignedDriverName}
                     </div>
                     <div className="text-[11px] font-medium text-muted">
@@ -421,7 +421,7 @@ export default function TruckDetailPage() {
                 <button
                   onClick={handleUnassignDriver}
                   disabled={isUnassigning}
-                  className="btn btn-ghost-danger w-full h-10 text-[11px] font-black uppercase tracking-widest text-danger"
+                  className="btn btn-ghost-danger w-full h-10 text-[11px] font-semibold  text-danger"
                 >
                   <UserMinus size={16} weight="bold" />
                   {isUnassigning ? "Removing..." : "Unassign Driver"}
@@ -429,20 +429,20 @@ export default function TruckDetailPage() {
               </div>
             ) : (
               <div className="space-y-5">
-                <div className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-border text-center">
+                <div className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-hairline text-center">
                   <User
                     size={28}
                     weight="thin"
                     className="mb-2 text-muted opacity-50"
                   />
-                  <p className="text-[11px] font-bold text-muted uppercase tracking-widest">
+                  <p className="text-[11px] font-bold text-muted ">
                     No driver assigned
                   </p>
                 </div>
 
                 <button
                   onClick={openAssignModal}
-                  className="btn btn-primary w-full h-10 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/10"
+                  className="btn btn-primary w-full h-10 text-[11px] font-semibold  "
                 >
                   <UserPlus size={16} weight="bold" />
                   Assign Driver
@@ -452,12 +452,12 @@ export default function TruckDetailPage() {
           </div>
 
           {/* GPS device */}
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-xl">
-            <h3 className="text-lg font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
+          <div className="rounded-3xl border border-hairline bg-card p-8 shadow-xl">
+            <h3 className="text-lg font-semibold tracking-tight text-ink mb-6 flex items-center gap-2">
               <NavigationArrow
                 size={22}
                 weight="bold"
-                className="text-accent"
+                className="text-primary"
               />
               GPS Device
             </h3>
@@ -470,28 +470,28 @@ export default function TruckDetailPage() {
                     className="text-success"
                   />
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted">
+                    <div className="text-[10px] font-semibold  text-muted">
                       Device ID
                     </div>
-                    <div className="text-sm font-mono font-bold text-foreground">
+                    <div className="text-sm font-mono font-bold text-ink">
                       {truck.gpsDeviceId}
                     </div>
                   </div>
                 </div>
-                <button className="btn btn-ghost text-[10px] font-black uppercase tracking-widest text-muted hover:text-danger">
+                <button className="btn btn-ghost text-[10px] font-semibold  text-muted hover:text-danger">
                   <LinkSimple size={14} weight="bold" />
                   Unlink
                 </button>
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-border text-center">
+                <div className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-hairline text-center">
                   <NavigationArrow
                     size={28}
                     weight="thin"
                     className="mb-2 text-muted opacity-50"
                   />
-                  <p className="text-[11px] font-bold text-muted uppercase tracking-widest">
+                  <p className="text-[11px] font-bold text-muted ">
                     No GPS device linked
                   </p>
                 </div>
@@ -502,7 +502,7 @@ export default function TruckDetailPage() {
                       "GPS linking will be available in the next update",
                     );
                   }}
-                  className="btn btn-secondary w-full h-10 text-[11px] font-black uppercase tracking-widest"
+                  className="btn btn-secondary w-full h-10 text-[11px] font-semibold "
                 >
                   <LinkSimple size={16} weight="bold" />
                   Link GPS Device
@@ -512,35 +512,35 @@ export default function TruckDetailPage() {
           </div>
 
           {/* Trailer */}
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-xl">
-            <h3 className="text-lg font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
-              <Cube size={22} weight="bold" className="text-accent" />
+          <div className="rounded-3xl border border-hairline bg-card p-8 shadow-xl">
+            <h3 className="text-lg font-semibold tracking-tight text-ink mb-6 flex items-center gap-2">
+              <Cube size={22} weight="bold" className="text-primary" />
               Trailer
             </h3>
             {truck.trailerId ? (
-              <div className="flex items-center justify-between p-4 rounded-2xl bg-input/50 border border-border/50">
+              <div className="flex items-center justify-between p-4 rounded-2xl bg-surface-soft/50 border border-hairline/50">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-light text-accent">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-soft text-primary">
                     <Cube size={20} weight="bold" />
                   </div>
                   <div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {truck.trailerInfo || "Trailer linked"}
                     </div>
-                    <div className="text-[10px] font-bold text-muted uppercase tracking-widest">
+                    <div className="text-[10px] font-bold text-muted ">
                       ID: {truck.trailerId.slice(-6).toUpperCase()}
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-border text-center">
+              <div className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-hairline text-center">
                 <Cube
                   size={28}
                   weight="thin"
                   className="mb-2 text-muted opacity-50"
                 />
-                <p className="text-[11px] font-bold text-muted uppercase tracking-widest">
+                <p className="text-[11px] font-bold text-muted ">
                   No trailer linked
                 </p>
               </div>
@@ -550,9 +550,9 @@ export default function TruckDetailPage() {
 
         {/* compliance section — only shown if driver assigned */}
         {truck.assignedDriverId && (driver || isLoadingDriver) && (
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-xl mb-8">
-            <h3 className="text-lg font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
-              <CalendarCheck size={22} weight="bold" className="text-accent" />
+          <div className="rounded-3xl border border-hairline bg-card p-8 shadow-xl mb-8">
+            <h3 className="text-lg font-semibold tracking-tight text-ink mb-6 flex items-center gap-2">
+              <CalendarCheck size={22} weight="bold" className="text-primary" />
               Compliance
             </h3>
 
@@ -573,14 +573,14 @@ export default function TruckDetailPage() {
                     "flex items-center justify-between rounded-2xl p-5 border",
                     cdlDaysLeft != null && cdlDaysLeft <= 30
                       ? "border-danger/20 bg-danger-light/30"
-                      : "border-border/50 bg-input/30",
+                      : "border-hairline/50 bg-surface-soft/30",
                   )}
                 >
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted mb-1">
+                    <div className="text-[10px] font-semibold  text-muted mb-1">
                       CDL Expiry
                     </div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {driver.cdlExpiry
                         ? new Date(driver.cdlExpiry).toLocaleDateString()
                         : "Not on file"}
@@ -613,14 +613,14 @@ export default function TruckDetailPage() {
                     "flex items-center justify-between rounded-2xl p-5 border",
                     medDaysLeft != null && medDaysLeft <= 30
                       ? "border-danger/20 bg-danger-light/30"
-                      : "border-border/50 bg-input/30",
+                      : "border-hairline/50 bg-surface-soft/30",
                   )}
                 >
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted mb-1">
+                    <div className="text-[10px] font-semibold  text-muted mb-1">
                       Medical Card Expiry
                     </div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {driver.medicalCardExpiry
                         ? new Date(
                             driver.medicalCardExpiry,
@@ -647,7 +647,7 @@ export default function TruckDetailPage() {
             ) : (
               <div className="flex flex-col items-center justify-center py-8 text-muted">
                 <Warning size={32} weight="thin" className="mb-2 opacity-40" />
-                <p className="text-xs font-bold uppercase tracking-widest">
+                <p className="text-xs font-bold ">
                   No compliance data available
                 </p>
               </div>
@@ -659,20 +659,20 @@ export default function TruckDetailPage() {
       {/* ─── assign driver modal ──────────────────────────────────────────────────────────── */}
       {isAssignModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-card w-full max-w-md rounded-[2rem] border border-border shadow-2xl overflow-hidden animate-in zoom-in-95">
-            <div className="flex items-center justify-between p-6 border-b border-border bg-muted/5">
+          <div className="bg-card w-full max-w-md rounded-[2rem] border border-hairline shadow-2xl overflow-hidden animate-in zoom-in-95">
+            <div className="flex items-center justify-between p-6 border-b border-hairline bg-muted/5">
               <div>
-                <h2 className="text-2xl font-black text-foreground">
+                <h2 className="text-2xl font-semibold text-ink">
                   Assign Driver
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   For {truck.make} {truck.model} (
                   {truck.internalId || truck._id.slice(-6)})
                 </p>
               </div>
               <button
                 onClick={() => setIsAssignModalOpen(false)}
-                className="h-10 w-10 flex items-center justify-center rounded-full bg-card border border-border text-muted hover:bg-danger hover:text-white hover:border-danger transition-all"
+                className="h-10 w-10 flex items-center justify-center rounded-full bg-card border border-hairline text-muted hover:bg-danger hover:text-white hover:border-danger transition-all"
               >
                 <span className="text-lg font-bold">×</span>
               </button>
@@ -680,7 +680,7 @@ export default function TruckDetailPage() {
 
             <div className="p-8 space-y-6">
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1 text-[10px] font-semibold  text-muted">
                   Select Driver
                 </label>
                 {isFetchingDrivers ? (
@@ -697,7 +697,7 @@ export default function TruckDetailPage() {
                     required
                     value={selectedDriverId}
                     onChange={(e) => setSelectedDriverId(e.target.value)}
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black text-foreground outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-2xl border border-hairline bg-surface-soft px-5 py-4 text-sm font-semibold text-ink outline-none appearance-none cursor-pointer"
                   >
                     <option value="" disabled>
                       Choose a driver...
@@ -716,14 +716,14 @@ export default function TruckDetailPage() {
                 <button
                   type="button"
                   onClick={() => setIsAssignModalOpen(false)}
-                  className="flex-1 btn btn-secondary h-12 text-[11px] font-black uppercase tracking-widest"
+                  className="flex-1 btn btn-secondary h-12 text-[11px] font-semibold "
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAssignDriver}
                   disabled={isAssigning || !selectedDriverId}
-                  className="flex-1 btn btn-primary h-12 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20"
+                  className="flex-1 btn btn-primary h-12 text-[11px] font-semibold  shadow-xl "
                 >
                   {isAssigning ? "Assigning..." : "Assign to Truck"}
                 </button>

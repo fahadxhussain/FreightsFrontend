@@ -302,7 +302,7 @@ export default function LoadDetailPage() {
         <CircleNotch
           size={48}
           weight="bold"
-          className="animate-spin text-accent"
+          className="animate-spin text-primary"
         />
       </div>
     );
@@ -317,12 +317,12 @@ export default function LoadDetailPage() {
             weight="thin"
             className="mx-auto mb-4 opacity-20"
           />
-          <p className="font-bold uppercase tracking-widest text-xs text-muted">
+          <p className="font-bold  text-xs text-muted">
             {error || "Load not found"}
           </p>
           <button
             onClick={() => router.back()}
-            className="btn btn-secondary mt-4 text-[10px] font-black"
+            className="btn btn-secondary mt-4 text-[10px] font-semibold"
           >
             <ArrowLeft size={16} weight="bold" /> Go Back
           </button>
@@ -347,7 +347,7 @@ export default function LoadDetailPage() {
         <div>
           <button
             onClick={() => router.back()}
-            className="mb-3 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+            className="mb-3 flex items-center gap-2 text-[10px] font-semibold  text-muted hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} weight="bold" />
             Loads
@@ -356,7 +356,7 @@ export default function LoadDetailPage() {
             <div className="badge badge-blue h-7 px-4">
               FL-{load._id.slice(-6).toUpperCase()}
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-foreground">
+            <h1 className="text-2xl font-semibold tracking-tight text-ink">
               {load.commodity || "Freight"} — {load.origin.city} to{" "}
               {load.destination.city}
             </h1>
@@ -393,14 +393,14 @@ export default function LoadDetailPage() {
         {/* ================================================================= */}
         <div className="space-y-6">
           {/* Map */}
-          <div className="aspect-[21/9] w-full rounded-2xl bg-input border-2 border-dashed border-border flex items-center justify-center text-muted hover:border-accent/30 transition-colors cursor-pointer group">
+          <div className="aspect-[21/9] w-full rounded-2xl bg-surface-soft border-2 border-dashed border-hairline flex items-center justify-center text-muted hover:border-accent/30 transition-colors cursor-pointer group">
             <div className="text-center group-hover:scale-105 transition-transform">
               <MapTrifold
                 size={44}
                 weight="duotone"
                 className="mx-auto mb-2 opacity-20"
               />
-              <p className="text-[10px] font-black uppercase tracking-widest">
+              <p className="text-[10px] font-semibold ">
                 {load.origin.city}, {load.origin.state} →{" "}
                 {load.destination.city}, {load.destination.state}
               </p>
@@ -411,22 +411,22 @@ export default function LoadDetailPage() {
           </div>
 
           {/* Load Details */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <h3 className="text-base font-black tracking-tight text-foreground mb-5 flex items-center gap-2">
-              <Package size={20} weight="bold" className="text-accent" />
+          <div className="rounded-2xl border border-hairline bg-card p-6 shadow-sm">
+            <h3 className="text-base font-semibold tracking-tight text-ink mb-5 flex items-center gap-2">
+              <Package size={20} weight="bold" className="text-primary" />
               Load Details
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-y-5 gap-x-6">
               <div>
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
+                <div className="text-[9px] font-semibold  text-muted mb-1">
                   Commodity
                 </div>
-                <div className="text-sm font-black text-foreground">
+                <div className="text-sm font-semibold text-ink">
                   {load.commodity || "—"}
                 </div>
               </div>
               <div>
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
+                <div className="text-[9px] font-semibold  text-muted mb-1">
                   Equipment
                 </div>
                 <span
@@ -439,19 +439,19 @@ export default function LoadDetailPage() {
                 </span>
               </div>
               <div>
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
+                <div className="text-[9px] font-semibold  text-muted mb-1">
                   Weight
                 </div>
-                <div className="flex items-center gap-1.5 text-sm font-black">
+                <div className="flex items-center gap-1.5 text-sm font-semibold">
                   <Scales size={14} weight="bold" className="text-muted" />
                   {load.weight?.toLocaleString()} lbs
                 </div>
               </div>
               <div>
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
+                <div className="text-[9px] font-semibold  text-muted mb-1">
                   Pickup
                 </div>
-                <div className="text-[12px] font-black text-foreground">
+                <div className="text-[12px] font-semibold text-ink">
                   {formatDateTime(load.pickupDate)}
                 </div>
                 <div className="text-[10px] font-bold text-muted">
@@ -459,10 +459,10 @@ export default function LoadDetailPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
+                <div className="text-[9px] font-semibold  text-muted mb-1">
                   Delivery
                 </div>
-                <div className="text-[12px] font-black text-foreground">
+                <div className="text-[12px] font-semibold text-ink">
                   {formatDateTime(load.deliveryDate)}
                 </div>
                 <div className="text-[10px] font-bold text-muted">
@@ -470,10 +470,10 @@ export default function LoadDetailPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-1">
+                <div className="text-[9px] font-semibold  text-muted mb-1">
                   Distance
                 </div>
-                <div className="flex items-center gap-1.5 text-sm font-black">
+                <div className="flex items-center gap-1.5 text-sm font-semibold">
                   <Truck size={14} weight="bold" className="text-muted" />
                   {load.estimatedDistance || 0} mi
                 </div>
@@ -482,8 +482,8 @@ export default function LoadDetailPage() {
 
             {/* Special requirements */}
             {load.specialRequirements && (
-              <div className="mt-5 pt-5 border-t border-border">
-                <div className="text-[9px] font-black uppercase tracking-widest text-muted mb-2">
+              <div className="mt-5 pt-5 border-t border-hairline">
+                <div className="text-[9px] font-semibold  text-muted mb-2">
                   Special Requirements
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -501,9 +501,9 @@ export default function LoadDetailPage() {
           </div>
 
           {/* Documents section */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <h3 className="text-base font-black tracking-tight text-foreground mb-5 flex items-center gap-2">
-              <FileText size={20} weight="bold" className="text-accent" />
+          <div className="rounded-2xl border border-hairline bg-card p-6 shadow-sm">
+            <h3 className="text-base font-semibold tracking-tight text-ink mb-5 flex items-center gap-2">
+              <FileText size={20} weight="bold" className="text-primary" />
               Required Documents
             </h3>
             <div className="space-y-4">
@@ -529,7 +529,7 @@ export default function LoadDetailPage() {
                           className="text-muted"
                         />
                       )}
-                      <span className="text-sm font-bold text-foreground">
+                      <span className="text-sm font-bold text-ink">
                         {doc}
                       </span>
                     </div>
@@ -548,9 +548,9 @@ export default function LoadDetailPage() {
           </div>
 
           {/* Shipment Timeline */}
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <h3 className="text-base font-black tracking-tight text-foreground mb-6 flex items-center gap-2">
-              <Clock size={20} weight="bold" className="text-accent" />
+          <div className="rounded-2xl border border-hairline bg-card p-6 shadow-sm">
+            <h3 className="text-base font-semibold tracking-tight text-ink mb-6 flex items-center gap-2">
+              <Clock size={20} weight="bold" className="text-primary" />
               Shipment Timeline
             </h3>
             <div className="space-y-0 ml-3">
@@ -589,10 +589,10 @@ export default function LoadDetailPage() {
                       className={cn(
                         "relative z-10 mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
                         isActive
-                          ? "border-accent bg-accent-light shadow-[0_0_0_4px_rgba(59,130,246,0.15)]"
+                          ? "border-accent bg-surface-soft shadow-[0_0_0_4px_rgba(59,130,246,0.15)]"
                           : isCompleted
                             ? "border-success bg-success"
-                            : "border-border bg-card",
+                            : "border-hairline bg-card",
                       )}
                     >
                       {isCompleted && !isActive && (
@@ -603,7 +603,7 @@ export default function LoadDetailPage() {
                         />
                       )}
                       {isActive && (
-                        <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                        <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                       )}
                     </div>
 
@@ -611,8 +611,8 @@ export default function LoadDetailPage() {
                     <div className="min-w-0">
                       <div
                         className={cn(
-                          "text-sm font-black uppercase tracking-wider",
-                          isFuture ? "text-muted" : "text-foreground",
+                          "text-sm font-semibold ",
+                          isFuture ? "text-muted" : "text-ink",
                         )}
                       >
                         {st.label}
@@ -624,7 +624,7 @@ export default function LoadDetailPage() {
                         </div>
                       )}
                       {isActive && !historyEntry && (
-                        <div className="text-[10px] font-bold text-accent mt-0.5">
+                        <div className="text-[10px] font-bold text-ink mt-0.5">
                           Current
                         </div>
                       )}
@@ -641,8 +641,8 @@ export default function LoadDetailPage() {
         {/* ================================================================= */}
         <div className="space-y-6">
           {/* Pricing */}
-          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-            <h3 className="text-base font-black tracking-tight text-foreground mb-4 flex items-center gap-2">
+          <div className="rounded-2xl border border-hairline bg-card p-5 shadow-sm">
+            <h3 className="text-base font-semibold tracking-tight text-ink mb-4 flex items-center gap-2">
               <CurrencyDollar
                 size={18}
                 weight="bold"
@@ -659,7 +659,7 @@ export default function LoadDetailPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted font-bold">Type</span>
-                <span className="text-sm font-bold text-foreground capitalize">
+                <span className="text-sm font-bold text-ink capitalize">
                   {load.rateType?.replace(/_/g, " ") || "Flat Rate"}
                 </span>
               </div>
@@ -679,17 +679,17 @@ export default function LoadDetailPage() {
 
           {/* Assigned Carrier */}
           {load.assignedTruckId && (
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-              <h3 className="text-base font-black tracking-tight text-foreground mb-4 flex items-center gap-2">
-                <Truck size={18} weight="bold" className="text-accent" />
+            <div className="rounded-2xl border border-hairline bg-card p-5 shadow-sm">
+              <h3 className="text-base font-semibold tracking-tight text-ink mb-4 flex items-center gap-2">
+                <Truck size={18} weight="bold" className="text-primary" />
                 Assigned Carrier
               </h3>
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-xs font-black text-white shadow-lg shadow-accent/20">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-xs font-semibold text-white shadow-lg ">
                   AC
                 </div>
                 <div>
-                  <div className="text-sm font-black text-foreground">
+                  <div className="text-sm font-semibold text-ink">
                     Assigned Carrier
                   </div>
                   <div className="text-[10px] font-bold text-muted">
@@ -718,13 +718,13 @@ export default function LoadDetailPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => router.push("/messaging")}
-                  className="btn btn-secondary flex-1 text-[10px] font-black h-9"
+                  className="btn btn-secondary flex-1 text-[10px] font-semibold h-9"
                 >
                   <ChatText size={14} weight="bold" /> Message
                 </button>
                 <button
                   onClick={() => router.push(`/tracking/${load._id}`)}
-                  className="btn btn-primary flex-1 text-[10px] font-black h-9"
+                  className="btn btn-primary flex-1 text-[10px] font-semibold h-9"
                 >
                   <MapPin size={14} weight="bold" /> Track
                 </button>
@@ -733,13 +733,13 @@ export default function LoadDetailPage() {
           )}
 
           {/* Booking Requests — broker only actions (Accept/Deny/Counter) */}
-          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+          <div className="rounded-2xl border border-hairline bg-card p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-black tracking-tight text-foreground flex items-center gap-2">
+              <h3 className="text-base font-semibold tracking-tight text-ink flex items-center gap-2">
                 <PaperPlaneTilt
                   size={18}
                   weight="bold"
-                  className="text-accent"
+                  className="text-primary"
                 />
                 Booking Requests
               </h3>
@@ -757,7 +757,7 @@ export default function LoadDetailPage() {
                   weight="thin"
                   className="mx-auto mb-2 opacity-20"
                 />
-                <p className="text-[10px] font-black uppercase tracking-widest">
+                <p className="text-[10px] font-semibold ">
                   No bids yet
                 </p>
               </div>
@@ -766,11 +766,11 @@ export default function LoadDetailPage() {
                 {bookingRequests.map((req) => (
                   <div
                     key={req._id}
-                    className="rounded-xl bg-input p-4 border border-border space-y-3"
+                    className="rounded-xl bg-surface-soft p-4 border border-hairline space-y-3"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-sm font-black text-foreground">
+                        <div className="text-sm font-semibold text-ink">
                           {req.carrierOrgName || "Carrier"}
                         </div>
                         <div className="text-[10px] font-bold text-muted">
@@ -797,7 +797,7 @@ export default function LoadDetailPage() {
                           <button
                             onClick={() => handleAcceptBid(req._id)}
                             disabled={actionLoading === req._id}
-                            className="btn btn-sm flex-1 h-9 text-[10px] font-black"
+                            className="btn btn-sm flex-1 h-9 text-[10px] font-semibold"
                             style={{
                               backgroundColor: "var(--success)",
                               color: "white",
@@ -817,14 +817,14 @@ export default function LoadDetailPage() {
                           <button
                             onClick={() => handleToggleCounterInput(req._id)}
                             disabled={actionLoading === req._id}
-                            className="btn btn-secondary btn-sm flex-1 h-9 text-[10px] font-black"
+                            className="btn btn-secondary btn-sm flex-1 h-9 text-[10px] font-semibold"
                           >
                             Counter
                           </button>
                           <button
                             onClick={() => handleDenyBid(req._id)}
                             disabled={actionLoading === req._id}
-                            className="btn btn-sm flex-1 h-9 text-[10px] font-black text-danger border border-danger/30 hover:bg-danger-light"
+                            className="btn btn-sm flex-1 h-9 text-[10px] font-semibold text-danger border border-danger/30 hover:bg-danger-light"
                           >
                             Deny
                           </button>
@@ -862,13 +862,13 @@ export default function LoadDetailPage() {
                                   [req._id]: e.target.value,
                                 }))
                               }
-                              className="w-full rounded-lg border border-border bg-card pl-7 pr-3 py-2 text-xs font-bold outline-none focus:border-accent"
+                              className="w-full rounded-lg border border-hairline bg-card pl-7 pr-3 py-2 text-xs font-bold outline-none focus:border-ink"
                             />
                           </div>
                           <button
                             onClick={() => handleCounterOffer(req._id)}
                             disabled={actionLoading === req._id}
-                            className="btn btn-primary btn-sm h-9 px-4 text-[10px] font-black"
+                            className="btn btn-primary btn-sm h-9 px-4 text-[10px] font-semibold"
                           >
                             {actionLoading === req._id ? (
                               <CircleNotch

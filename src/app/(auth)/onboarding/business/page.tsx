@@ -61,8 +61,8 @@ export default function BusinessStep() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-bold">Business Information</h2>
-        <p className="text-sm text-gray-500">Provide your company details for verification.</p>
+        <h2 className="text-xl font-semibold text-ink">Business Information</h2>
+        <p className="text-sm text-muted">Provide your company details for verification.</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -141,7 +141,7 @@ export default function BusinessStep() {
             <Button type="button" variant="ghost" onClick={() => router.back()}>
               Back
             </Button>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="h-10 rounded-md bg-primary text-primary-foreground hover:bg-primary-active transition-colors text-sm font-semibold">
               {isLoading ? 'Saving...' : 'Next: Payment Setup'}
             </Button>
           </div>

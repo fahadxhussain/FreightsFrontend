@@ -213,8 +213,8 @@ const NOTIFICATION_EVENTS: {
 function FieldSkeleton({ wide }: { wide?: boolean }) {
   return (
     <div className={cn("space-y-2", wide && "col-span-2")}>
-      <div className="ml-1 h-3 w-20 rounded-md bg-input animate-pulse" />
-      <div className="h-12 w-full rounded-2xl bg-input animate-pulse" />
+      <div className="ml-1 h-3 w-20 rounded-md bg-surface-soft animate-pulse" />
+      <div className="h-12 w-full rounded-xl bg-surface-soft animate-pulse" />
     </div>
   );
 }
@@ -222,11 +222,11 @@ function FieldSkeleton({ wide }: { wide?: boolean }) {
 function ProfileSkeleton() {
   return (
     <div className="space-y-8">
-      <div className="flex items-center gap-6 p-6 rounded-[2rem] bg-input/50 border border-border">
-        <div className="h-24 w-24 rounded-[2rem] bg-input animate-pulse" />
+      <div className="flex items-center gap-6 p-6 rounded-xl bg-surface-soft/50 border border-hairline">
+        <div className="h-24 w-24 rounded-xl bg-surface-soft animate-pulse" />
         <div className="space-y-2">
-          <div className="h-5 w-28 rounded-md bg-input animate-pulse" />
-          <div className="h-3 w-40 rounded-md bg-input animate-pulse" />
+          <div className="h-5 w-28 rounded-md bg-surface-soft animate-pulse" />
+          <div className="h-3 w-40 rounded-md bg-surface-soft animate-pulse" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-6">
@@ -256,7 +256,7 @@ function ToggleSwitch({
       onClick={onChange}
       className={cn(
         "h-8 w-14 rounded-full transition-all relative p-1",
-        checked ? "bg-accent" : "bg-muted/30",
+        checked ? "bg-primary" : "bg-muted/30",
         disabled && "opacity-50 cursor-not-allowed",
       )}
     >
@@ -557,8 +557,8 @@ export default function SettingsPage() {
   return (
     <div className="flex min-h-[calc(100vh-72px)] overflow-hidden animate-in fade-in duration-500">
       {/* ── Sidebar Nav ──────────────────────────────────────────────── */}
-      <div className="w-[260px] border-r border-border bg-background p-5 flex-shrink-0">
-        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-muted mb-6 ml-2">
+      <div className="w-[260px] border-r border-hairline bg-canvas p-5 flex-shrink-0">
+        <h2 className="text-xs font-semibold  text-muted mb-6 ml-2">
           Settings
         </h2>
         <nav className="space-y-1">
@@ -569,11 +569,11 @@ export default function SettingsPage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all",
+                  "w-full flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-bold transition-all",
                   isActive
-                    ? "bg-accent-light text-accent shadow-sm ring-1 ring-accent/10"
+                    ? "bg-surface-soft text-ink shadow-sm ring-1 ring-primary"
                     : cn(
-                        "text-muted hover:bg-card-hover hover:text-foreground",
+                        "text-muted hover:bg-surface-soft hover:text-ink",
                         tab.color,
                       ),
                 )}
@@ -596,10 +596,10 @@ export default function SettingsPage() {
           {activeTab === "profile" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-foreground">
+                <h2 className="text-2xl font-semibold tracking-tight text-ink">
                   Profile Settings
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Manage your personal information
                 </p>
               </div>
@@ -612,28 +612,28 @@ export default function SettingsPage() {
                   className="space-y-6"
                 >
                   {/* Avatar */}
-                  <div className="flex items-center gap-5 p-6 rounded-[2rem] bg-input/50 border border-border">
-                    <div className="h-20 w-20 flex items-center justify-center rounded-[2rem] bg-accent text-white text-2xl font-black shadow-xl shadow-accent/20">
+                  <div className="flex items-center gap-5 p-6 rounded-xl bg-surface-soft/50 border border-hairline">
+                    <div className="h-20 w-20 flex items-center justify-center rounded-xl bg-primary text-white text-2xl font-semibold shadow-sm">
                       {user?.firstName?.slice(0, 1)}
                       {user?.lastName?.slice(0, 1)}
                     </div>
                     <div>
-                      <h4 className="text-base font-black text-foreground">
+                      <h4 className="text-base font-semibold text-ink">
                         Profile Photo
                       </h4>
-                      <p className="text-[10px] font-bold text-muted uppercase tracking-widest mt-0.5">
+                      <p className=" font-bold text-muted  mt-0.5">
                         JPG or PNG, max 5MB
                       </p>
                       <div className="flex gap-2 mt-3">
                         <button
                           type="button"
-                          className="btn btn-secondary h-8 px-4 text-[10px] font-black uppercase tracking-widest"
+                          className="btn btn-secondary h-8 px-4  font-semibold "
                         >
                           <PencilSimple size={14} weight="bold" /> Upload
                         </button>
                         <button
                           type="button"
-                          className="btn btn-ghost h-8 px-4 text-[10px] font-black uppercase tracking-widest"
+                          className="btn btn-ghost h-8 px-4  font-semibold "
                         >
                           Remove
                         </button>
@@ -644,12 +644,12 @@ export default function SettingsPage() {
                   {/* Name fields */}
                   <div className="grid grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         First Name
                       </label>
                       <input
                         {...profileForm.register("firstName")}
-                        className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                       />
                       {profileForm.formState.errors.firstName && (
                         <p className="text-xs font-bold text-danger ml-1">
@@ -658,12 +658,12 @@ export default function SettingsPage() {
                       )}
                     </div>
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         Last Name
                       </label>
                       <input
                         {...profileForm.register("lastName")}
-                        className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                       />
                       {profileForm.formState.errors.lastName && (
                         <p className="text-xs font-bold text-danger ml-1">
@@ -675,7 +675,7 @@ export default function SettingsPage() {
 
                   {/* Email (readonly) */}
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Email Address
                     </label>
                     <div className="relative">
@@ -687,14 +687,14 @@ export default function SettingsPage() {
                       <input
                         readOnly
                         value={user?.email || ""}
-                        className="w-full rounded-2xl border border-border bg-muted/10 pl-12 pr-5 py-3.5 text-sm font-bold text-muted outline-none cursor-not-allowed"
+                        className="w-full rounded-md border border-hairline bg-muted/10 pl-12 pr-5 py-3.5 text-sm font-bold text-muted outline-none cursor-not-allowed"
                       />
                     </div>
                   </div>
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Phone Number
                     </label>
                     <div className="relative">
@@ -705,7 +705,7 @@ export default function SettingsPage() {
                       />
                       <input
                         {...profileForm.register("phone")}
-                        className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                         placeholder="+1 (555) 123-4567"
                       />
                     </div>
@@ -713,7 +713,7 @@ export default function SettingsPage() {
 
                   {/* Timezone */}
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Timezone
                     </label>
                     <div className="relative">
@@ -724,7 +724,7 @@ export default function SettingsPage() {
                       />
                       <select
                         {...profileForm.register("timezone")}
-                        className="w-full rounded-2xl border border-border bg-input pl-12 pr-10 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all appearance-none cursor-pointer"
+                        className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-10 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all appearance-none cursor-pointer"
                       >
                         {TIMEZONES.map((tz) => (
                           <option key={tz} value={tz}>
@@ -738,7 +738,7 @@ export default function SettingsPage() {
                   <button
                     type="submit"
                     disabled={savingProfile}
-                    className="btn btn-primary h-12 px-10 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20"
+                    className="btn btn-primary h-12 px-10 text-[11px] font-semibold  shadow-sm"
                   >
                     {savingProfile ? (
                       <Spinner
@@ -758,10 +758,10 @@ export default function SettingsPage() {
           {activeTab === "security" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-foreground">
+                <h2 className="text-2xl font-semibold tracking-tight text-ink">
                   Security & Password
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Keep your account secure
                 </p>
               </div>
@@ -771,7 +771,7 @@ export default function SettingsPage() {
                 className="space-y-5"
               >
                 <div className="space-y-1.5">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                  <label className="ml-1  font-semibold  text-muted">
                     Current Password
                   </label>
                   <div className="relative">
@@ -783,7 +783,7 @@ export default function SettingsPage() {
                     <input
                       type="password"
                       {...passwordForm.register("currentPassword")}
-                      className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                      className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                       placeholder="Enter current password"
                     />
                   </div>
@@ -796,13 +796,13 @@ export default function SettingsPage() {
 
                 <div className="grid grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       New Password
                     </label>
                     <input
                       type="password"
                       {...passwordForm.register("newPassword")}
-                      className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                      className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                       placeholder="Minimum 8 characters"
                     />
                     {passwordForm.formState.errors.newPassword && (
@@ -812,13 +812,13 @@ export default function SettingsPage() {
                     )}
                   </div>
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Confirm Password
                     </label>
                     <input
                       type="password"
                       {...passwordForm.register("confirmPassword")}
-                      className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                      className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                       placeholder="Repeat new password"
                     />
                     {passwordForm.formState.errors.confirmPassword && (
@@ -832,7 +832,7 @@ export default function SettingsPage() {
                 <button
                   type="submit"
                   disabled={changingPassword}
-                  className="btn btn-primary h-12 px-10 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20"
+                  className="btn btn-primary h-12 px-10 text-[11px] font-semibold  shadow-sm"
                 >
                   {changingPassword ? (
                     <Spinner size={18} weight="bold" className="animate-spin" />
@@ -841,20 +841,20 @@ export default function SettingsPage() {
                 </button>
               </form>
 
-              <hr className="border-border" />
+              <hr className="border-hairline" />
 
               {/* 2FA placeholder */}
-              <div className="rounded-2xl border border-border bg-card p-8 shadow-sm space-y-4">
+              <div className="rounded-xl border border-hairline bg-card p-8 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-indigo-light text-indigo">
                       <DeviceMobile size={28} weight="bold" />
                     </div>
                     <div>
-                      <h4 className="text-base font-black text-foreground">
+                      <h4 className="text-base font-semibold text-ink">
                         Two-Factor Authentication
                       </h4>
-                      <p className="text-xs font-bold text-muted uppercase tracking-widest mt-0.5">
+                      <p className="text-xs font-bold text-muted  mt-0.5">
                         Add an extra layer of security
                       </p>
                     </div>
@@ -862,7 +862,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     onClick={() => toast.info("2FA setup coming soon")}
-                    className="btn btn-secondary h-10 px-5 text-[10px] font-black uppercase tracking-widest"
+                    className="btn btn-secondary h-10 px-5  font-semibold "
                   >
                     Enable 2FA
                   </button>
@@ -875,17 +875,17 @@ export default function SettingsPage() {
           {activeTab === "accounts" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-foreground">
+                <h2 className="text-2xl font-semibold tracking-tight text-ink">
                   Connected Accounts
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Manage third-party integrations
                 </p>
               </div>
 
               {/* Stripe */}
               <div
-                className="rounded-2xl border p-6 shadow-sm"
+                className="rounded-xl border p-6 shadow-sm"
                 style={{
                   borderLeftWidth: "3px",
                   borderLeftColor:
@@ -896,20 +896,20 @@ export default function SettingsPage() {
               >
                 {stripeStatus === "loading" ? (
                   <div className="flex items-center gap-4 animate-pulse">
-                    <div className="h-10 w-10 rounded-lg bg-input" />
+                    <div className="h-10 w-10 rounded-lg bg-surface-soft" />
                     <div className="space-y-2">
-                      <div className="h-4 w-32 rounded bg-input" />
-                      <div className="h-3 w-48 rounded bg-input" />
+                      <div className="h-4 w-32 rounded bg-surface-soft" />
+                      <div className="h-3 w-48 rounded bg-surface-soft" />
                     </div>
                   </div>
                 ) : stripeStatus === "connected" ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-[#635BFF] text-white font-black text-sm">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-[#635BFF] text-white font-semibold text-sm">
                         <CreditCard size={20} weight="fill" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-black text-foreground">
+                        <h4 className="text-sm font-semibold text-ink">
                           Stripe Connected
                         </h4>
                         <p className="text-xs font-bold text-muted mt-0.5">
@@ -924,14 +924,14 @@ export default function SettingsPage() {
                         onClick={() =>
                           toast.info("Stripe dashboard coming soon")
                         }
-                        className="btn btn-secondary h-9 px-4 text-[10px] font-black uppercase tracking-widest"
+                        className="btn btn-secondary h-9 px-4  font-semibold "
                       >
                         Manage
                       </button>
                       <button
                         type="button"
                         onClick={() => toast.info("Disconnect coming soon")}
-                        className="btn btn-secondary h-9 px-4 text-[10px] font-black uppercase tracking-widest text-danger border-danger/20 hover:bg-danger-light"
+                        className="btn btn-secondary h-9 px-4  font-semibold  text-danger border-danger/20 hover:bg-danger-light"
                       >
                         Disconnect
                       </button>
@@ -940,7 +940,7 @@ export default function SettingsPage() {
                 ) : (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-input">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-md bg-surface-soft">
                         <CreditCard
                           size={20}
                           weight="bold"
@@ -948,7 +948,7 @@ export default function SettingsPage() {
                         />
                       </div>
                       <div>
-                        <h4 className="text-sm font-black text-foreground">
+                        <h4 className="text-sm font-semibold text-ink">
                           Stripe Not Connected
                         </h4>
                         <p className="text-xs font-bold text-muted mt-0.5">
@@ -959,7 +959,7 @@ export default function SettingsPage() {
                     <button
                       type="button"
                       onClick={handleStripeConnect}
-                      className="btn btn-primary h-9 px-5 text-[10px] font-black uppercase tracking-widest shadow-lg"
+                      className="btn btn-primary h-9 px-5  font-semibold  shadow-lg"
                     >
                       <Plug size={14} weight="bold" /> Connect Stripe
                     </button>
@@ -973,10 +973,10 @@ export default function SettingsPage() {
           {activeTab === "notifications" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-foreground">
+                <h2 className="text-2xl font-semibold tracking-tight text-ink">
                   Notification Preferences
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Choose how and when to be notified
                 </p>
               </div>
@@ -986,10 +986,10 @@ export default function SettingsPage() {
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div
                       key={i}
-                      className="rounded-2xl border border-border bg-card p-5 animate-pulse"
+                      className="rounded-xl border border-hairline bg-card p-5 animate-pulse"
                     >
-                      <div className="h-4 w-48 rounded bg-input mb-2" />
-                      <div className="h-3 w-72 rounded bg-input" />
+                      <div className="h-4 w-48 rounded bg-surface-soft mb-2" />
+                      <div className="h-3 w-72 rounded bg-surface-soft" />
                     </div>
                   ))}
                 </div>
@@ -1000,11 +1000,11 @@ export default function SettingsPage() {
                     return (
                       <div
                         key={event.key}
-                        className="rounded-2xl border border-border bg-card p-5 hover:bg-input/20 transition-colors"
+                        className="rounded-xl border border-hairline bg-card p-5 hover:bg-surface-soft/20 transition-colors"
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
-                            <h4 className="text-sm font-black text-foreground uppercase tracking-wide">
+                            <h4 className="text-sm font-semibold text-ink uppercase tracking-wide">
                               {event.title}
                             </h4>
                             <p className="text-xs font-bold text-muted mt-1">
@@ -1019,7 +1019,7 @@ export default function SettingsPage() {
                                   toggleNotifChannel(event.key, "email")
                                 }
                               />
-                              <span className="text-[9px] font-black uppercase tracking-widest text-muted">
+                              <span className="text-[9px] font-semibold  text-muted">
                                 Email
                               </span>
                             </label>
@@ -1030,7 +1030,7 @@ export default function SettingsPage() {
                                   toggleNotifChannel(event.key, "push")
                                 }
                               />
-                              <span className="text-[9px] font-black uppercase tracking-widest text-muted">
+                              <span className="text-[9px] font-semibold  text-muted">
                                 Push
                               </span>
                             </label>
@@ -1041,7 +1041,7 @@ export default function SettingsPage() {
                                   toggleNotifChannel(event.key, "inapp")
                                 }
                               />
-                              <span className="text-[9px] font-black uppercase tracking-widest text-muted">
+                              <span className="text-[9px] font-semibold  text-muted">
                                 In-App
                               </span>
                             </label>
@@ -1056,7 +1056,7 @@ export default function SettingsPage() {
               <button
                 onClick={handleNotifSave}
                 disabled={notifSaving || notifLoading}
-                className="btn btn-primary h-12 px-10 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20"
+                className="btn btn-primary h-12 px-10 text-[11px] font-semibold  shadow-sm"
               >
                 {notifSaving ? (
                   <Spinner size={18} weight="bold" className="animate-spin" />
@@ -1070,10 +1070,10 @@ export default function SettingsPage() {
           {activeTab === "business" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-foreground">
+                <h2 className="text-2xl font-semibold tracking-tight text-ink">
                   Business Profile
                 </h2>
-                <p className="text-xs font-bold text-muted uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold text-muted  mt-1">
                   Your company information for loads and contracts
                 </p>
               </div>
@@ -1100,7 +1100,7 @@ export default function SettingsPage() {
                 >
                   {/* Company name */}
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Company Name
                     </label>
                     <div className="relative">
@@ -1111,7 +1111,7 @@ export default function SettingsPage() {
                       />
                       <input
                         {...businessForm.register("companyName")}
-                        className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                         placeholder="Your company legal name"
                       />
                     </div>
@@ -1125,7 +1125,7 @@ export default function SettingsPage() {
                   {/* MC / DOT */}
                   <div className="grid grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         MC Number
                       </label>
                       <div className="relative">
@@ -1136,13 +1136,13 @@ export default function SettingsPage() {
                         />
                         <input
                           {...businessForm.register("mcNumber")}
-                          className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                          className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                           placeholder="MC-123456"
                         />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         DOT Number
                       </label>
                       <div className="relative">
@@ -1153,7 +1153,7 @@ export default function SettingsPage() {
                         />
                         <input
                           {...businessForm.register("dotNumber")}
-                          className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                          className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                           placeholder="DOT-1234567"
                         />
                       </div>
@@ -1162,7 +1162,7 @@ export default function SettingsPage() {
 
                   {/* Address */}
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Address Line 1
                     </label>
                     <div className="relative">
@@ -1173,49 +1173,49 @@ export default function SettingsPage() {
                       />
                       <input
                         {...businessForm.register("address.line1")}
-                        className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                         placeholder="123 Commerce St"
                       />
                     </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                    <label className="ml-1  font-semibold  text-muted">
                       Address Line 2
                     </label>
                     <input
                       {...businessForm.register("address.line2")}
-                      className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                      className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                       placeholder="Suite 200"
                     />
                   </div>
                   <div className="grid grid-cols-3 gap-5">
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         City
                       </label>
                       <input
                         {...businessForm.register("address.city")}
-                        className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                         placeholder="Chicago"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         State
                       </label>
                       <input
                         {...businessForm.register("address.state")}
-                        className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                         placeholder="IL"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                      <label className="ml-1  font-semibold  text-muted">
                         ZIP
                       </label>
                       <input
                         {...businessForm.register("address.zip")}
-                        className="w-full rounded-2xl border border-border bg-input px-5 py-3.5 text-sm font-bold outline-none focus:border-accent transition-all"
+                        className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-3.5 text-sm font-bold outline-none focus:border-primary transition-all"
                         placeholder="60601"
                       />
                     </div>
@@ -1224,7 +1224,7 @@ export default function SettingsPage() {
                   <button
                     type="submit"
                     disabled={savingBusiness}
-                    className="btn btn-primary h-12 px-10 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20"
+                    className="btn btn-primary h-12 px-10 text-[11px] font-semibold  shadow-sm"
                   >
                     {savingBusiness ? (
                       <Spinner
@@ -1243,8 +1243,8 @@ export default function SettingsPage() {
           {/* ── Danger Zone Tab ───────────────────────────────────────── */}
           {activeTab === "danger" && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
-              <div className="rounded-2xl border-2 border-danger/20 bg-danger-light p-8 shadow-lg">
-                <h2 className="text-2xl font-black tracking-tight text-danger flex items-center gap-3 mb-3">
+              <div className="rounded-xl border-2 border-danger/20 bg-danger-light p-8 shadow-lg">
+                <h2 className="text-2xl font-semibold tracking-tight text-danger flex items-center gap-3 mb-3">
                   <WarningCircle size={28} weight="fill" />
                   Danger Zone
                 </h2>
@@ -1254,12 +1254,12 @@ export default function SettingsPage() {
                   removed from our servers.
                 </p>
 
-                <div className="p-6 rounded-2xl bg-card border border-danger/30 space-y-4">
+                <div className="p-6 rounded-xl bg-card border border-danger/30 space-y-4">
                   <div>
-                    <h4 className="text-base font-black text-foreground">
+                    <h4 className="text-base font-semibold text-ink">
                       Delete Account
                     </h4>
-                    <p className="text-xs font-bold text-muted uppercase tracking-widest mt-0.5">
+                    <p className="text-xs font-bold text-muted  mt-0.5">
                       This action cannot be undone
                     </p>
                   </div>
@@ -1269,7 +1269,7 @@ export default function SettingsPage() {
                       deleteForm.reset();
                       setShowDeleteModal(true);
                     }}
-                    className="btn btn-primary h-11 px-8 text-[11px] font-black uppercase tracking-widest bg-danger border-none hover:bg-danger/90 shadow-xl shadow-danger/20"
+                    className="btn btn-primary h-11 px-8 text-[11px] font-semibold  bg-danger border-none hover:bg-danger/90 shadow-xl shadow-danger/20"
                   >
                     <TrashIcon /> Permanently Delete My Account
                   </button>
@@ -1283,9 +1283,9 @@ export default function SettingsPage() {
       {/* ── Delete Account Modal ──────────────────────────────────────── */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-card w-full max-w-md rounded-[2rem] border border-border shadow-2xl p-8 animate-in zoom-in-95">
+          <div className="bg-card w-full max-w-md rounded-xl border border-hairline shadow-2xl p-8 animate-in zoom-in-95">
             <div className="flex items-start gap-4 mb-6">
-              <div className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-2xl bg-danger-light">
+              <div className="h-12 w-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-danger-light">
                 <WarningCircle
                   size={24}
                   weight="fill"
@@ -1293,7 +1293,7 @@ export default function SettingsPage() {
                 />
               </div>
               <div>
-                <h2 className="text-xl font-black text-foreground">
+                <h2 className="text-xl font-semibold text-ink">
                   Delete your account?
                 </h2>
                 <p className="text-sm font-bold text-muted mt-1">
@@ -1308,7 +1308,7 @@ export default function SettingsPage() {
               className="space-y-5"
             >
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Your Password
                 </label>
                 <div className="relative">
@@ -1320,7 +1320,7 @@ export default function SettingsPage() {
                   <input
                     type="password"
                     {...deleteForm.register("password")}
-                    className="w-full rounded-2xl border border-border bg-input pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-danger transition-all"
+                    className="w-full rounded-md border border-hairline bg-surface-soft pl-12 pr-5 py-3.5 text-sm font-bold outline-none focus:border-danger transition-all"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -1336,14 +1336,14 @@ export default function SettingsPage() {
                   type="button"
                   onClick={() => setShowDeleteModal(false)}
                   disabled={deleting}
-                  className="flex-1 btn btn-secondary h-11 text-[11px] font-black uppercase tracking-widest"
+                  className="flex-1 btn btn-secondary h-11 text-[11px] font-semibold "
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={deleting}
-                  className="flex-1 btn btn-primary h-11 text-[11px] font-black uppercase tracking-widest bg-danger border-none hover:bg-danger/90 shadow-xl shadow-danger/20"
+                  className="flex-1 btn btn-primary h-11 text-[11px] font-semibold  bg-danger border-none hover:bg-danger/90 shadow-xl shadow-danger/20"
                 >
                   {deleting ? (
                     <Spinner size={18} weight="bold" className="animate-spin" />

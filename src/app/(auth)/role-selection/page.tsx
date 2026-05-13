@@ -39,13 +39,13 @@ export default function RoleSelectionPage() {
 
   return (
     <div className="flex flex-col gap-1">
-      <h1 className="text-center text-[1.8rem] font-extrabold text-accent">
+      <h1 className="text-center text-2xl font-semibold text-ink tracking-tight">
         FLOW
       </h1>
-      <h2 className="mt-1 text-center text-[1.4rem] font-bold text-foreground">
+      <h2 className="mt-2 text-center text-lg font-semibold text-ink">
         Who are you?
       </h2>
-      <p className="mb-7 text-center text-sm text-muted">
+      <p className="mb-7 text-center text-sm text-body-text">
         Your role determines your dashboard and features.
       </p>
 
@@ -55,18 +55,18 @@ export default function RoleSelectionPage() {
             key={id}
             onClick={() => setSelectedRole(id)}
             className={cn(
-              "flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all hover:border-muted",
+              "flex cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-colors hover:border-hairline",
               selectedRole === id
-                ? "border-accent bg-accent-light"
-                : "border-border bg-input",
+                ? "border-primary bg-surface-soft"
+                : "border-hairline bg-surface-soft",
             )}
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-light text-accent">
+            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-surface-card text-ink">
               <Icon size={24} />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-foreground">{title}</h4>
-              <p className="text-xs text-muted font-medium">{description}</p>
+              <h4 className="text-sm font-semibold text-ink">{title}</h4>
+              <p className="text-xs text-muted">{description}</p>
             </div>
           </div>
         ))}
@@ -75,14 +75,14 @@ export default function RoleSelectionPage() {
       <button
         onClick={handleContinue}
         disabled={!selectedRole}
-        className="btn btn-primary btn-lg mt-8 w-full"
+        className="w-full h-11 mt-8 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-active transition-colors disabled:opacity-50"
       >
         Continue
       </button>
 
       <p className="mt-6 text-center text-sm text-muted">
         Already have an account?{" "}
-        <Link href="/login" className="font-bold text-accent hover:underline">
+        <Link href="/login" className="font-medium text-ink hover:underline">
           Sign In
         </Link>
       </p>

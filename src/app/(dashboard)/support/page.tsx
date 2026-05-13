@@ -49,11 +49,11 @@ const CATEGORY_MAP: Record<string, string> = {
 };
 
 const CATEGORY_BADGE: Record<string, string> = {
-  payment: 'badge-red',
-  booking: 'badge-amber',
-  load: 'badge-amber',
-  technical: 'badge-blue',
-  other: 'badge-gray',
+  payment: 'badge-pill badge-pill-red',
+  booking: 'badge-pill badge-pill-amber',
+  load: 'badge-pill badge-pill-amber',
+  technical: 'badge-pill badge-pill-blue',
+  other: 'badge-pill badge-pill-gray',
 };
 
 export default function SupportPage() {
@@ -134,12 +134,12 @@ export default function SupportPage() {
     <div className="p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground">Support & Disputes</h1>
-          <p className="text-sm font-bold text-muted uppercase tracking-widest mt-1">Get help or resolve disputes with our specialist team</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">Support & Disputes</h1>
+          <p className="text-sm font-bold text-muted  mt-1">Get help or resolve disputes with our specialist team</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="btn btn-primary btn-lg shadow-xl shadow-accent/20"
+          className="btn btn-primary btn-lg shadow-sm"
         >
           <Plus size={20} weight="bold" />
           Open New Ticket
@@ -153,10 +153,10 @@ export default function SupportPage() {
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={cn(
-              "whitespace-nowrap px-6 py-3 text-[11px] font-black uppercase tracking-wider rounded-2xl border transition-all",
+              "whitespace-nowrap px-6 py-3 text-[11px] font-semibold  rounded-md border transition-all",
               activeTab === tab 
-                ? "bg-accent border-accent text-white shadow-lg shadow-accent/20" 
-                : "bg-card border-border text-muted hover:border-muted hover:text-foreground"
+                ? "bg-primary border-primary text-white shadow-sm" 
+                : "bg-card border-hairline text-muted hover:border-muted hover:text-ink"
             )}
           >
             {tab}
@@ -166,12 +166,12 @@ export default function SupportPage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center py-24">
-          <CircleNotch size={32} weight="bold" className="animate-spin text-accent" />
+          <CircleNotch size={32} weight="bold" className="animate-spin text-ink" />
         </div>
       ) : tickets.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-muted">
           <Lifebuoy size={48} weight="thin" className="mb-4 opacity-20" />
-          <p className="text-sm font-bold uppercase tracking-widest">No {activeTab.toLowerCase()} tickets</p>
+          <p className="text-sm font-bold ">No {activeTab.toLowerCase()} tickets</p>
           <p className="text-xs mt-2">Open a new ticket to get help</p>
         </div>
       ) : (
@@ -180,41 +180,41 @@ export default function SupportPage() {
             <div 
               key={ticket._id} 
               className={cn(
-                "rounded-[2rem] border border-border bg-card p-6 shadow-xl hover:border-accent/30 transition-all group cursor-pointer",
+                "rounded-xl border border-hairline bg-card p-6 shadow-xl hover:border-ink transition-all group cursor-pointer",
                 ticket.status === 'resolved' && "opacity-60 grayscale-[0.3]"
               )}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <span className="badge badge-gray h-5 px-2 text-[9px] font-black">{ticket._id.slice(-6).toUpperCase()}</span>
+                  <span className="badge badge-pill badge-pill-gray h-5 px-2 text-[9px] font-semibold">{ticket._id.slice(-6).toUpperCase()}</span>
                   {ticket.loadId && (
-                    <span className="badge badge-blue h-5 px-2 text-[9px] font-black">{ticket.loadId}</span>
+                    <span className="badge badge-pill badge-pill-blue h-5 px-2 text-[9px] font-semibold">{ticket.loadId}</span>
                   )}
                   <span className={cn(
-                    "badge h-5 px-2 text-[9px] font-black",
-                    CATEGORY_BADGE[ticket.category] || "badge-gray"
+                    "badge h-5 px-2 text-[9px] font-semibold",
+                    CATEGORY_BADGE[ticket.category] || "badge-pill badge-pill-gray"
                   )}>{CATEGORY_MAP[ticket.category] || ticket.category}</span>
                 </div>
                 <span className={cn(
                   "badge px-3 h-6",
-                  ticket.status === 'open' ? "badge-amber" :
-                  ticket.status === 'in_progress' ? "badge-blue" :
-                  ticket.status === 'resolved' ? "badge-green" : "badge-gray"
+                  ticket.status === 'open' ? "badge-pill badge-pill-amber" :
+                  ticket.status === 'in_progress' ? "badge-pill badge-pill-blue" :
+                  ticket.status === 'resolved' ? "badge-pill badge-pill-green" : "badge-pill badge-pill-gray"
                 )}>
                   {STATUS_MAP[ticket.status] || ticket.status}
                 </span>
               </div>
 
-              <h3 className="text-lg font-black tracking-tight text-foreground mb-4 group-hover:text-accent transition-colors">
+              <h3 className="text-lg font-semibold tracking-tight text-ink mb-4 group-hover:text-ink transition-colors">
                  {ticket.subject}
               </h3>
 
               <div className="flex items-center justify-between">
                  <div className="flex items-center gap-3">
-                    <div className="h-6 w-6 flex items-center justify-center rounded-lg bg-accent text-white font-black text-[8px]">
+                    <div className="h-6 w-6 flex items-center justify-center rounded-lg bg-primary text-white font-semibold text-[8px]">
                        {ticket.userId.slice(0, 2).toUpperCase()}
                     </div>
-                    <span className="text-[11px] font-black text-muted uppercase tracking-widest">
+                    <span className="text-[11px] font-semibold text-muted ">
                        Opened {formatTime(ticket.createdAt)}
                     </span>
                  </div>
@@ -228,10 +228,10 @@ export default function SupportPage() {
       {/* New Ticket Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6 backdrop-blur-md bg-black/40 animate-in fade-in duration-300">
-          <div className="w-full max-w-xl rounded-3xl border border-border bg-card p-10 shadow-2xl animate-in zoom-in-95 duration-300">
+          <div className="w-full max-w-xl rounded-xl border border-hairline bg-card p-10 shadow-2xl animate-in zoom-in-95 duration-300">
             <div className="flex items-center justify-between mb-8">
-               <h3 className="text-2xl font-black tracking-tight text-foreground">Open Support Ticket</h3>
-               <button onClick={() => setIsModalOpen(false)} className="text-muted hover:text-foreground">
+               <h3 className="text-2xl font-semibold tracking-tight text-ink">Open Support Ticket</h3>
+               <button onClick={() => setIsModalOpen(false)} className="text-muted hover:text-ink">
                   <X size={24} weight="bold" />
                </button>
             </div>
@@ -239,9 +239,9 @@ export default function SupportPage() {
             <div className="space-y-6">
                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Category</label>
+                    <label className="ml-1  font-semibold  text-muted">Category</label>
                     <select 
-                      className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black outline-none focus:border-accent transition-all"
+                      className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-semibold outline-none focus:border-primary transition-all"
                       value={formCategory}
                       onChange={(e) => setFormCategory(e.target.value)}
                     >
@@ -253,9 +253,9 @@ export default function SupportPage() {
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Associated Load</label>
+                    <label className="ml-1  font-semibold  text-muted">Associated Load</label>
                     <input 
-                      className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black outline-none focus:border-accent transition-all" 
+                      className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-semibold outline-none focus:border-primary transition-all" 
                       placeholder="Load ID (optional)"
                       value={formLoadId}
                       onChange={(e) => setFormLoadId(e.target.value)}
@@ -264,9 +264,9 @@ export default function SupportPage() {
                </div>
 
                <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Subject</label>
+                  <label className="ml-1  font-semibold  text-muted">Subject</label>
                   <input 
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black outline-none focus:border-accent transition-all" 
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-semibold outline-none focus:border-primary transition-all" 
                     placeholder="Brief description of the issue"
                     value={formSubject}
                     onChange={(e) => setFormSubject(e.target.value)}
@@ -274,20 +274,20 @@ export default function SupportPage() {
                </div>
 
                <div className="space-y-2">
-                  <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">Description</label>
+                  <label className="ml-1  font-semibold  text-muted">Description</label>
                   <textarea 
                     rows={4} 
-                    className="w-full rounded-2xl border border-border bg-input px-5 py-4 text-sm font-black outline-none focus:border-accent transition-all resize-none" 
+                    className="w-full rounded-md border border-hairline bg-surface-soft px-5 py-4 text-sm font-semibold outline-none focus:border-primary transition-all resize-none" 
                     placeholder="Provide detailed context about the issue..."
                     value={formDescription}
                     onChange={(e) => setFormDescription(e.target.value)}
                   />
                </div>
 
-               <div className="p-4 rounded-2xl bg-danger-light border border-danger/30 flex items-start gap-4">
+               <div className="p-4 rounded-md bg-danger-light border border-danger/30 flex items-start gap-4">
                   <Warning size={20} weight="fill" className="text-danger mt-1 flex-shrink-0" />
                   <div>
-                     <p className="text-xs font-black text-danger/80 leading-relaxed uppercase tracking-widest">
+                     <p className="text-xs font-semibold text-danger/80 leading-relaxed ">
                         Submitting this ticket will freeze the escrow of $1,455.00 until resolved.
                      </p>
                      <label className="flex items-center gap-2 mt-4 cursor-pointer">
@@ -297,7 +297,7 @@ export default function SupportPage() {
                           checked={formFreezeEscrow}
                           onChange={(e) => setFormFreezeEscrow(e.target.checked)}
                         />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-danger">I understand and want to freeze the escrow.</span>
+                        <span className=" font-semibold  text-danger">I understand and want to freeze the escrow.</span>
                      </label>
                   </div>
                </div>
@@ -305,14 +305,14 @@ export default function SupportPage() {
                <div className="flex gap-4">
                   <button 
                     onClick={() => setIsModalOpen(false)} 
-                    className="btn btn-secondary flex-1 h-14 text-[11px] font-black uppercase tracking-widest"
+                    className="btn btn-secondary flex-1 h-14 text-[11px] font-semibold "
                   >
                     Cancel
                   </button>
                   <button 
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="btn btn-primary flex-1 h-14 text-[11px] font-black uppercase tracking-widest shadow-xl shadow-accent/20 disabled:opacity-60"
+                    className="btn btn-primary flex-1 h-14 text-[11px] font-semibold  shadow-sm disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       <CircleNotch size={18} weight="bold" className="animate-spin" />

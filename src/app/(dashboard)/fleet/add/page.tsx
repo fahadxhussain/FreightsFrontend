@@ -228,13 +228,13 @@ export default function AddVehiclePage() {
       {/* back link */}
       <Link
         href="/fleet"
-        className="mb-4 inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+        className="mb-4 inline-flex items-center gap-1.5  font-semibold  text-muted hover:text-ink transition-colors"
       >
         <ArrowLeft size={14} weight="bold" />
         Back to Fleet
       </Link>
 
-      <h1 className="text-3xl font-black tracking-tight text-foreground mb-8">
+      <h1 className="text-3xl font-semibold tracking-tight text-ink mb-8">
         Register a New Vehicle
       </h1>
 
@@ -245,22 +245,22 @@ export default function AddVehiclePage() {
             <div
               className={cn(
                 "flex flex-col items-center gap-2",
-                step >= s.num ? "text-foreground" : "text-muted",
+                step >= s.num ? "text-ink" : "text-muted",
               )}
             >
               <div
                 className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-black transition-all",
+                  "flex h-10 w-10 items-center justify-center rounded-xl border-2 text-sm font-semibold transition-all",
                   step === s.num
-                    ? "border-accent bg-accent text-white shadow-lg shadow-accent/20"
+                    ? "border-primary bg-primary text-white shadow-sm"
                     : step > s.num
                       ? "border-success bg-success text-white"
-                      : "border-border bg-card",
+                      : "border-hairline bg-card",
                 )}
               >
                 {step > s.num ? <Check size={20} weight="bold" /> : s.num}
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest">
+              <span className=" font-semibold ">
                 {s.label}
               </span>
             </div>
@@ -277,34 +277,34 @@ export default function AddVehiclePage() {
       </div>
 
       {/* ── step content card ────────────────────────────────────────────────────────────── */}
-      <div className="rounded-3xl border border-border bg-card p-10 shadow-2xl">
+      <div className="rounded-xl border border-hairline bg-card p-10 shadow-2xl">
         {/* ─── Step 1: VIN & Plate ──────────────────────────────────────────────── */}
         {step === 1 && (
           <div className="space-y-6 animate-in fade-in duration-300">
-            <h3 className="text-lg font-black tracking-tight text-foreground">
+            <h3 className="text-lg font-semibold tracking-tight text-ink">
               VIN &amp; Plate Number
             </h3>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   License Plate
                 </label>
                 <input
                   value={plateNumber}
                   onChange={(e) => setPlateNumber(e.target.value)}
                   placeholder="FB-2847"
-                  className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
                 />
               </div>
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   State
                 </label>
                 <select
                   value={plateState}
                   onChange={(e) => setPlateState(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground outline-none appearance-none cursor-pointer"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink outline-none appearance-none cursor-pointer"
                 >
                   <option value="">Select State</option>
                   {US_STATES.map((s) => (
@@ -317,7 +317,7 @@ export default function AddVehiclePage() {
             </div>
 
             <div className="space-y-2">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 VIN Number
               </label>
               <div className="flex gap-2">
@@ -329,12 +329,12 @@ export default function AddVehiclePage() {
                   }}
                   maxLength={17}
                   placeholder="3AKJHHDR5LSLN4829"
-                  className="flex-1 rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                  className="flex-1 rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
                 />
                 <button
                   onClick={handleDecodeVin}
                   disabled={isDecodingVin}
-                  className="btn btn-secondary px-5 text-[11px] font-black uppercase tracking-widest"
+                  className="btn btn-secondary px-5 text-[11px] font-semibold "
                 >
                   {isDecodingVin ? (
                     <Spinner size={16} weight="bold" className="animate-spin" />
@@ -351,60 +351,60 @@ export default function AddVehiclePage() {
             </div>
 
             <div className="space-y-2">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 Internal ID <span className="text-muted">(optional)</span>
               </label>
               <input
                 value={internalId}
                 onChange={(e) => setInternalId(e.target.value)}
                 placeholder="e.g. FB-2847"
-                className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
               />
             </div>
 
             {/* VIN decode result */}
             {vinData && (
-              <div className="rounded-2xl border border-success/20 bg-success-light p-6 animate-in slide-in-from-top-2">
+              <div className="rounded-md border border-success/20 bg-success-light p-6 animate-in slide-in-from-top-2">
                 <div className="flex items-center gap-3 mb-4">
                   <CheckCircle
                     size={24}
                     weight="fill"
                     className="text-success"
                   />
-                  <strong className="text-sm font-black text-success uppercase tracking-widest">
+                  <strong className="text-sm font-semibold text-success ">
                     VIN Decoded Successfully
                   </strong>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted">
+                    <div className=" font-semibold  text-muted">
                       Year
                     </div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {vinData.year}
                     </div>
                   </div>
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted">
+                    <div className=" font-semibold  text-muted">
                       Make
                     </div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {vinData.make}
                     </div>
                   </div>
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted">
+                    <div className=" font-semibold  text-muted">
                       Model
                     </div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {vinData.model}
                     </div>
                   </div>
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted">
+                    <div className=" font-semibold  text-muted">
                       Engine
                     </div>
-                    <div className="text-sm font-black text-foreground">
+                    <div className="text-sm font-semibold text-ink">
                       {vinData.engine}
                     </div>
                   </div>
@@ -417,13 +417,13 @@ export default function AddVehiclePage() {
         {/* ─── Step 2: Specs ─────────────────────────────────────────────────────── */}
         {step === 2 && (
           <div className="space-y-6 animate-in fade-in duration-300">
-            <h3 className="text-lg font-black tracking-tight text-foreground">
+            <h3 className="text-lg font-semibold tracking-tight text-ink">
               Specifications
             </h3>
 
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Year
                 </label>
                 <input
@@ -431,41 +431,41 @@ export default function AddVehiclePage() {
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
                   placeholder="2021"
-                  className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
                 />
               </div>
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Make
                 </label>
                 <input
                   value={make}
                   onChange={(e) => setMake(e.target.value)}
                   placeholder="Freightliner"
-                  className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
                 />
               </div>
               <div className="space-y-2">
-                <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+                <label className="ml-1  font-semibold  text-muted">
                   Model
                 </label>
                 <input
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
                   placeholder="Cascadia"
-                  className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                  className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 Equipment Type
               </label>
               <select
                 value={equipmentType}
                 onChange={(e) => setEquipmentType(e.target.value)}
-                className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground outline-none appearance-none cursor-pointer"
+                className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink outline-none appearance-none cursor-pointer"
               >
                 {EQUIPMENT_TYPES.map((et) => (
                   <option key={et.value} value={et.value}>
@@ -476,7 +476,7 @@ export default function AddVehiclePage() {
             </div>
 
             <div className="space-y-2">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 Max Payload (lbs)
               </label>
               <input
@@ -484,7 +484,7 @@ export default function AddVehiclePage() {
                 value={maxPayload}
                 onChange={(e) => setMaxPayload(e.target.value)}
                 placeholder="48000"
-                className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-bold text-foreground placeholder:text-muted outline-none focus:border-accent transition-all"
+                className="w-full rounded-md border border-hairline bg-surface-soft px-4 py-3 text-sm font-bold text-ink placeholder:text-muted outline-none focus:border-primary transition-all"
               />
             </div>
           </div>
@@ -493,21 +493,21 @@ export default function AddVehiclePage() {
         {/* ─── Step 3: Documents ─────────────────────────────────────────────────── */}
         {step === 3 && (
           <div className="space-y-6 animate-in fade-in duration-300">
-            <h3 className="text-lg font-black tracking-tight text-foreground">
+            <h3 className="text-lg font-semibold tracking-tight text-ink">
               Upload Documents
             </h3>
 
             {/* Vehicle Registration */}
             <div className="space-y-2">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 Vehicle Registration (required)
               </label>
               <label
                 className={cn(
-                  "flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 cursor-pointer transition-all group",
+                  "flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 cursor-pointer transition-all group",
                   registrationFile
                     ? "border-success/40 bg-success-light/50"
-                    : "border-border hover:border-accent/30 bg-card",
+                    : "border-hairline hover:border-ink bg-card",
                 )}
               >
                 {registrationFile ? (
@@ -517,10 +517,10 @@ export default function AddVehiclePage() {
                       weight="fill"
                       className="mx-auto mb-2 text-success"
                     />
-                    <p className="text-xs font-bold text-success uppercase tracking-widest">
+                    <p className="text-xs font-bold text-success ">
                       {registrationFile.name}
                     </p>
-                    <p className="text-[10px] text-muted mt-1">
+                    <p className=" text-muted mt-1">
                       Click to replace
                     </p>
                   </div>
@@ -529,9 +529,9 @@ export default function AddVehiclePage() {
                     <UploadSimple
                       size={32}
                       weight="regular"
-                      className="mb-2 text-muted group-hover:text-accent transition-colors"
+                      className="mb-2 text-muted group-hover:text-ink transition-colors"
                     />
-                    <p className="text-xs font-bold text-muted uppercase tracking-widest">
+                    <p className="text-xs font-bold text-muted ">
                       Drag file here or click to browse
                     </p>
                   </>
@@ -549,15 +549,15 @@ export default function AddVehiclePage() {
 
             {/* Insurance Certificate */}
             <div className="space-y-2">
-              <label className="ml-1 text-[10px] font-black uppercase tracking-[0.2em] text-muted">
+              <label className="ml-1  font-semibold  text-muted">
                 Insurance Certificate (required)
               </label>
               <label
                 className={cn(
-                  "flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 cursor-pointer transition-all group",
+                  "flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 cursor-pointer transition-all group",
                   insuranceFile
                     ? "border-success/40 bg-success-light/50"
-                    : "border-border hover:border-accent/30 bg-card",
+                    : "border-hairline hover:border-ink bg-card",
                 )}
               >
                 {insuranceFile ? (
@@ -567,10 +567,10 @@ export default function AddVehiclePage() {
                       weight="fill"
                       className="mx-auto mb-2 text-success"
                     />
-                    <p className="text-xs font-bold text-success uppercase tracking-widest">
+                    <p className="text-xs font-bold text-success ">
                       {insuranceFile.name}
                     </p>
-                    <p className="text-[10px] text-muted mt-1">
+                    <p className=" text-muted mt-1">
                       Click to replace
                     </p>
                   </div>
@@ -579,9 +579,9 @@ export default function AddVehiclePage() {
                     <UploadSimple
                       size={32}
                       weight="regular"
-                      className="mb-2 text-muted group-hover:text-accent transition-colors"
+                      className="mb-2 text-muted group-hover:text-ink transition-colors"
                     />
-                    <p className="text-xs font-bold text-muted uppercase tracking-widest">
+                    <p className="text-xs font-bold text-muted ">
                       Drag file here or click to browse
                     </p>
                   </>
@@ -604,7 +604,7 @@ export default function AddVehiclePage() {
           <button
             onClick={handleBack}
             className={cn(
-              "btn btn-secondary flex-1 h-12 text-[11px] font-black uppercase tracking-widest",
+              "btn btn-secondary flex-1 h-12 text-[11px] font-semibold ",
               step === 1 && "opacity-0 pointer-events-none",
             )}
           >
@@ -615,7 +615,7 @@ export default function AddVehiclePage() {
           {step < 3 ? (
             <button
               onClick={handleNext}
-              className="btn btn-primary flex-1 h-12 text-[11px] font-black uppercase tracking-widest shadow-lg shadow-accent/20"
+              className="btn btn-primary flex-1 h-12 text-[11px] font-semibold  shadow-sm"
             >
               Next
               <ArrowRight size={18} weight="bold" />
@@ -624,7 +624,7 @@ export default function AddVehiclePage() {
             <button
               onClick={handleSaveVehicle}
               disabled={isSaving}
-              className="btn btn-primary flex-1 h-12 bg-success border-success text-[11px] font-black uppercase tracking-widest shadow-lg shadow-success/20"
+              className="btn btn-primary flex-1 h-12 bg-success border-success text-[11px] font-semibold  shadow-sm"
             >
               {isSaving ? "Saving..." : "Save Vehicle"}
               <Check size={18} weight="bold" />
