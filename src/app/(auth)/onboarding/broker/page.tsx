@@ -22,6 +22,8 @@ import {
   Gauge
 } from '@phosphor-icons/react';
 import { cn } from '@/lib/utils';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { updateOnboardingStatus } from '@/store/slices/authSlice';
 import api from '@/lib/axios';
 
 const businessSchema = z.object({
@@ -50,6 +52,8 @@ const STEPS = [
 
 export default function BrokerOnboardingPage() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((s) => s.auth.user);
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -116,14 +120,43 @@ export default function BrokerOnboardingPage() {
     try {
       const businessData = businessForm.getValues();
       const authorityData = authorityForm.getValues();
-      
-      await api.post('/onboarding/broker', {
-        ...businessData,
-        ...authorityData,
+
+      // 1. Save profile step
+      await api.patch('/auth/onboarding/profile', {
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
       });
-      
+
+      // 2. Save business profile to real backend
+      if (user?.id) {
+        await api.post(`/api/users/${user.id}/business-profile`, {
+          companyName: businessData.companyName,
+          mcNumber: authorityData.mcNumber,
+          dotNumber: '',
+          address: {
+            line1: businessData.street,
+            line2: '',
+            city: businessData.city,
+            state: businessData.state,
+            zip: businessData.zip,
+          },
+        });
+      }
+
+      // 3. Mark business step complete
+      await api.patch('/auth/onboarding/business', {});
+
+      // 4. Mark stripe step complete
+      await api.patch('/auth/onboarding/stripe', { stripeConnected: true });
+
+      // 5. Mark prefs step complete
+      await api.patch('/auth/onboarding/prefs', {});
+
+      dispatch(updateOnboardingStatus(true));
       setIsCompleted(true);
+      toast.success('Onboarding complete!');
     } catch (error: any) {
+      console.error('[BROKER ONBOARDING] Error:', error);
       toast.error(error.response?.data?.error?.message || 'Something went wrong');
     } finally {
       setIsLoading(false);
@@ -138,8 +171,8 @@ export default function BrokerOnboardingPage() {
         </div>
         <h2 className="text-2xl font-black tracking-tight text-foreground">You&apos;re all set!</h2>
         <p className="mt-2 text-muted font-medium">Welcome to FLOW. Your brokerage is ready to post loads.</p>
-        <button 
-          onClick={() => router.push('/dashboard')}
+        <button
+          onClick={() => window.location.href = '/dashboard'}
           className="btn btn-primary btn-lg mt-8 shadow-lg shadow-accent/20"
         >
           <Gauge size={20} weight="bold" />
@@ -168,7 +201,7 @@ export default function BrokerOnboardingPage() {
             )}>
               <div className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-black transition-all",
-                step === s.num ? "border-accent bg-accent text-white shadow-lg shadow-accent/20" : 
+                step === s.num ? "border-accent bg-accent text-white shadow-lg shadow-accent/20" :
                 step > s.num ? "border-success bg-success text-white" : "border-border bg-card"
               )}>
                 {step > s.num ? <Check size={18} weight="bold" /> : s.num}
@@ -193,11 +226,11 @@ export default function BrokerOnboardingPage() {
               <Briefcase size={24} weight="bold" />
               <h3 className="text-lg font-bold">Set up your business profile</h3>
             </div>
-            
+
             <div className="grid gap-5">
               <div className="space-y-1.5">
                 <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Company Name</label>
-                <input 
+                <input
                   {...businessForm.register('companyName')}
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.companyName && "border-danger")}
                   placeholder="e.g., Smith Brokerage LLC"
@@ -207,7 +240,7 @@ export default function BrokerOnboardingPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Business Type</label>
-                  <select 
+                  <select
                     {...businessForm.register('businessType')}
                     className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none appearance-none"
                   >
@@ -218,7 +251,7 @@ export default function BrokerOnboardingPage() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">EIN</label>
-                  <input 
+                  <input
                     {...businessForm.register('ein')}
                     className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.ein && "border-danger")}
                     placeholder="XX-XXXXXXX"
@@ -228,7 +261,7 @@ export default function BrokerOnboardingPage() {
 
               <div className="space-y-1.5">
                 <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Street Address</label>
-                <input 
+                <input
                   {...businessForm.register('street')}
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.street && "border-danger")}
                   placeholder="123 Broker Ave"
@@ -238,7 +271,7 @@ export default function BrokerOnboardingPage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1.5">
                   <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">City</label>
-                  <input 
+                  <input
                     {...businessForm.register('city')}
                     className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.city && "border-danger")}
                     placeholder="Chicago"
@@ -246,7 +279,7 @@ export default function BrokerOnboardingPage() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">State</label>
-                  <select 
+                  <select
                     {...businessForm.register('state')}
                     className="w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none appearance-none"
                   >
@@ -255,7 +288,7 @@ export default function BrokerOnboardingPage() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">ZIP</label>
-                  <input 
+                  <input
                     {...businessForm.register('zip')}
                     className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.zip && "border-danger")}
                     placeholder="60601"
@@ -265,7 +298,7 @@ export default function BrokerOnboardingPage() {
 
               <div className="space-y-1.5">
                 <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">Business Phone</label>
-                <input 
+                <input
                   {...businessForm.register('phone')}
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", businessForm.formState.errors.phone && "border-danger")}
                   placeholder="+1 (555) 000-0000"
@@ -292,11 +325,11 @@ export default function BrokerOnboardingPage() {
               <h3 className="text-lg font-bold">Verify your Broker Authority</h3>
             </div>
             <p className="text-sm font-medium text-muted">Enter your MC number. We&apos;ll verify it has active <strong>Broker Authority</strong> with FMCSA.</p>
-            
+
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">MC Number</label>
-                <input 
+                <input
                   {...authorityForm.register('mcNumber')}
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", authorityForm.formState.errors.mcNumber && "border-danger")}
                   placeholder="MC-XXXXXXX"
@@ -304,7 +337,7 @@ export default function BrokerOnboardingPage() {
               </div>
 
               {!verificationResult && (
-                <button 
+                <button
                   onClick={verifyAuthority}
                   disabled={isVerifying}
                   className="btn btn-primary w-full py-3 shadow-lg shadow-accent/10"
@@ -373,7 +406,7 @@ export default function BrokerOnboardingPage() {
               <h3 className="text-lg font-bold">Connect your payment account</h3>
             </div>
             <p className="text-sm font-medium text-muted">FLOW uses Stripe to process all payments securely. As a broker, you&apos;ll make payments through this account.</p>
-            
+
             <div className="py-6 flex items-center justify-center gap-5">
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#635BFF] text-2xl font-black text-white shadow-xl shadow-[#635BFF]/20">S</div>
               <div className="text-muted"><LinkSimple size={24} weight="bold" /></div>
@@ -382,7 +415,7 @@ export default function BrokerOnboardingPage() {
 
             {!stripeConnected ? (
               <div className="space-y-3">
-                <button 
+                <button
                   onClick={() => { setStripeConnected(true); toast.success('Stripe connected!'); }}
                   className="btn btn-primary btn-lg w-full bg-[#635BFF] hover:bg-[#5851e5] shadow-lg shadow-[#635BFF]/20"
                 >
@@ -398,7 +431,7 @@ export default function BrokerOnboardingPage() {
                   </div>
                   <div>
                     <div className="text-sm font-bold text-foreground">Stripe Connected</div>
-                    <div className="text-xs font-medium text-muted">Chase Business ••••8812</div>
+                    <div className="text-xs font-medium text-muted">Chase Business &bull;&bull;&bull;&bull;8812</div>
                   </div>
                 </div>
               </div>
@@ -407,16 +440,16 @@ export default function BrokerOnboardingPage() {
         )}
 
         <div className="mt-10 flex justify-between gap-4">
-          <button 
+          <button
             onClick={handleBack}
             className={cn("btn btn-secondary flex-1 py-3 h-12", step === 1 && "opacity-0 pointer-events-none")}
           >
             <ArrowLeft size={18} weight="bold" />
             Back
           </button>
-          
+
           {step < 3 ? (
-            <button 
+            <button
               onClick={handleNext}
               className="btn btn-primary flex-1 py-3 h-12 shadow-lg shadow-accent/10"
             >
@@ -424,7 +457,7 @@ export default function BrokerOnboardingPage() {
               <ArrowRight size={18} weight="bold" />
             </button>
           ) : (
-            <button 
+            <button
               onClick={completeOnboarding}
               disabled={isLoading || !stripeConnected}
               className="btn btn-primary flex-1 py-3 h-12 bg-success hover:bg-success/90 shadow-lg shadow-success/10 border-none"

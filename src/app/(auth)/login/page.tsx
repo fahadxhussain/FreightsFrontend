@@ -41,7 +41,7 @@ export default function LoginPage() {
     try {
       const response = await api.post("/auth/login", data);
       const { accessToken, user } = response.data.data;
-      const isOnboardingComplete = user.isOnboardingComplete ?? false;
+      const isOnboardingComplete = user?.isOnboardingComplete ?? false;
 
       localStorage.setItem("token", accessToken);
       document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; SameSite=Lax`;
@@ -67,24 +67,30 @@ export default function LoginPage() {
       );
       toast.success("Welcome back!");
 
-      if (isOnboardingComplete) {
-        router.push("/dashboard");
-      } else {
-        const role = user.role;
+      // Determine destination
+      let destination = "/dashboard";
+      if (!isOnboardingComplete) {
+        const role = user?.role || "broker";
         if (
           role === "independent_driver" ||
           role === "company_driver" ||
           role === "driver"
         ) {
-          router.push("/onboarding/driver");
+          destination = "/onboarding/driver";
         } else if (role === "carrier") {
-          router.push("/onboarding/carrier");
+          destination = "/onboarding/carrier";
         } else {
-          router.push("/onboarding/broker");
+          destination = "/onboarding/broker";
         }
       }
-    } catch {
-      toast.error("Invalid email or password");
+
+      // Use window.location for guaranteed navigation (router.push can be flaky in some Next.js builds)
+      window.location.href = destination;
+    } catch (error: any) {
+      console.error("[LOGIN] Error:", error);
+      const message =
+        error?.response?.data?.error?.message || "Invalid email or password";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

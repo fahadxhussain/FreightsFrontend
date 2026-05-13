@@ -19,6 +19,8 @@ import {
   UploadSimple
 } from '@phosphor-icons/react';
 import { cn } from '@/lib/utils';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { updateOnboardingStatus } from '@/store/slices/authSlice';
 import api from '@/lib/axios';
 
 const authoritySchema = z.object({
@@ -35,6 +37,8 @@ const STEPS = [
 
 export default function DriverOnboardingPage() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((s) => s.auth.user);
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -78,11 +82,27 @@ export default function DriverOnboardingPage() {
     setIsLoading(true);
     try {
       const authorityData = authorityForm.getValues();
-      await api.post('/onboarding/driver', {
-        ...authorityData,
+
+      // 1. Mark profile step complete
+      await api.patch('/auth/onboarding/profile', {
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
       });
+
+      // 2. Mark business step complete (drivers skip detailed business profile)
+      await api.patch('/auth/onboarding/business', {});
+
+      // 3. Mark stripe step complete (optional for drivers)
+      await api.patch('/auth/onboarding/stripe', {});
+
+      // 4. Mark prefs step complete
+      await api.patch('/auth/onboarding/prefs', {});
+
+      dispatch(updateOnboardingStatus(true));
       setIsCompleted(true);
+      toast.success('Onboarding complete!');
     } catch (error: any) {
+      console.error('[DRIVER ONBOARDING] Error:', error);
       toast.error(error.response?.data?.error?.message || 'Something went wrong');
     } finally {
       setIsLoading(false);
@@ -97,8 +117,8 @@ export default function DriverOnboardingPage() {
         </div>
         <h2 className="text-2xl font-black tracking-tight text-foreground">You&apos;re all set!</h2>
         <p className="mt-2 text-muted font-medium">Welcome to FLOW. Your driver profile is ready.</p>
-        <button 
-          onClick={() => router.push('/dashboard')}
+        <button
+          onClick={() => window.location.href = '/dashboard'}
           className="btn btn-primary btn-lg mt-8 shadow-lg shadow-accent/20"
         >
           <Gauge size={20} weight="bold" />
@@ -127,7 +147,7 @@ export default function DriverOnboardingPage() {
             )}>
               <div className={cn(
                 "flex h-9 w-9 items-center justify-center rounded-full border-2 text-sm font-black transition-all",
-                step === s.num ? "border-accent bg-accent text-white shadow-lg shadow-accent/20" : 
+                step === s.num ? "border-accent bg-accent text-white shadow-lg shadow-accent/20" :
                 step > s.num ? "border-success bg-success text-white" : "border-border bg-card"
               )}>
                 {step > s.num ? <Check size={18} weight="bold" /> : s.num}
@@ -153,11 +173,11 @@ export default function DriverOnboardingPage() {
               <h3 className="text-lg font-bold">Verify your authority</h3>
             </div>
             <p className="text-sm font-medium text-muted">Your MC or USDOT number is issued by the FMCSA.</p>
-            
+
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">MC or USDOT Number</label>
-                <input 
+                <input
                   {...authorityForm.register('mcNumber')}
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", authorityForm.formState.errors.mcNumber && "border-danger")}
                   placeholder="MC-123456"
@@ -165,7 +185,7 @@ export default function DriverOnboardingPage() {
               </div>
 
               {!verificationResult && (
-                <button 
+                <button
                   onClick={verifyAuthority}
                   disabled={isVerifying}
                   className="btn btn-primary w-full py-3"
@@ -212,7 +232,7 @@ export default function DriverOnboardingPage() {
               <h3 className="text-lg font-bold">Upload your CDL</h3>
             </div>
             <p className="text-sm font-medium text-muted">Take a photo or choose from your gallery. Both sides preferred.</p>
-            
+
             <div className="rounded-2xl border-2 border-dashed border-border p-10 bg-card hover:border-muted transition-colors cursor-pointer text-center group">
               <div className="mb-4 flex flex-col items-center justify-center text-muted group-hover:text-accent transition-colors">
                 <Camera size={48} weight="regular" />
@@ -230,7 +250,7 @@ export default function DriverOnboardingPage() {
               <h3 className="text-lg font-bold">Upload Government ID</h3>
             </div>
             <p className="text-sm font-medium text-muted">A National ID, Passport, or State ID is accepted for identity verification.</p>
-            
+
             <div className="rounded-2xl border-2 border-dashed border-border p-10 bg-card hover:border-muted transition-colors cursor-pointer text-center group">
               <div className="mb-4 flex flex-col items-center justify-center text-muted group-hover:text-accent transition-colors">
                 <IdentificationCard size={48} weight="regular" />
@@ -242,16 +262,16 @@ export default function DriverOnboardingPage() {
         )}
 
         <div className="mt-10 flex justify-between gap-4">
-          <button 
+          <button
             onClick={handleBack}
             className={cn("btn btn-secondary flex-1 py-3 h-12", step === 1 && "opacity-0 pointer-events-none")}
           >
             <ArrowLeft size={18} weight="bold" />
             Back
           </button>
-          
+
           {step < 3 ? (
-            <button 
+            <button
               onClick={handleNext}
               className="btn btn-primary flex-1 py-3 h-12 shadow-lg shadow-accent/10"
             >
@@ -259,7 +279,7 @@ export default function DriverOnboardingPage() {
               <ArrowRight size={18} weight="bold" />
             </button>
           ) : (
-            <button 
+            <button
               onClick={completeOnboarding}
               disabled={isLoading}
               className="btn btn-primary flex-1 py-3 h-12 bg-success hover:bg-success/90 shadow-lg shadow-success/10 border-none"
