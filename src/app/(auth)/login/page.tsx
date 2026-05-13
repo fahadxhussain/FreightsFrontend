@@ -40,10 +40,11 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const response = await api.post("/auth/login", data);
-      const { accessToken, user } = response.data.data;
+      const { accessToken, refreshToken, user } = response.data.data;
       const isOnboardingComplete = user?.isOnboardingComplete ?? false;
 
       localStorage.setItem("token", accessToken);
+      if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
       document.cookie = `accessToken=${accessToken}; path=/; max-age=604800; SameSite=Lax`;
 
       // Extract permissions from JWT

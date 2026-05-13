@@ -541,6 +541,7 @@ export default function SettingsPage() {
       toast.success("Account deleted");
       // Force logout
       localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
       router.push("/login");
     } catch (err: unknown) {
       const axiosErr = err as AxiosError<{ error?: { message?: string } }>;
