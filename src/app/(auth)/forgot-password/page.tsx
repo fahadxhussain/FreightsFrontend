@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
           Check your inbox and enter the code below.
         </p>
         <button
-          onClick={() => router.push(`/otp-verification?email=${encodeURIComponent(form.getValues("email"))}&type=reset`)}
+          onClick={() => router.push(`/reset-password?email=${encodeURIComponent(form.getValues("email"))}`)}
           className="btn btn-primary btn-lg w-full shadow-lg shadow-accent/20"
         >
           Enter Reset Code
