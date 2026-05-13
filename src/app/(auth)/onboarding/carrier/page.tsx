@@ -157,6 +157,12 @@ export default function CarrierOnboardingPage() {
       // 5. Mark prefs step complete
       await api.patch('/auth/onboarding/prefs', {});
 
+      // Refresh token to get updated JWT claims (isOnboardingComplete: true)
+      const refreshRes = await api.post('/auth/refresh');
+      const { accessToken: newToken } = refreshRes.data.data;
+      localStorage.setItem('token', newToken);
+      document.cookie = `accessToken=${newToken}; path=/; max-age=604800; SameSite=Lax`;
+
       dispatch(updateOnboardingStatus(true));
       setIsCompleted(true);
       toast.success('Onboarding complete!');

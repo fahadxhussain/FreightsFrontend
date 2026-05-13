@@ -31,12 +31,17 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // Attempt to refresh the token using the refresh cookie
-        await axios.post(
+        const refreshRes = await axios.post(
           `${api.defaults.baseURL}/auth/refresh`,
           {},
           { withCredentials: true },
         );
+        const newToken = refreshRes.data?.data?.accessToken;
+        if (newToken) {
+          localStorage.setItem("token", newToken);
+          document.cookie = `accessToken=${newToken}; path=/; max-age=604800; SameSite=Lax`;
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        }
 
         return api(originalRequest);
       } catch (refreshError) {

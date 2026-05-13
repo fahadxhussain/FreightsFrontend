@@ -152,6 +152,17 @@ export default function BrokerOnboardingPage() {
       // 5. Mark prefs step complete
       await api.patch('/auth/onboarding/prefs', {});
 
+      // Get fresh access token with updated isOnboardingComplete claim
+      let newToken = localStorage.getItem('token') || '';
+      try {
+        const refreshRes = await api.post('/auth/refresh');
+        newToken = refreshRes.data.data.accessToken || newToken;
+      } catch {
+        // Refresh token may have been cleared — use existing token
+      }
+      localStorage.setItem('token', newToken);
+      document.cookie = `accessToken=${newToken}; path=/; max-age=604800; SameSite=Lax`;
+
       dispatch(updateOnboardingStatus(true));
       setIsCompleted(true);
       toast.success('Onboarding complete!');
