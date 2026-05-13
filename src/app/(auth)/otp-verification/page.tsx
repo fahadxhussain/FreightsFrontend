@@ -136,11 +136,18 @@ function OtpVerificationForm() {
   async function doSendOTP(showToast = true) {
     setSendError(null);
     try {
-      await withRetry(
-        () => api.post("/auth/send-verification-otp", { email }),
-        "Send code",
-      );
-      if (showToast) toast.success("Verification code sent!");
+      if (type === "reset") {
+        await withRetry(
+          () => api.post("/auth/forgot-password", { email }),
+          "Send reset code",
+        );
+      } else {
+        await withRetry(
+          () => api.post("/auth/send-verification-otp", { email }),
+          "Send code",
+        );
+      }
+      if (showToast) toast.success(type === "reset" ? "Reset code sent!" : "Verification code sent!");
       setCooldown(60);
     } catch (error: any) {
       const msg = error.response?.data?.error?.message || "Failed to send code";
