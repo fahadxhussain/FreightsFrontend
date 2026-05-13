@@ -29,7 +29,7 @@ const NAV_BY_ROLE: Record<string, NavItem[]> = {
   admin: [
     { href: "/admin", label: "Admin Panel", Icon: Gauge },
     { href: "/admin/users", label: "Users", Icon: Lifebuoy },
-    { href: "/admin/verification", label: "Verification", Icon: FileText },
+    { href: "/admin/verifications", label: "Verification", Icon: FileText },
     { href: "/admin/settings", label: "Platform Config", Icon: Gear },
   ],
   broker: [

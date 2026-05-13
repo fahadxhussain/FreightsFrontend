@@ -124,7 +124,7 @@ export default function AdminVerificationsPage() {
                         {u.role}
                       </span>
                       <span className="rounded-full bg-warning-light px-2 py-0.5 text-xs font-medium text-warning">
-                        {u.verificationMethod || 'fmcsa'}
+                        {u.verificationMethod || 'manual'}
                       </span>
                       <span className="flex items-center gap-1 text-xs text-muted">
                         <Clock size={12} />

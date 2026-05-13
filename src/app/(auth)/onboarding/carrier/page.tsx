@@ -49,7 +49,7 @@ type FmcsaValues = z.infer<typeof fmcsaSchema>;
 
 const STEPS = [
   { num: 1, label: 'Company' },
-  { num: 2, label: 'FMCSA' },
+  { num: 2, label: 'Authority' },
   { num: 3, label: 'Compliance' },
   { num: 4, label: 'Payments' },
 ];
@@ -89,11 +89,6 @@ export default function CarrierOnboardingPage() {
       const valid = await companyForm.trigger();
       if (!valid) return;
       setStep(2);
-    } else if (step === 2) {
-      if (!verificationResult) {
-        toast.error('Please verify your authority first');
-        return;
-      }
       setStep(3);
     } else if (step === 3) {
       setStep(4);
@@ -333,65 +328,29 @@ export default function CarrierOnboardingPage() {
           <div className="space-y-6 animate-in fade-in duration-300">
             <div className="flex items-center gap-2 text-accent">
               <Certificate size={24} weight="bold" />
-              <h3 className="text-lg font-bold">Verify your operating authority</h3>
+              <h3 className="text-lg font-bold">Operating Authority</h3>
             </div>
-            <p className="text-sm font-medium text-muted">Your MC or USDOT number is issued by the Federal Motor Carrier Safety Administration (FMCSA).</p>
+            <p className="text-sm font-medium text-muted">Enter your MC or USDOT number as issued by the FMCSA. This will be verified by our admin team.</p>
 
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">MC Number</label>
+                <label className="ml-1 text-[10px] font-bold text-muted uppercase tracking-wider">MC or USDOT Number</label>
                 <input
                   {...fmcsaForm.register('mcNumber')}
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", fmcsaForm.formState.errors.mcNumber && "border-danger")}
-                  placeholder="MC-XXXXXXX"
+                  placeholder="e.g. MC-123456"
                 />
+                {fmcsaForm.formState.errors.mcNumber && (
+                  <p className="text-xs text-danger ml-1">{fmcsaForm.formState.errors.mcNumber.message}</p>
+                )}
               </div>
 
-              {!verificationResult && (
-                <button
-                  onClick={verifyFmcsa}
-                  disabled={isVerifying}
-                  className="btn btn-primary w-full py-3 shadow-lg shadow-accent/10"
-                >
-                  <MagnifyingGlass size={18} weight="bold" />
-                  {isVerifying ? 'Verifying...' : 'Verify Now'}
-                </button>
-              )}
-
-              {verificationResult && (
-                <div className="animate-in fade-in slide-in-from-top-2 duration-500">
-                  <div className="mb-4 flex justify-center">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success-light text-success">
-                      <Check size={24} weight="bold" />
-                    </div>
-                  </div>
-                  <div className="rounded-xl border border-border bg-input p-5">
-                    <h4 className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-muted">FMCSA Verification Result</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Legal Name</span>
-                        <span className="text-xs font-black">{companyForm.getValues('companyName') || "Mike's Carriers LLC"}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Authority Status</span>
-                        <span className="badge badge-green">Active</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Insurance</span>
-                        <span className="badge badge-green">Valid</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Safety Rating</span>
-                        <span className="badge badge-green">Satisfactory</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Authority Type</span>
-                        <span className="badge badge-blue">Common Carrier</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <div className="rounded-xl border border-border bg-accent/5 p-4 flex items-start gap-3">
+                <CheckCircle size={20} className="text-accent shrink-0 mt-0.5" weight="fill" />
+                <p className="text-xs font-medium text-accent-dark">
+                  By providing this number, you authorize FLOW to review your public safety records and insurance status.
+                </p>
+              </div>
             </div>
           </div>
         )}

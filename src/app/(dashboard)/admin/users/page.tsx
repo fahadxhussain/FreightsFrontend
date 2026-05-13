@@ -1,0 +1,254 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { CheckCircle, XCircle, User, Shield, Info, MagnifyingGlass, UserMinus, UserPlus } from '@phosphor-icons/react';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { useAppSelector } from '@/store/hooks';
+import api from '@/lib/axios';
+
+interface AdminUser {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  status: string;
+  identityStatus: string;
+  identityVerified: boolean;
+  createdAt: string;
+  verificationDocuments: { url: string; type: string }[];
+}
+
+export default function AdminUsersPage() {
+  const router = useRouter();
+  const user = useAppSelector((s) => s.auth.user);
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isProcessing, setIsProcessing] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user?.role && user.role !== 'admin') {
+      router.replace('/dashboard');
+    }
+  }, [user?.role, router]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  async function fetchUsers() {
+    try {
+      const res = await api.get('/admin/users');
+      setUsers(res.data.data?.data || []);
+    } catch {
+      toast.error('Failed to load users');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleApproveIdentity(userId: string) {
+    setIsProcessing(userId);
+    try {
+      await api.post(`/admin/verifications/${userId}/approve`);
+      toast.success('User activated and identity approved');
+      setUsers(prev => prev.map(u => u._id === userId ? { ...u, status: 'active', identityStatus: 'approved', identityVerified: true } : u));
+    } catch {
+      toast.error('Failed to activate user');
+    } finally {
+      setIsProcessing(null);
+    }
+  }
+
+  async function handleSuspend(userId: string) {
+    setIsProcessing(userId);
+    try {
+      await api.post(`/admin/users/${userId}/suspend`);
+      toast.success('User suspended');
+      setUsers(prev => prev.map(u => u._id === userId ? { ...u, status: 'suspended' } : u));
+    } catch {
+      toast.error('Failed to suspend');
+    } finally {
+      setIsProcessing(null);
+    }
+  }
+
+  async function handleReactivate(userId: string) {
+    setIsProcessing(userId);
+    try {
+      await api.post(`/admin/users/${userId}/reactivate`);
+      toast.success('User reactivated');
+      setUsers(prev => prev.map(u => u._id === userId ? { ...u, status: 'active' } : u));
+    } catch {
+      toast.error('Failed to reactivate');
+    } finally {
+      setIsProcessing(null);
+    }
+  }
+
+  const filteredUsers = users.filter(u => 
+    u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    `${u.firstName} ${u.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">User Management</h1>
+          <p className="text-sm text-muted">Manage all platform users and their access</p>
+        </div>
+        <div className="relative w-64">
+          <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+          <input
+            type="text"
+            placeholder="Search users..."
+            className="w-full rounded-lg border border-border bg-card pl-10 pr-4 py-2 text-sm outline-none focus:border-accent"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-muted/50 border-bottom border-border">
+            <tr>
+              <th className="px-6 py-4 font-bold text-muted uppercase tracking-wider text-[10px]">User</th>
+              <th className="px-6 py-4 font-bold text-muted uppercase tracking-wider text-[10px]">Role</th>
+              <th className="px-6 py-4 font-bold text-muted uppercase tracking-wider text-[10px]">Status</th>
+              <th className="px-6 py-4 font-bold text-muted uppercase tracking-wider text-[10px]">Verification</th>
+              <th className="px-6 py-4 font-bold text-muted uppercase tracking-wider text-[10px] text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            {filteredUsers.map((u) => (
+              <React.Fragment key={u._id}>
+                <tr className="hover:bg-muted/30 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-light text-accent text-xs font-bold">
+                        {u.firstName[0]}{u.lastName[0]}
+                      </div>
+                      <div>
+                        <div className="font-bold text-foreground">{u.firstName} {u.lastName}</div>
+                        <div className="text-xs text-muted">{u.email}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="rounded-full bg-indigo-light px-2 py-0.5 text-[10px] font-black uppercase text-indigo tracking-wider">
+                      {u.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={cn(
+                      "rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider",
+                      u.status === 'active' ? "bg-success-light text-success" : 
+                      u.status === 'suspended' ? "bg-danger-light text-danger" : "bg-warning-light text-warning"
+                    )}>
+                      {u.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      {u.identityVerified ? (
+                        <CheckCircle size={16} className="text-success" weight="fill" />
+                      ) : (
+                        <Clock size={16} className="text-warning" weight="fill" />
+                      )}
+                      <span className="text-xs font-medium">{u.identityStatus}</span>
+                      {u.verificationDocuments.length > 0 && (
+                        <button 
+                          onClick={() => setSelectedUserId(selectedUserId === u._id ? null : u._id)}
+                          className="ml-2 text-accent hover:underline text-[10px] font-bold"
+                        >
+                          {selectedUserId === u._id ? 'Hide Docs' : `View Docs (${u.verificationDocuments.length})`}
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex justify-end gap-2">
+                      {!u.identityVerified && (
+                        <button
+                          onClick={() => handleApproveIdentity(u._id)}
+                          disabled={!!isProcessing}
+                          className="flex h-8 items-center gap-1.5 rounded-lg bg-success px-3 text-[10px] font-black uppercase tracking-wider text-white hover:bg-success/90 disabled:opacity-50"
+                          title="Approve Identity & Activate Account"
+                        >
+                          <CheckCircle size={14} weight="bold" />
+                          Activate
+                        </button>
+                      )}
+                      {u.status === 'active' ? (
+                        <button
+                          onClick={() => handleSuspend(u._id)}
+                          disabled={!!isProcessing}
+                          className="flex h-8 items-center gap-1.5 rounded-lg bg-danger px-3 text-[10px] font-black uppercase tracking-wider text-white hover:bg-danger/90 disabled:opacity-50"
+                        >
+                          <UserMinus size={14} weight="bold" />
+                          Suspend
+                        </button>
+                      ) : u.status === 'suspended' ? (
+                        <button
+                          onClick={() => handleReactivate(u._id)}
+                          disabled={!!isProcessing}
+                          className="flex h-8 items-center gap-1.5 rounded-lg bg-indigo px-3 text-[10px] font-black uppercase tracking-wider text-white hover:bg-indigo/90 disabled:opacity-50"
+                        >
+                          <UserPlus size={14} weight="bold" />
+                          Reactivate
+                        </button>
+                      ) : null}
+                    </div>
+                  </td>
+                </tr>
+                {selectedUserId === u._id && (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-4 bg-muted/10 border-y border-border">
+                      <div className="grid grid-cols-2 gap-4">
+                        {u.verificationDocuments.map((doc, idx) => (
+                          <a
+                            key={idx}
+                            href={doc.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 hover:border-accent/30 transition-all"
+                          >
+                            <FileText size={20} className="text-accent" />
+                            <div>
+                              <p className="text-sm font-medium text-foreground">Document {idx + 1}</p>
+                              <p className="text-xs text-muted">{doc.type}</p>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+        {filteredUsers.length === 0 && (
+          <div className="py-12 text-center">
+            <Info size={48} className="mx-auto mb-4 text-muted" />
+            <p className="text-muted font-medium">No users found</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

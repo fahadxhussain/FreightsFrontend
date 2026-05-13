@@ -85,11 +85,6 @@ export default function BrokerOnboardingPage() {
       const valid = await businessForm.trigger();
       if (!valid) return;
       setStep(2);
-    } else if (step === 2) {
-      if (verificationResult !== 'success') {
-        toast.error('Please verify your authority first');
-        return;
-      }
       setStep(3);
     }
   };
@@ -333,9 +328,9 @@ export default function BrokerOnboardingPage() {
           <div className="space-y-6 animate-in fade-in duration-300">
             <div className="flex items-center gap-2 text-accent">
               <Certificate size={24} weight="bold" />
-              <h3 className="text-lg font-bold">Verify your Broker Authority</h3>
+              <h3 className="text-lg font-bold">Broker Authority</h3>
             </div>
-            <p className="text-sm font-medium text-muted">Enter your MC number. We&apos;ll verify it has active <strong>Broker Authority</strong> with FMCSA.</p>
+            <p className="text-sm font-medium text-muted">Enter your MC number. This will be manually verified by our admin team before you can post loads.</p>
 
             <div className="space-y-4">
               <div className="space-y-1.5">
@@ -345,67 +340,17 @@ export default function BrokerOnboardingPage() {
                   className={cn("w-full rounded-xl border border-border bg-input px-4 py-3 text-sm font-medium outline-none transition-all focus:border-accent", authorityForm.formState.errors.mcNumber && "border-danger")}
                   placeholder="MC-XXXXXXX"
                 />
+                {authorityForm.formState.errors.mcNumber && (
+                  <p className="text-xs text-danger ml-1">{authorityForm.formState.errors.mcNumber.message}</p>
+                )}
               </div>
 
-              {!verificationResult && (
-                <button
-                  onClick={verifyAuthority}
-                  disabled={isVerifying}
-                  className="btn btn-primary w-full py-3 shadow-lg shadow-accent/10"
-                >
-                  <MagnifyingGlass size={18} weight="bold" />
-                  {isVerifying ? 'Verifying...' : 'Verify Now'}
-                </button>
-              )}
-
-              {verificationResult === 'success' && (
-                <div className="animate-in fade-in slide-in-from-top-2 duration-500">
-                  <div className="mb-4 flex justify-center">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success-light text-success">
-                      <Check size={24} weight="bold" />
-                    </div>
-                  </div>
-                  <div className="rounded-xl border border-border bg-input p-5">
-                    <h4 className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-muted">FMCSA Verification Result</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Legal Name</span>
-                        <span className="text-xs font-black">{businessForm.getValues('companyName') || 'Smith Brokerage LLC'}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Status</span>
-                        <span className="badge badge-green">Active</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Type</span>
-                        <span className="badge badge-blue">Broker</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-muted uppercase">Bond/Trust</span>
-                        <span className="badge badge-green">$75,000 Active</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {verificationResult === 'mismatch' && (
-                <div className="animate-in fade-in slide-in-from-top-2 duration-500">
-                  <div className="mb-4 flex justify-center">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-warning-light text-warning">
-                      <WarningCircle size={24} weight="bold" />
-                    </div>
-                  </div>
-                  <div className="rounded-xl border border-border bg-input p-5">
-                    <h4 className="mb-2 text-sm font-bold text-warning">Authority Type Mismatch</h4>
-                    <p className="text-xs font-medium text-muted leading-relaxed">This MC number has Carrier authority, not Broker authority. Would you like to register as a Carrier instead?</p>
-                    <div className="mt-4 flex gap-3">
-                      <button onClick={() => router.push('/onboarding/carrier')} className="btn btn-primary h-9 text-xs px-4">Switch to Carrier</button>
-                      <button onClick={() => setVerificationResult(null)} className="btn btn-secondary h-9 text-xs px-4">Try Different MC</button>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <div className="rounded-xl border border-border bg-accent/5 p-4 flex items-start gap-3">
+                <CheckCircle size={20} className="text-accent shrink-0 mt-0.5" weight="fill" />
+                <p className="text-xs font-medium text-accent-dark">
+                  Broker authority is required for all freight brokerages on the FLOW platform.
+                </p>
+              </div>
             </div>
           </div>
         )}
