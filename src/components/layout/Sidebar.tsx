@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
+import { useLogout } from "@/hooks/useLogout";
 import {
   Gauge,
   Package,
@@ -16,6 +17,7 @@ import {
   Gear,
   BookmarkSimple,
   Bell,
+  SignOut,
 } from "@phosphor-icons/react";
 
 interface NavItem {
@@ -92,6 +94,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const user = useAppSelector((state) => state.auth.user);
   const userPermissions = useAppSelector((state) => state.auth.permissions);
+  const handleLogout = useLogout();
 
   const role = user?.role || "broker";
   const navItems = NAV_BY_ROLE[role] || NAV_BY_ROLE.broker;
@@ -145,12 +148,12 @@ export function Sidebar() {
       </nav>
 
       <div className="p-3 mt-auto border-t border-hairline">
-        <div className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-sidebar-hover">
+        <div className="flex items-center gap-2 rounded-lg p-2 transition-colors hover:bg-sidebar-hover group">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-card text-xs font-semibold text-ink">
             {user?.firstName?.slice(0, 1)}
             {user?.lastName?.slice(0, 1)}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="truncate text-sm font-medium text-ink">
               {user?.firstName} {user?.lastName}
             </div>
@@ -158,6 +161,13 @@ export function Sidebar() {
               {user?.role?.replace("_", " ")}
             </div>
           </div>
+          <button
+            onClick={handleLogout}
+            className="flex h-8 w-8 items-center justify-center rounded-md text-muted opacity-0 group-hover:opacity-100 transition-all hover:bg-surface-card hover:text-ink"
+            title="Sign out"
+          >
+            <SignOut size={18} weight="regular" />
+          </button>
         </div>
       </div>
     </aside>
