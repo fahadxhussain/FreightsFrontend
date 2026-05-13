@@ -100,6 +100,8 @@ function OtpVerificationForm() {
 
   const isComplete = otp.every((digit) => digit !== "");
 
+  const type = searchParams.get("type") || "verify"; // "verify" | "reset"
+
   async function handleVerify() {
     if (!isComplete) return;
     setIsLoading(true);
@@ -108,9 +110,10 @@ function OtpVerificationForm() {
         () => api.post("/auth/verify-otp", { email, code: otp.join("") }),
         "Verification",
       );
-      toast.success("Email verified successfully!");
-      // Redirect to role-specific onboarding per spec
-      if (role === "independent_driver" || role === "driver") {
+      toast.success("Code verified successfully!");
+      if (type === "reset") {
+        router.push(`/reset-password?email=${encodeURIComponent(email)}`);
+      } else if (role === "independent_driver" || role === "driver") {
         router.push("/onboarding/driver");
       } else if (role === "carrier") {
         router.push("/onboarding/carrier");
@@ -196,12 +199,13 @@ function OtpVerificationForm() {
       </div>
 
       <h2 className="text-center text-[1.4rem] font-bold text-foreground tracking-tight">
-        Verify your email
+        {type === "reset" ? "Enter reset code" : "Verify your email"}
       </h2>
       <p className="mb-8 mt-1 text-center text-sm text-muted font-medium">
-        We&apos;ve sent a 6-digit code to{" "}
-        <span className="text-foreground font-bold">{maskedEmail}</span>. It
-        expires in 10 minutes.
+        {type === "reset"
+          ? <>We sent a code to <span className="text-foreground font-bold">{maskedEmail}</span>. Enter it below to reset your password.</>
+          : <>We&apos;ve sent a 6-digit code to <span className="text-foreground font-bold">{maskedEmail}</span>. It expires in 10 minutes.</>
+        }
       </p>
 
       {sendError && (
