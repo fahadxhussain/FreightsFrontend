@@ -45,6 +45,22 @@ export default async function proxy(request: NextRequest) {
 
   try {
     const claims = decodeJwt(accessToken) as Record<string, unknown>;
+
+    // Check if token is expired
+    const now = Math.floor(Date.now() / 1000);
+    const exp = claims?.exp as number | undefined;
+    if (exp && exp < now) {
+      // Token expired — treat as unauthenticated, clear stale cookie
+      if (isPublicPath || pathname === "/") {
+        const response = NextResponse.next();
+        response.cookies.delete("accessToken");
+        return response;
+      }
+      const response = NextResponse.redirect(new URL("/login", request.url));
+      response.cookies.delete("accessToken");
+      return response;
+    }
+
     const isOnboardingComplete = claims?.isOnboardingComplete as boolean;
 
     if (isPublicPath) {
